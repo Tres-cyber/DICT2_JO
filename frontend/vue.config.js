@@ -1,9 +1,10 @@
 const { defineConfig } = require("@vue/cli-service");
+const { minify } = require("html-minifier-terser");
 
 module.exports = defineConfig({
   pages: {
     index: {
-      entry: "src/index.js",
+      entry: "src/index.ts",
       template: "public/index.php",
       filename: "index.php",
     },
