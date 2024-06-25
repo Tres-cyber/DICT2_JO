@@ -1,0 +1,14 @@
+ALTER TABLE Personnels
+DROP COLUMN first_name;
+
+ALTER TABLE Personnels
+DROP COLUMN last_name;
+
+ALTER TABLE Personnels
+DROP COLUMN title;
+
+ALTER TABLE Personnels
+ADD COLUMN name VARCHAR(128) NOT NULL;
+
+ALTER TABLE Personnels
+ADD COLUMN position VARCHAR(64) NOT NULL;
