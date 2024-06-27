@@ -45,3 +45,5 @@ VALUES(
     'GovNet',
     '47'
 );
+
+UPDATE `projects` SET `project_name` = 'Philippine National Public Key Infrastructure' WHERE `projects`.`project_id` = 4
