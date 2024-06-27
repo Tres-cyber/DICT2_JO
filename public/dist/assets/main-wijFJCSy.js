@@ -1,1 +1,0 @@
-import{d as a,r as c,c as s,a as o,t as l,F as p,o as r,b as u}from"./vendor-Bgbmti8E.js";const m=a({__name:"HelloWorld",props:{msg:{}},setup(i){const e=c(0);function t(){e.value+=1}return(_,d)=>(r(),s(p,null,[o("p",null,l(e.value),1),o("button",{onClick:t})],64))}}),n=u({});n.component("HelloWorld",m);n.mount("#app");

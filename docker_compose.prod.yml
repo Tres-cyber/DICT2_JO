@@ -1,0 +1,30 @@
+services:
+  public:
+    build: public
+    restart: always
+    depends_on:
+      - database
+    ports:
+      - "8080:80"
+    environment:
+      VITE_HOST: ""
+      MODE_DEPLOY: production
+      MYSQL_HOST: database
+      MYSQL_DATABASE: dict
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password1234
+    command: ["apache2-foreground"]
+
+  database:
+    build: database
+    restart: always
+    volumes:
+      - mysql-prod:/var/lib/mysql
+    environment:
+      - "MYSQL_DATABASE=dict"
+      - "MYSQL_USER=admin"
+      - "MYSQL_PASSWORD=password1234"
+      - "MYSQL_ROOT_PASSWORD=password1234"
+      - "MYSQL_RANDOM_ROOT_PASSWORD="
+volumes:
+  mysql-prod:
