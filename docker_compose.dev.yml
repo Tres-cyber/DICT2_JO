@@ -1,15 +1,16 @@
 services:
-  frontend:
-    build: frontend
+  public:
+    build: public
     restart: always
     depends_on: 
       - database
     ports:
       - "8080:80"
     volumes:
-      - ./frontend/html:/var/www/html
+      - ./public:/var/www/html
       - ./storage:/var/www/html/storage
     environment:
+      VITE_HOST: http://localhost:5133
       MODE_DEPLOY: development
       MYSQL_HOST: database
       MYSQL_DATABASE: dict

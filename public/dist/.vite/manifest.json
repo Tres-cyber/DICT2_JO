@@ -1,0 +1,18 @@
+{
+  "_vendor-Bgbmti8E.js": {
+    "file": "assets/vendor-Bgbmti8E.js",
+    "name": "vendor"
+  },
+  "main.ts": {
+    "file": "assets/main-wijFJCSy.js",
+    "name": "main",
+    "src": "main.ts",
+    "isEntry": true,
+    "imports": [
+      "_vendor-Bgbmti8E.js"
+    ],
+    "css": [
+      "assets/main-CbQMbAXL.css"
+    ]
+  }
+}
