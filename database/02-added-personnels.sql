@@ -1,4 +1,4 @@
-INSERT INTO `personnels` ( `name`, `position`) VALUES 
+INSERT INTO Personnels (name, position) VALUES 
 ('Engr. Pinky T. Jimenez, PECE, Ph.D.', 'Regional Director'),
 ('Janet T. Catinoy', 'Planning Officer II'),
 ('Donna Andrea D. Fidel', 'PDO I'),
