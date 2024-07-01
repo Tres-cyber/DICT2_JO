@@ -51,28 +51,30 @@ function formatDateRange([start, end]: [Date, Date]) {
     :enable-time-picker="false"
   />
 </template>
-<style>
-.dp__theme_light {
+<style scoped>
+* >>> .dp__theme_light {
+  --dp-font-family: theme(fontFamily.serif);
   --dp-primary-color: theme(colors.blue.950);
   --dp-range-between-dates-background-color: theme(colors.blue.100);
   --dp-menu-border-color: theme(colors.neutral.400);
   --dp-text-color: inherit;
+  --dp-font-size: theme(fontSize.sm);
 }
 
-.dp__input_wrap {
+:deep(.dp__input_wrap) {
   display: flex;
 }
 
-.dp__clear_icon {
+:deep(.dp__clear_icon) {
   padding: 0;
 }
 
 @media print {
-  .dp__clear_icon {
+  :deep(.dp__clear_icon) {
     display: none;
   }
 
-  .dp__menu {
+  :deep(.dp__menu) {
     display: none;
   }
 }
