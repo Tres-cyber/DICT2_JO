@@ -2,16 +2,13 @@ services:
   public:
     build: public
     restart: always
-    depends_on: 
+    depends_on:
       - database
     ports:
       - "8080:80"
-    volumes:
-      - ./public:/var/www/html
-      - ./storage:/var/www/html/storage
     environment:
-      VITE_HOST: http://localhost:5133
-      MODE_DEPLOY: development
+      VITE_HOST: ""
+      MODE_DEPLOY: production
       MYSQL_HOST: database
       MYSQL_DATABASE: dict
       MYSQL_USER: admin
@@ -21,29 +18,13 @@ services:
   database:
     build: database
     restart: always
-    ports:
-      - "3306:3306"
     volumes:
-      - mysql:/var/lib/mysql
+      - mysql-prod:/var/lib/mysql
     environment:
       - "MYSQL_DATABASE=dict"
       - "MYSQL_USER=admin"
       - "MYSQL_PASSWORD=password1234"
       - "MYSQL_ROOT_PASSWORD=password1234"
       - "MYSQL_RANDOM_ROOT_PASSWORD="
-
-  phpmyadmin:
-    image: phpmyadmin:latest
-    restart: always
-    depends_on:
-      - database
-    ports:
-      - "8081:80"
-    environment:
-      PMA_HOST: database
-      PMA_PORT: 3306
-      PMA_USER: root
-      PMA_PASSWORD: password1234
-
 volumes:
-  mysql:
+  mysql-prod:

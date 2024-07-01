@@ -18,18 +18,18 @@
           <img src="assets/logo.png" alt="" class="login-logo">
         </div>
        <div class="login-wrapper-2">
-       <div class="login-box">
-          <h1 class="login-title">login</h1>
-          <form action="">
-            <label class="input-title" for="">Email</label>
-            <input class="input-wrapper" type="text">
-            <label class="input-title" for="">Password</label>
-            <input class="input-wrapper" type="text">
-            <div class="input-submit-wrapper">
-            <input class="input-submit" type="submit" value="Submit">
-            </div>
-          </form>
-        </div>
+        <div class="login-box">
+            <h1 class="login-title">login</h1>
+            <form action="">
+              <label class="input-title" for="">Email</label>
+              <input class="input-wrapper" type="text">
+              <label class="input-title" for="">Password</label>
+              <input class="input-wrapper" type="text">
+              <div class="input-submit-wrapper">
+              <input class="input-submit" type="submit" value="Submit">
+              </div>
+            </form>
+          </div>
        </div>
        </div>
       </div>
