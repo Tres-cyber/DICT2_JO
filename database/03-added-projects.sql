@@ -1,49 +1,41 @@
-INSERT INTO `projects`(
-    `project_id`,
-    `project_name`,
-    `project_code`,
-    `focal_person_id`
-)
-VALUES(
-    NULL,
+INSERT INTO Projects(project_name, project_code, focal_person_id)
+VALUES
+(
     'ICT Industry Development Bureau',
     'IIDB',
-    '26'
+    26
 ),(
-    NULL,
     'National ICT Planning, Policy and Standards Bureau',
     'NIPPSB',
-    '6'
+    6
 ),(
-    NULL,
     'electronic Local Government Unit',
     'e-LGU',
-    '18'
-),(NULL, 'Cybersecurity', 'PNPKI', '35'),(
-    NULL,
+    18
+),(
+    'Cybersecurity',
+    'PNPKI',
+    35
+),(
     'National Government Portal',
     'NGP',
-    '26'
+    26
 ),(
-    NULL,
     'ICT Literacy and Competency Development Bureau',
     'ILCDB',
-    '6'
+    6
 ),(
-    NULL,
     'Government Emergency Communications System',
     'GECS',
-    '18'
+    18
 ),(
-    NULL,
     'Free Wi-Fi for All - Free Public Internet Access Program',
     'Free Wi-Fi 4 All',
-    '47'
+    47
 ),(
-    NULL,
     'Government Network',
     'GovNet',
-    '47'
+    47
 );
 
-UPDATE `projects` SET `project_name` = 'Philippine National Public Key Infrastructure' WHERE `projects`.`project_id` = 4
+UPDATE Projects SET project_name = 'Philippine National Public Key Infrastructure' WHERE project_id = 4
