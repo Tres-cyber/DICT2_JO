@@ -8,7 +8,7 @@ export default defineConfig({
     vue(),
     liveReload([
       __dirname + "/(app|config|views)/**/*.php",
-      __dirname + "/../public/*.php",
+      __dirname + "/../public/**/*.{css,php,html,js}",
     ]),
     splitVendorChunkPlugin(),
   ],
