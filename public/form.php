@@ -17,6 +17,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/lib/vite.php';
   <div id="app">
     <div class="container mx-auto flex justify-center print:!m-0 print:!max-w-full">
       <div class="relative print:!w-full">
+        <strong class="uppercase absolute text-neutral-300 text-4xl tracking-widest rotate-[-55deg] scale-[7] top-1/2 left-1/2 -translate-x-1/2 translate-y-1/2 z-[-1] hidden print:block">draft</strong>
         <print-button class="absolute top-4 left-4 py-2 px-4 rounded-full bg-blue-950 text-white text-sm font-semibold uppercase print:hidden overflow-clip"></print-button>
         <div class="h-[13in] w-[8.5in] border border-neutral-700 p-[0.75in] print:!w-full print:border-none flex flex-col items-stretch">
           <div class="relative flex h-[0.75in] items-center justify-between">
@@ -39,13 +40,13 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/lib/vite.php';
               <td class="border border-black w-1/2">
                 <div class="flex items-center">
                   <label for="name" class="text-sm leading-none uppercase">Name:</label>
-                  <input id="name" type="text" value="Joel P. Manuel" class="ml-1 leading-none font-semibold text-sm flex-1 uppercase w-0">
+                  <input id="name" type="text" value="Joel P. Manuel" class="ml-1 leading-none font-semibold text-sm flex-1 uppercase w-0 bg-transparent">
                 </div>
               </td>
               <td class="border border-black w-1/2">
                 <div class="flex items-center">
                   <label for="contact_number" class="text-sm leading-none uppercase">Contact Number:</label>
-                  <input id="contact_number" type="text" value="09168225076" class="ml-1 leading-none font-semibold text-sm flex-1 w-0">
+                  <input id="contact_number" type="text" value="09168225076" class="ml-1 leading-none font-semibold text-sm flex-1 w-0 bg-transparent">
                 </div>
               </td>
             </tr>
@@ -53,7 +54,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/lib/vite.php';
               <td class="border border-black" colspan="2">
                 <div class="flex items-center">
                   <label for="lgu" class="text-sm leading-none uppercase">LGU:</label>
-                  <input id="lgu" type="text" value="Alcala, Cagayan" class="ml-1 leading-none font-semibold text-sm flex-1 uppercase w-0">
+                  <input id="lgu" type="text" value="Alcala, Cagayan" class="ml-1 leading-none font-semibold text-sm flex-1 uppercase w-0 bg-transparent">
                 </div>
               </td>
             </tr>
@@ -61,13 +62,13 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/lib/vite.php';
               <td class="border border-black w-1/2">
                 <div class="flex items-center">
                   <label for="mode_of_request" class="text-sm leading-none uppercase">Mode of request:</label>
-                  <input id="mode_of_request" type="text" value="On site" class="ml-1 leading-none font-semibold text-sm flex-1 capitalize w-0">
+                  <input id="mode_of_request" type="text" value="On site" class="ml-1 leading-none font-semibold text-sm flex-1 capitalize w-0 bg-transparent">
                 </div>
               </td>
               <td class="border border-black w-1/2">
                 <div class="flex items-center">
                   <label for="date" class="text-sm leading-none uppercase">Date: </label>
-                  <date-picker date="2024-02-23" class="ml-1 w-0 flex-1" hide-input-icon input-class-name="border-none rounded-none leading-none font-semibold text-sm font-serif p-0 uppercase"></date-picker>
+                  <date-picker date="2024-02-23" class="ml-1 w-0 flex-1" hide-input-icon input-class-name="bg-transparent border-none rounded-none leading-none font-semibold text-sm font-serif p-0 uppercase"></date-picker>
                 </div>
               </td>
             </tr>
@@ -80,13 +81,13 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/lib/vite.php';
               <td class="border border-black w-1/2">
                 <div class="flex items-center">
                   <span class="text-sm leading-none uppercase">Scheduled date: </span>
-                  <date-picker start-date="2024-02-26" end-date="2024-02-27" range class="ml-1 w-0 flex-1" hide-input-icon input-class-name="border-none rounded-none leading-none font-semibold text-sm font-serif p-0 uppercase"></date-picker>
+                  <date-picker start-date="2024-02-26" end-date="2024-02-27" range class="ml-1 w-0 flex-1" hide-input-icon input-class-name="bg-transparent border-none rounded-none leading-none font-semibold text-sm font-serif p-0 uppercase"></date-picker>
                 </div>
               </td>
               <td class="border border-black w-1/2">
                 <div class="flex items-center">
                   <span class="text-sm leading-none uppercase">Job order number: </span>
-                  <input type="text" value="iBPLS-R2-2024-02-26-S37" class="ml-1 leading-none font-semibold text-sm flex-1 w-0">
+                  <input type="text" value="iBPLS-R2-2024-02-26-S37" class="ml-1 leading-none font-semibold text-sm flex-1 w-0 bg-transparent">
                 </div>
               </td>
             </tr>
@@ -94,13 +95,13 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/lib/vite.php';
               <td class="border border-black w-1/2">
                 <div class="flex items-center">
                   <span class="text-sm leading-none uppercase">Issued by: </span>
-                  <input type="text" value="Engr. Ronald S. Bariuan" class="ml-1 leading-none font-semibold text-sm flex-1 w-0 uppercase">
+                  <input type="text" value="Engr. Ronald S. Bariuan" class="ml-1 leading-none font-semibold text-sm flex-1 w-0 uppercase bg-transparent">
                 </div>
               </td>
               <td class="border border-black w-1/2">
                 <div class="flex items-center">
                   <span class="text-sm leading-none uppercase">Approved by: </span>
-                  <input type="text" value="Engr. Pinky T. Jimenez" class="ml-1 leading-none font-semibold text-sm flex-1 w-0 uppercase">
+                  <input type="text" value="Engr. Pinky T. Jimenez" class="ml-1 leading-none font-semibold text-sm flex-1 w-0 uppercase bg-transparent">
                 </div>
               </td>
             </tr>
@@ -109,9 +110,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/lib/vite.php';
                 <div class="flex items-center">
                   <div class="flex items-start flex-1">
                     <span class="text-sm leading-[19px] uppercase mr-1">Endorsed to: </span>
-                    <div class="flex items-start flex-1 flex-wrap">
-                      <span type="text" class="mr-1 leading-[19px] font-semibold text-sm uppercase">Jaymar C. Recolizado</span>
-                    </div>
+                    <multiple-select permanent="Jaymar C. Recolizado" :selected="['Jaymar C. Recolizado','Joel P. Manuel']" placeholder="Add endorsee" container-class="flex items-start flex-1 flex-wrap" value-class="group/value relative mr-1 leading-[19px] font-semibold text-sm uppercase" delete-class="group-hover/value:block hidden absolute right-0 bg-red-600 translate-x-1/2 text-white text-xs font-black font-sans leading-[16px] -translate-y-1/2 rounded-full top-0 w-4 h-4" input-class="leading-none font-semibold text-sm w-[30ch] uppercase bg-transparent print:hidden" options="Jaymar C. Recolizado,Joel P. Manuel" choices-class="absolute inset-0 top-full bg-white border-neutral-400 rounded" select-class="relative flex"></multiple-select>
                   </div>
                 </div>
               </td>
@@ -120,7 +119,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/lib/vite.php';
               <td class="border border-black w-1/2" colspan="2">
                 <div class="flex flex-col items-stretch">
                   <span class="block text-sm leading-[19px] font-semibold uppercase">Job Request Description</span>
-                  <dynamic-textarea class="leading-none text-sm mx-0 min-h-[7em] max-h-[20em] resize-none my-4">
+                  <dynamic-textarea class="leading-none text-sm mx-0 min-h-[7em] max-h-[20em] resize-none my-4 bg-transparent">
                     <pre>
 Day 1 – February 26, 2024:
 
@@ -141,8 +140,8 @@ Day 2 – February 27, 2024:
                 <div class="flex h-[5em] items-end">
                   <span class="text-sm leading-[19px] uppercase">Performed by: </span>
                   <div class="flex flex-1 flex-col items-center">
-                    <input type="text" value="Jaymar C. Recolizado" class="leading-none font-semibold text-sm uppercase w-full text-center">
-                    <input type="text" value="ISA II" class="leading-none text-xs uppercase w-full text-center font-medium italic">
+                    <input type="text" value="Jaymar C. Recolizado" class="leading-none font-semibold text-sm uppercase w-full text-center bg-transparent">
+                    <input type="text" value="ISA II" class="leading-none text-xs uppercase w-full text-center font-medium italic bg-transparent">
                   </div>
                 </div>
               </td>
@@ -152,8 +151,8 @@ Day 2 – February 27, 2024:
                 <div class="flex h-[5em] items-end">
                   <span class="text-sm leading-[19px] uppercase">Verified by: </span>
                   <div class="flex flex-1 flex-col items-center">
-                    <input type="text" value="Joel P. Manuel" class="leading-none font-semibold text-sm uppercase w-full text-center">
-                    <input type="text" value="BPLO LGU Alcala" class="leading-none text-xs uppercase w-full text-center font-medium italic">
+                    <input type="text" value="Joel P. Manuel" class="leading-none font-semibold text-sm uppercase w-full text-center bg-transparent">
+                    <input type="text" value="BPLO LGU Alcala" class="leading-none text-xs uppercase w-full text-center font-medium italic bg-transparent">
                   </div>
                 </div>
               </td>
@@ -162,7 +161,7 @@ Day 2 – February 27, 2024:
 
           <div class="border border-black mt-auto flex-1 flex items-stretch justify-stretch break-before-avoid flex-col">
             <div class="h-0 flex-1">
-              <textarea class="leading-none text-sm resize-none w-full h-full"></textarea>
+              <textarea class="leading-none text-sm resize-none w-full h-full bg-transparent"></textarea>
             </div>
             <em class="invisible print:visible mt-4">
               ****Please accomplish together with Client Satisfaction Feedback Form

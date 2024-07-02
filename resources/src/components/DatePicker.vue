@@ -52,7 +52,7 @@ function formatDateRange([start, end]: [Date, Date]) {
   />
 </template>
 <style scoped>
-* >>> .dp__theme_light {
+:deep(.dp__theme_light) {
   --dp-font-family: theme(fontFamily.serif);
   --dp-primary-color: theme(colors.blue.950);
   --dp-range-between-dates-background-color: theme(colors.blue.100);
