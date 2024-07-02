@@ -22,6 +22,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/lib/vite.php';
           <img src="assets/logo.png" alt="" class="login-logo">
         </div>
        <div class="login-wrapper-2">
+       <img src="assets/logo.png" alt="" class="login-logo-two">
        <div class="login-box">
           <h1 class="login-title">login</h1>
           <form action="">
