@@ -1,0 +1,10 @@
+ALTER TABLE `projects` ADD `project_logo` VARCHAR(64) NOT NULL AFTER `focal_person_id`;
+UPDATE `projects` SET `project_code` = 'FW4A' WHERE `projects`.`project_id` = 8
+UPDATE `projects` SET `project_logo` = '/storage/iidb.png' WHERE `projects`.`project_id` = 1;
+UPDATE `projects` SET `project_logo` = '/storage/NIPPSB.png' WHERE `projects`.`project_id` = 2;
+UPDATE `projects` SET `project_logo` = '/storage/eLGU.png' WHERE `projects`.`project_id` = 3;
+UPDATE `projects` SET `project_logo` = '/storage/PNPKI.png' WHERE `projects`.`project_id` = 4;
+UPDATE `projects` SET `project_logo` = '/storage/ilcdb.png' WHERE `projects`.`project_id` = 6;
+UPDATE `projects` SET `project_logo` = '/storage/gecs.png' WHERE `projects`.`project_id` = 7;
+UPDATE `projects` SET `project_logo` = '/storage/fw4a.png' WHERE `projects`.`project_id` = 8;
+UPDATE `projects` SET `project_logo` = '/storage/govnet.png' WHERE `projects`.`project_id` = 9;
