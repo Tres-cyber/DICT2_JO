@@ -5,6 +5,12 @@
     "className",
     "classList",
     "ngClass",
-    "[a-z]+-class"
+    "container-class",
+    "select-class",
+    "value-class",
+    "delete-class",
+    "input-class",
+    "choices-class",
+    "option-class"
   ]
 }

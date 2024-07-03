@@ -1,0 +1,283 @@
+{% extends 'base.twig' %} {% block title %}Forms{% endblock %} {% block body %}
+
+<div class="container mx-auto flex justify-center print:!m-0 print:!max-w-full">
+  <div class="relative print:!w-full">
+    <strong
+      class="absolute left-1/2 top-1/2 z-[-1] hidden -translate-x-1/2 translate-y-1/2 rotate-[-55deg] scale-[7] text-4xl uppercase tracking-widest text-neutral-300 print:block"
+    >
+      draft
+    </strong>
+    <print-button
+      class="absolute left-4 top-4 overflow-clip rounded-full bg-blue-950 px-4 py-2 text-sm font-semibold uppercase text-white print:hidden"
+    ></print-button>
+    <div
+      class="flex h-[13in] w-[8.5in] flex-col items-stretch border border-neutral-700 p-[0.75in] print:!w-full print:border-none"
+    >
+      <div class="relative flex h-[0.75in] items-center justify-between">
+        <img
+          src="./bagon_pilipinas.png"
+          alt="Bagong Pilipinas Logo"
+          class="h-[0.5in]"
+        />
+        <img
+          src="dict_header.png"
+          alt="DICT Official Header"
+          class="absolute right-1/2 h-[0.75in] translate-x-1/2"
+        />
+        <img src="elgu.png" alt="eLGU IBPLS logo" class="h-[0.5in]" />
+      </div>
+      <div class="flex justify-center">
+        <h1 class="mt-4 font-serif text-3xl font-semibold uppercase">
+          job order form
+        </h1>
+      </div>
+      <table class="mb-[0.75in] mt-2 w-full border-collapse font-serif">
+        <tr>
+          <td
+            class="border border-black bg-neutral-200 text-start text-xs font-semibold uppercase leading-none"
+            colspan="2"
+          >
+            Client/Worksite Details
+          </td>
+        </tr>
+        <tr>
+          <td class="w-1/2 border border-black">
+            <div class="flex items-center">
+              <label for="name" class="text-sm uppercase leading-none"
+                >Name:</label
+              >
+              <input
+                id="name"
+                type="text"
+                value="Joel P. Manuel"
+                class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
+              />
+            </div>
+          </td>
+          <td class="w-1/2 border border-black">
+            <div class="flex items-center">
+              <label for="contact_number" class="text-sm uppercase leading-none"
+                >Contact Number:</label
+              >
+              <input
+                id="contact_number"
+                type="text"
+                value="09168225076"
+                class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold leading-none"
+              />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="border border-black" colspan="2">
+            <div class="flex items-center">
+              <label for="lgu" class="text-sm uppercase leading-none"
+                >LGU:</label
+              >
+              <input
+                id="lgu"
+                type="text"
+                value="Alcala, Cagayan"
+                class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
+              />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="w-1/2 border border-black">
+            <div class="flex items-center">
+              <label
+                for="mode_of_request"
+                class="text-sm uppercase leading-none"
+                >Mode of request:</label
+              >
+              <input
+                id="mode_of_request"
+                type="text"
+                value="On site"
+                class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold capitalize leading-none"
+              />
+            </div>
+          </td>
+          <td class="w-1/2 border border-black">
+            <div class="flex items-center">
+              <label for="date" class="text-sm uppercase leading-none"
+                >Date:
+              </label>
+              <date-picker
+                date="2024-02-23"
+                class="ml-1 w-0 flex-1"
+                hide-input-icon
+                input-class-name="bg-transparent border-none rounded-none leading-none font-semibold text-sm font-serif p-0 uppercase"
+              ></date-picker>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td
+            class="border border-black bg-neutral-200 text-start text-xs font-semibold uppercase leading-none"
+            colspan="2"
+          >
+            Job Order Details
+          </td>
+        </tr>
+        <tr>
+          <td class="w-1/2 border border-black">
+            <div class="flex items-center">
+              <span class="text-sm uppercase leading-none"
+                >Scheduled date:
+              </span>
+              <date-picker
+                start-date="2024-02-26"
+                end-date="2024-02-27"
+                range
+                class="ml-1 w-0 flex-1"
+                hide-input-icon
+                input-class-name="bg-transparent border-none rounded-none leading-none font-semibold text-sm font-serif p-0 uppercase"
+              ></date-picker>
+            </div>
+          </td>
+          <td class="w-1/2 border border-black">
+            <div class="flex items-center">
+              <span class="text-sm uppercase leading-none"
+                >Job order number:
+              </span>
+              <input
+                type="text"
+                value="iBPLS-R2-2024-02-26-S37"
+                class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold leading-none"
+              />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="w-1/2 border border-black">
+            <div class="flex items-center">
+              <span class="text-sm uppercase leading-none">Issued by: </span>
+              <input
+                type="text"
+                value="Engr. Ronald S. Bariuan"
+                class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
+              />
+            </div>
+          </td>
+          <td class="w-1/2 border border-black">
+            <div class="flex items-center">
+              <span class="text-sm uppercase leading-none">Approved by: </span>
+              <input
+                type="text"
+                value="Engr. Pinky T. Jimenez"
+                class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
+              />
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="h-[3em] w-1/2 border border-black" colspan="2">
+            <div class="flex items-center">
+              <div class="flex flex-1 items-start">
+                <span class="mr-1 text-sm uppercase leading-[19px]"
+                  >Endorsed to:
+                </span>
+                <multiple-select
+                  permanent="Jaymar C. Recolizado"
+                  :selected="['Jaymar C. Recolizado','Joel P. Manuel']"
+                  placeholder="Add endorsee"
+                  container-class="flex flex-1 flex-wrap items-start"
+                  value-class="group/value relative mr-1 text-sm font-semibold uppercase leading-[19px]"
+                  delete-class="absolute right-0 top-0 hidden h-4 w-4 -translate-y-1/2 translate-x-1/2 rounded-full bg-red-600 font-sans text-xs font-black leading-[16px] text-white group-hover/value:block"
+                  select-class="relative flex"
+                  input-class="w-[30ch] bg-transparent text-sm font-semibold uppercase leading-none print:hidden"
+                  choices-class="absolute inset-0 top-full rounded border-neutral-400 bg-white"
+                  options="Jaymar C. Recolizado,Joel P. Manuel"
+                ></multiple-select>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="w-1/2 border border-black" colspan="2">
+            <div class="flex flex-col items-stretch">
+              <span class="block text-sm font-semibold uppercase leading-[19px]"
+                >Job Request Description</span
+              >
+              <dynamic-textarea
+                class="mx-0 my-4 max-h-[20em] min-h-[7em] resize-none bg-transparent text-sm leading-none"
+              >
+                <pre>
+Day 1 – February 26, 2024:
+
+1. Provided technical assistance to the participants from the LGU of Alcala in terms of discussion of specified technicalities in using the eGOV app.
+2. Assisted the trainers in the discussion of crucial parts in the configuration in the access control of the system.
+
+Day 2 – February 27, 2024:
+
+1. Assisted in the discussion of the recap from day 1.
+2. Assisted the trainers in the discussion of crucial parts in the civil registry and community tax certificate transaction in the eGOV app to the eGOV admin dashboard.
+</pre
+                >
+              </dynamic-textarea>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="w-1/2 border border-black" colspan="2">
+            <div class="flex h-[5em] items-end">
+              <span class="text-sm uppercase leading-[19px]"
+                >Performed by:
+              </span>
+              <div class="flex flex-1 flex-col items-center">
+                <input
+                  type="text"
+                  value="Jaymar C. Recolizado"
+                  class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
+                />
+                <input
+                  type="text"
+                  value="ISA II"
+                  class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
+                />
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="w-1/2 border border-black" colspan="2">
+            <div class="flex h-[5em] items-end">
+              <span class="text-sm uppercase leading-[19px]"
+                >Verified by:
+              </span>
+              <div class="flex flex-1 flex-col items-center">
+                <input
+                  type="text"
+                  value="Joel P. Manuel"
+                  class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
+                />
+                <input
+                  type="text"
+                  value="BPLO LGU Alcala"
+                  class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
+                />
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+
+      <div
+        class="mt-auto flex flex-1 break-before-avoid flex-col items-stretch justify-stretch border border-black"
+      >
+        <div class="h-0 flex-1">
+          <textarea
+            class="h-full w-full resize-none bg-transparent text-sm leading-none"
+          ></textarea>
+        </div>
+        <em class="invisible mt-4 print:visible">
+          ****Please accomplish together with Client Satisfaction Feedback Form
+        </em>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

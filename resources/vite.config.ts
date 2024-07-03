@@ -6,10 +6,7 @@ import path from "node:path";
 export default defineConfig({
   plugins: [
     vue(),
-    liveReload([
-      __dirname + "/(app|config|views)/**/*.php",
-      __dirname + "/../public/**/*.{css,php,html,js}",
-    ]),
+    liveReload([__dirname + "/../public/**/*.{css,php,html,js,twig}"]),
     splitVendorChunkPlugin(),
   ],
 
