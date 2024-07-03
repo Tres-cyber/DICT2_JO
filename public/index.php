@@ -1,5 +1,6 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/lib/vite.php';
+
 ?>
 <!DOCTYPE html>
 <html lang="">
@@ -26,11 +27,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/lib/vite.php';
        <div class="login-box">
           <h1 class="login-title">login</h1>
           <form action="">
-            <label class="input-title" for="">Email</label>
-            <input class="input-wrapper" type="text">
-            <label class="input-title" for="">Password</label>
-            <input class="input-wrapper" type="text">
-            <input class="input-submit self-center" type="submit" value="Submit">
+            <input class="input-wrapper" type="text" placeholder="Email">
+            <input class="input-wrapper" type="text" placeholder="Password">
+            <input class="input-submit self-center" type="submit" value="Sign In">
           </form>
         </div>
        </div>
