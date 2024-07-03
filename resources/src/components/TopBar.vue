@@ -12,9 +12,15 @@
         />
       </a>
       <h1
+        class="ml-4 font-serif text-xl font-semibold uppercase text-white sm:hidden"
+        v-if="active"
+      >
+        {{ active }}
+      </h1>
+      <h1
         class="ml-4 hidden font-serif text-2xl font-semibold uppercase text-white sm:block"
       >
-        Administrator
+        {{ admin ? "Administrator" : "Job Order System" }}
       </h1>
 
       <Transition
@@ -61,20 +67,23 @@
           <div v-if="admin" class="flex w-8/12 flex-col gap-6 [&_a]:uppercase">
             <slot>
               <a
-                href="#"
+                href="/admin/activities.php"
                 class="font-serif font-semibold tracking-wide text-neutral-200 hover:text-white"
+                :class="[active == 'activities' && '!text-white']"
               >
                 Activities
               </a>
               <a
-                href="#"
+                href="/admin/accounts.php"
                 class="font-serif font-semibold tracking-wide text-neutral-200 hover:text-white"
+                :class="[active == 'accounts' && '!text-white']"
               >
                 Accounts
               </a>
               <a
-                href="#"
-                class="font-serif font-semibold tracking-wide text-white hover:text-white"
+                href="/admin/projects.php"
+                class="font-serif font-semibold tracking-wide text-neutral-200 hover:text-white"
+                :class="[active == 'projects' && '!text-white']"
               >
                 Projects
               </a>
@@ -97,20 +106,23 @@
       <nav ref="sidebar" class="ml-auto hidden items-center gap-4 md:flex">
         <slot v-if="admin">
           <a
-            href="#"
+            href="/admin/activities.php"
             class="font-serif font-semibold tracking-wide text-neutral-200 hover:text-white"
+            :class="[active == 'activities' && '!text-white']"
           >
             Activities
           </a>
           <a
-            href="#"
+            href="/admin/accounts.php"
             class="font-serif font-semibold tracking-wide text-neutral-200 hover:text-white"
+            :class="[active == 'accounts' && '!text-white']"
           >
             Accounts
           </a>
           <a
-            href="#"
-            class="font-serif font-semibold tracking-wide text-white hover:text-white"
+            href="/admin/projects.php"
+            class="font-serif font-semibold tracking-wide text-neutral-200 hover:text-white"
+            :class="[active == 'projects' && '!text-white']"
           >
             Projects
           </a>
@@ -146,6 +158,7 @@ const toggled = ref(false);
 withDefaults(
   defineProps<{
     admin?: boolean;
+    active?: string;
   }>(),
   { admin: false },
 );

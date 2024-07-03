@@ -11,52 +11,25 @@ body {
   height: 100%;
   background-size: cover;
 }
-.navbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #075987;
-  color: white;
-  position: fixed;
-  width: 100%;
-  top: 0;
-  left: 0;
-  height: 70px;
-  z-index: 1;
-  padding: 0 40px;
-  box-sizing: border-box;
-}
 .left {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-
-.navbar .logo {
-  width: 50px;
-  height: auto;
-  margin-right: 20px;
-  border-radius: 50%;
-}
-.navbar h2 {
-  margin-right: 30px;
-}
-.link{
+.link {
   text-decoration: none;
   color: white;
   font-size: 0.9rem;
   transition: color 0.3s;
 }
 
-.link h2:hover{
+.link h2:hover {
   color: rgb(209, 209, 209);
   transform: translateY(-1px);
 }
 
-
-
-.logout-action{
+.logout-action {
   background-color: rgb(173, 20, 20);
   padding: 6px;
   font-size: 16px;
@@ -70,11 +43,10 @@ body {
   text-decoration: none;
   margin-bottom: 5px;
   height: 1.3rem;
-	
 }
 
-.logout-action:hover{
-  background-color:#bd2a2a;
+.logout-action:hover {
+  background-color: #bd2a2a;
   cursor: pointer;
 }
 .logout-action:hover {
@@ -87,11 +59,11 @@ a.logout-button {
   height: 50px;
 }
 .logout-button:hover .svg-path {
-  fill: #bebebe; 
+  fill: #bebebe;
 }
 
 .teybol tr:hover {
-  background-color: #959595; 
+  background-color: #959595;
 }
 .table-container {
   overflow-x: auto;
@@ -105,7 +77,6 @@ a.logout-button {
 .table-container-3 {
   display: flex;
   justify-content: center;
-  margin-top: 102px;
 }
 
 .table-container2 {
@@ -178,7 +149,6 @@ svg {
   margin-right: 0;
 }
 @media screen and (max-width: 1174px) {
-  
   .teybol td {
     font-size: 0.75rem;
   }
@@ -228,13 +198,10 @@ svg {
   }
   tbody tr:nth-child(even):hover {
     background-color: rgb(225, 225, 225);
-    
   }
   tbody tr:nth-child(odd):hover {
     background-color: rgb(255, 255, 255);
-    
   }
- 
 
   .teybol td::before {
     content: attr(data-label);
@@ -246,7 +213,7 @@ svg {
     line-height: 95%;
   }
   .teybol td:hover {
-    background-color: #959595; 
+    background-color: #959595;
   }
   html,
   body {
@@ -260,10 +227,8 @@ svg {
   }
 }
 @media screen and (max-width: 497px) {
-  .teybol td:nth-child(1), .teybol td:nth-child(4) {
+  .teybol td:nth-child(1),
+  .teybol td:nth-child(4) {
     padding-bottom: 20px;
-  }
-  .navbar h2{
-    display: none;
   }
 }

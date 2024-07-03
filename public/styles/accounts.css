@@ -32,7 +32,6 @@ body {
   justify-content: center;
 }
 
-
 .navbar .logo {
   width: 50px;
   height: auto;
@@ -42,27 +41,25 @@ body {
 .navbar h2 {
   margin-right: 30px;
 }
-.link{
+.link {
   text-decoration: none;
   color: white;
   font-size: 0.9rem;
   transition: color 0.3s;
 }
 
-.link h2:hover{
+.link h2:hover {
   color: rgb(209, 209, 209);
   transform: translateY(-1px);
 }
 
-
-.action-table{
-    display: flex;
-    align-items: center;
-    gap: .5rem;
+.action-table {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-
-.delete-button{
+.delete-button {
   border: none;
   border-radius: 5px;
   width: 30px;
@@ -70,14 +67,14 @@ body {
   cursor: pointer;
   padding: 4px;
   height: 1.6rem;
-  transition: background-color .3s;
+  transition: background-color 0.3s;
 }
 
-.delete-button:hover{
-  background-color:#771212;
+.delete-button:hover {
+  background-color: #771212;
 }
 
-.reset-button{
+.reset-button {
   border: none;
   color: white;
   height: 1.6rem;
@@ -86,15 +83,15 @@ body {
   width: 30px;
   background-color: #0c9239;
   cursor: pointer;
-  transition: background-color .3s;  
+  transition: background-color 0.3s;
 }
 
-.reset-button:hover{
-    background-color: #085020;
+.reset-button:hover {
+  background-color: #085020;
 }
 
-.out-button{
-    border: none;
+.out-button {
+  border: none;
   color: white;
   height: 1.6rem;
   border-radius: 5px;
@@ -102,17 +99,18 @@ body {
   padding: 4px;
   background-color: #165ea1;
   cursor: pointer;
-  transition: background-color .3s;
+  transition: background-color 0.3s;
 }
 
-.out-button:hover{
-    background-color: #060d36;
+.out-button:hover {
+  background-color: #060d36;
 }
 
-
-.delete-button svg, .out-button svg, .reset-button svg{
-    height: 13.86px;
-    width: 13.86px;
+.delete-button svg,
+.out-button svg,
+.reset-button svg {
+  height: 13.86px;
+  width: 13.86px;
 }
 
 a.logout-button {
@@ -122,9 +120,8 @@ a.logout-button {
   height: 50px;
 }
 .logout-button:hover .svg-path {
-  fill: #bebebe; 
+  fill: #bebebe;
 }
-
 
 .table-container {
   overflow-x: auto;
@@ -138,7 +135,6 @@ a.logout-button {
 .table-container-3 {
   display: flex;
   justify-content: center;
-  margin-top: 102px;
 }
 
 .table-container2 {
@@ -172,21 +168,21 @@ tbody tr:nth-child(even) {
 }
 
 tbody tr:nth-child(even):hover {
-    background-color: rgb(225, 225, 225);
-    color: rgb(0, 0, 0);
-  }
-  
-  tbody tr:nth-child(odd):hover {
-    background-color: rgb(225, 225, 225);
-  } 
+  background-color: rgb(225, 225, 225);
+  color: rgb(0, 0, 0);
+}
+
+tbody tr:nth-child(odd):hover {
+  background-color: rgb(225, 225, 225);
+}
 
 tbody tr:nth-child(odd) {
   background-color: rgb(255, 255, 255);
   color: rgb(0, 0, 0);
 }
 
-.teybol tr:hover{
-    background-color: #959595;
+.teybol tr:hover {
+  background-color: #959595;
 }
 .logout-button {
   padding: 6px;
@@ -214,7 +210,6 @@ svg {
   margin-right: 0;
 }
 @media screen and (max-width: 1174px) {
-  
   .teybol td {
     font-size: 0.75rem;
   }
@@ -263,7 +258,6 @@ svg {
     font-size: 0.9rem;
   }
 
-
   .teybol td::before {
     content: attr(data-label);
     position: absolute;
@@ -274,13 +268,11 @@ svg {
     line-height: 95%;
   }
 
-
-tbody tr:nth-child(even):hover {
+  tbody tr:nth-child(even):hover {
     background-color: rgb(225, 225, 225);
   }
 
-
-tbody tr:nth-child(odd):hover {
+  tbody tr:nth-child(odd):hover {
     background-color: rgb(225, 225, 225);
   }
 
@@ -288,10 +280,9 @@ tbody tr:nth-child(odd):hover {
     background-color: rgb(225, 225, 225);
   }
 
-  .teybol td:hover{
+  .teybol td:hover {
     background-color: #959595;
   }
-
 
   html,
   body {
@@ -305,12 +296,12 @@ tbody tr:nth-child(odd):hover {
   }
 }
 @media screen and (max-width: 497px) {
-  .teybol td:nth-child(1), .teybol td:nth-child(4) {
+  .teybol td:nth-child(1),
+  .teybol td:nth-child(4) {
     padding-bottom: 20px;
   }
-  .navbar h2{
+  .navbar h2 {
     display: none;
   }
-
-
 }
+

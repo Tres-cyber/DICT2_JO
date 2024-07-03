@@ -53,7 +53,7 @@ a.logout-button {
 }
 
 .logout-button:hover .svg-path {
-  fill: #bebebe; 
+  fill: #bebebe;
 }
 .add-button:hover {
   background-color: #45a049;
@@ -71,7 +71,6 @@ a.logout-button {
 .table-container-3 {
   display: flex;
   justify-content: center;
-  margin-top: 102px;
 }
 
 .table-container2 {
@@ -100,7 +99,7 @@ a.logout-button {
   text-align: left;
 }
 .teybol tr:hover {
-  background-color: #959595; 
+  background-color: #959595;
 }
 tbody tr:nth-child(even) {
   background-color: rgb(225, 225, 225);
@@ -116,7 +115,7 @@ tbody tr:nth-child(odd) {
 .edit-button {
   background-color: rgb(22, 94, 161);
 }
-.delete-button svg{
+.delete-button svg {
   width: 13.86px;
   height: 13.86px;
 }
@@ -153,7 +152,6 @@ svg {
   margin-right: 0;
 }
 @media screen and (max-width: 1174px) {
-  
   .teybol td {
     font-size: 0.75rem;
   }
@@ -199,7 +197,6 @@ svg {
   .teybol tr {
     margin-bottom: 0;
   }
- 
 
   .teybol td {
     box-sizing: border-box;
@@ -211,11 +208,9 @@ svg {
   }
   tbody tr:nth-child(even):hover {
     background-color: rgb(225, 225, 225);
-    
   }
   tbody tr:nth-child(odd):hover {
     background-color: rgb(255, 255, 255);
-    
   }
   .teybol td::before {
     content: attr(data-label);
@@ -227,7 +222,7 @@ svg {
     line-height: 95%;
   }
   .teybol td:hover {
-    background-color: #959595; 
+    background-color: #959595;
   }
   html,
   body {
@@ -241,10 +236,11 @@ svg {
   }
 }
 @media screen and (max-width: 497px) {
-  .teybol td:nth-child(1), .teybol td:nth-child(4) {
+  .teybol td:nth-child(1),
+  .teybol td:nth-child(4) {
     padding-bottom: 20px;
   }
-  .header h2{
+  .header h2 {
     display: none;
   }
 }
