@@ -1,0 +1,25 @@
+{% extends 'base.twig' %}
+{% block head %}
+<title>DICT JO - Sign IN</title>
+<link rel="stylesheet" href="./styles/style.css">
+{% endblock %}
+{% block body %}
+<div class="login-container">
+  <div class="login-logo-wrapper">
+    <img src="assets/logo.png" alt="" class="login-logo">
+  </div>
+  <div class="login-wrapper-2">
+    <img src="assets/logo.png" alt="" class="login-logo-two">
+    <div class="login-box">
+      <h1 class="login-title">login</h1>
+      <form action="">
+        <label class="input-title" for="">Email</label>
+        <input class="input-wrapper" type="text">
+        <label class="input-title" for="">Password</label>
+        <input class="input-wrapper" type="text">
+        <input class="input-submit self-center" type="submit" value="Submit">
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,5 +1,7 @@
 {% extends 'base.twig' %}
-{% block title %}Forms{% endblock %}
+{% block head %}
+<title>DICT JO - Form</title>
+{% endblock %}
 {% block body %}
 <div class="container mx-auto flex justify-center print:!m-0 print:!max-w-full">
   <div class="relative print:!w-full">
@@ -12,16 +14,16 @@
     <div class="flex h-[13in] w-[8.5in] flex-col items-stretch border border-neutral-700 p-[0.75in] print:!w-full print:border-none">
       <div class="relative flex h-[0.75in] items-center justify-between">
         <img
-          src="./bagon_pilipinas.png"
+          src="./assets/bagong_pilipinas.png"
           alt="Bagong Pilipinas Logo"
           class="h-[0.5in]"
         >
         <img
-          src="dict_header.png"
+          src="./assets/dict_header.png"
           alt="DICT Official Header"
           class="absolute right-1/2 h-[0.75in] translate-x-1/2"
         >
-        <img src="elgu.png" alt="eLGU IBPLS logo" class="h-[0.5in]">
+        <img src="./assets/elgu.png" alt="eLGU IBPLS logo" class="h-[0.5in]">
       </div>
       <div class="flex justify-center">
         <h1 class="mt-4 font-serif text-3xl font-semibold uppercase">job order form</h1>

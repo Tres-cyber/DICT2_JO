@@ -1,4 +1,4 @@
 <?php
 require_once __DIR__ . '/app/setup.php';
 
-echo $twig->render('form.twig', []);
+echo $twig->render('dashboard.twig', []);
