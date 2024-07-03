@@ -1,35 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 body {
-  max-width: 1200px;
   margin: 0 auto;
-  background: linear-gradient(45deg, #49a09d, #5f2c82);
-  font-family: sans-serif;
-  font-weight: 100;
+  background-color: white;
+  font-family: "Inter", "Helvetica Neue", "Helvetica";
+  font-weight: 500;
 }
 html,
 body {
   height: 100%;
   background-size: cover;
-  
- 
 }
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.682);
+  background-color: #075987;
   color: white;
-  padding: 5px;
-  padding-left: 25px;
-  padding-right: 30px;
-  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.574);
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  height: 70px;
+  z-index: 1;
+  padding: 0 40px;
+  box-sizing: border-box;
 }
-
+.left {
+  display: flex;
+  align-items: center;
+  justify-content: c;
+}
+.header .logo {
+  width: 50px;
+  height: auto;
+  margin-right: 20px;
+  border-radius: 50%;
+}
 .header h1 {
   margin: 0;
 }
 
-.add-button {
+a.add-button {
   background-color: #4caf50;
+  width: 24px;
+  height: 24px;
 }
 
 .add-button:hover {
@@ -38,7 +52,23 @@ body {
 
 .table-container {
   overflow-x: auto;
-  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.574);
+  border-radius: 15px;
+  border: rgba(0, 0, 0, 0.514) 2px solid;
+  max-width: 90%;
+  display: flex;
+  margin-bottom: 50px;
+}
+
+.table-container-3 {
+  display: flex;
+  justify-content: center;
+  margin-top: 100px;
+}
+
+.table-container2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .teybol {
@@ -50,24 +80,23 @@ body {
 .teybol td {
   padding: 18px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
-  
+  border-bottom: rgba(181, 178, 178, 0.424) 1px solid;
 }
 
 .teybol th {
-  background-color: #55608f;
+  background-color: #075987;
   color: white;
   font-weight: bold;
   font-size: 20px;
   text-align: left;
 }
 tbody tr:nth-child(even) {
-  background-color: rgba(255, 255, 255, 0.3);
-  color: white;
+  background-color: rgb(225, 225, 225);
+  color: rgb(0, 0, 0);
 }
 tbody tr:nth-child(odd) {
-  background-color: rgba(37, 37, 37, 0.3);
-  color: white;
+  background-color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
 }
 .delete-button {
   background-color: rgb(173, 20, 20);
@@ -79,7 +108,6 @@ tbody tr:nth-child(odd) {
 .delete-button,
 .add-button {
   padding: 6px;
-  margin-right: 5px;
   font-size: 16px;
   color: white;
   border: none;
@@ -107,11 +135,28 @@ svg {
 .edit-button:last-child {
   margin-right: 0;
 }
-
-@media screen and (max-width: 600px) {
-  .header {
-    margin-top: 0px;
+@media screen and (max-width: 1174px) {
+  .teybol td {
+    font-size: 75%;
+    padding: 1%;
   }
+  .teybol th {
+    font-size: 90%;
+    }
+    
+  }
+
+
+@media screen and (max-width: 712px) {
+  .table-container-3,
+  .table-container,
+  .table-container-2 {
+    margin-top: 20px;
+    width: 100%;
+    border-radius: 0;
+    border: none;
+  }
+
   .teybol thead {
     display: none;
   }
@@ -122,6 +167,7 @@ svg {
   .teybol td {
     display: block;
     width: 100%;
+    border-top: rgba(0, 0, 0, 0.569) 0.001rem solid;
   }
 
   .teybol tr {
@@ -134,19 +180,27 @@ svg {
     padding-left: 0px;
     position: relative;
     width: 90%;
+    font-size: 90%;
   }
 
   .teybol td::before {
     content: attr(data-label);
     position: absolute;
     left: 0;
-    width: 50%;
+    width: 30%;
     padding-left: 20px;
     font-weight: bold;
     text-align: left;
+    line-height: 95%;
   }
-  html,body {
-  height: fit-content;
-  overflow-y: visible;
+  html,
+  body {
+    height: fit-content;
+    overflow-y: visible;
+  }
 }
+@media screen and (max-width: 345px) {
+  .teybol td {
+    font-size: 80%;
+  }
 }
