@@ -108,8 +108,10 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/lib/vite.php';
               <td class="border border-black w-1/2 h-[3em]" colspan="2">
                 <div class="flex items-center">
                   <div class="flex items-start flex-1">
-                    <span class="text-sm leading-[19px] uppercase">Endorsed to: </span>
-                    <input type="text" value="Engr. Ronald S. Bariuan" class="ml-1 leading-none font-semibold text-sm flex-1 w-0 uppercase">
+                    <span class="text-sm leading-[19px] uppercase mr-1">Endorsed to: </span>
+                    <div class="flex items-start flex-1 flex-wrap">
+                      <span type="text" class="mr-1 leading-[19px] font-semibold text-sm uppercase">Jaymar C. Recolizado</span>
+                    </div>
                   </div>
                 </div>
               </td>
@@ -148,7 +150,7 @@ Day 2 – February 27, 2024:
             <tr>
               <td class="border border-black w-1/2" colspan="2">
                 <div class="flex h-[5em] items-end">
-                  <span class="text-sm leading-[19px] uppercase">Performed by: </span>
+                  <span class="text-sm leading-[19px] uppercase">Verified by: </span>
                   <div class="flex flex-1 flex-col items-center">
                     <input type="text" value="Joel P. Manuel" class="leading-none font-semibold text-sm uppercase w-full text-center">
                     <input type="text" value="BPLO LGU Alcala" class="leading-none text-xs uppercase w-full text-center font-medium italic">
@@ -158,8 +160,8 @@ Day 2 – February 27, 2024:
             </tr>
           </table>
 
-          <div class="border border-black mt-auto flex-1 flex items-stretch justify-stretch bg-red-50 break-before-avoid flex-col">
-            <div class="h-0 flex-1 bg-green-50">
+          <div class="border border-black mt-auto flex-1 flex items-stretch justify-stretch break-before-avoid flex-col">
+            <div class="h-0 flex-1">
               <textarea class="leading-none text-sm resize-none w-full h-full"></textarea>
             </div>
             <em class="invisible print:visible mt-4">
