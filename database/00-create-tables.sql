@@ -44,4 +44,3 @@ CREATE TABLE EndorsedPersonnels(
     CONSTRAINT FOREIGN KEY (job_order_id) REFERENCES JobOrder (job_order_id) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT FOREIGN KEY (personnel_id) REFERENCES Personnels (personnel_id) ON DELETE CASCADE ON UPDATE CASCADE
 );
-
