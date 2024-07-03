@@ -12,7 +12,7 @@ ALTER TABLE Accounts ADD `admin` boolean DEFAULT FALSE NOT NULL;
 ALTER TABLE Accounts MODIFY `personnel_id` INTEGER UNSIGNED NULL;
 ALTER TABLE Accounts DROP COLUMN current_session;
 ALTER TABLE Accounts ADD COLUMN current_session_id INTEGER UNSIGNED NULL;
-ALTER TABLE Accounts ADD CONSTRAINT FOREIGN KEY (current_session_id) REFERENCES Sessions(session_id) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE Accounts ADD CONSTRAINT FOREIGN KEY (current_session_id) REFERENCES Sessions(session_id) ON DELETE SET NULL ON UPDATE CASCADE;
 
 ALTER TABLE JobOrder
 ADD COLUMN client_name VARCHAR(128) NOT NULL,
@@ -30,5 +30,5 @@ ADD CONSTRAINT FOREIGN KEY (issued_by) REFERENCES Personnels(personnel_id) ON DE
 ADD CONSTRAINT FOREIGN KEY (approved_by) REFERENCES Personnels(personnel_id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- password is 'adminpassword'
-INSERT INTO Accounts (personnel_id, password_hash, email, deleted, admin)
-VALUES (NULL, '$2y$10$GFJ3tJ6Il3769xGc/GC8zOLBaoJqMf35YsrffO1SelZMhN/Di1dHi', 'admin@email.com.com', TRUE);
+INSERT INTO Accounts (personnel_id, password_hash, email, admin)
+VALUES (NULL, '$2y$10$GFJ3tJ6Il3769xGc/GC8zOLBaoJqMf35YsrffO1SelZMhN/Di1dHi', 'admin@email.com', TRUE);
