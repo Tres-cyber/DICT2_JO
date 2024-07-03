@@ -10,6 +10,8 @@ const selectRef = ref<InstanceType<typeof AutocompleteSelect> | null>(null);
 
 const props = withDefaults(
   defineProps<{
+    name?: string;
+    readonly?: boolean;
     permanent?: string | string[];
     options?: string | string[];
     seperator?: string;
@@ -23,6 +25,7 @@ const props = withDefaults(
   }>(),
   {
     permanent: () => [],
+    readonly: false,
     default: "",
     options: "",
     seperator: ",",
@@ -82,17 +85,18 @@ function add(value: string | null) {
             : ", "
       }}
       <button
-        v-if="!permanent.includes(value)"
+        v-if="!permanent.includes(value) && !props.readonly"
         :class="props.deleteClass"
         @click="removeSelected(value)"
       >
         X
       </button>
+      <input :name="props.name" type="hidden" :value="value" />
     </span>
-    <div>
+    <div class="relative" v-if="!props.readonly">
       <AutocompleteSelect
         ref="selectRef"
-        v-bind="{ ...$attrs, ...props }"
+        v-bind="{ ...$attrs, ...props, name: undefined }"
         :options="options.filter((v) => !selected.includes(v))"
         :container-class="selectClass"
         @select="add"

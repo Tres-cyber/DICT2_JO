@@ -7,12 +7,13 @@ import DatePicker from "./components/DatePicker.vue";
 import DynamicTextarea from "./components/DynamicTextarea.vue";
 import MultipleSelect from "./components/MultipleSelect.vue";
 import PrintButton from "./components/PrintButton.vue";
+import TopBar from "./components/TopBar.vue";
 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faPrint } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faPrint } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faPrint);
+library.add(faPrint, faBars);
 
 const app = createApp({});
 app.component("AutocompleteSelect", AutocompleteSelect);
@@ -21,4 +22,5 @@ app.component("DynamicTextarea", DynamicTextarea);
 app.component("FontAwesomeIcon", FontAwesomeIcon);
 app.component("MultipleSelect", MultipleSelect);
 app.component("PrintButton", PrintButton);
+app.component("TopBar", TopBar);
 app.mount("#app");
