@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+
 body {
   margin: 0 auto;
   background-color: white;
@@ -10,7 +11,7 @@ body {
   height: 100%;
   background-size: cover;
 }
-.header {
+.navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -30,20 +31,54 @@ body {
   align-items: center;
   justify-content: center;
 }
-.header .logo {
+
+
+.navbar .logo {
   width: 50px;
   height: auto;
   margin-right: 20px;
   border-radius: 50%;
 }
-.header h2 {
+.navbar h2 {
   margin-right: 30px;
 }
+.link{
+  text-decoration: none;
+  color: white;
+  font-size: 0.9rem;
+  transition: color 0.3s;
+}
 
-a.add-button {
-  background-color: #4caf50;
-  width: 24px;
-  height: 24px;
+.link h2:hover{
+  color: rgb(209, 209, 209);
+  transform: translateY(-1px);
+}
+
+
+
+.logout-action{
+  background-color: rgb(173, 20, 20);
+  padding: 6px;
+  font-size: 16px;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  display: inline-block;
+  width: 1.5rem;
+  text-decoration: none;
+  margin-bottom: 5px;
+  height: 1.3rem;
+	
+}
+
+.logout-action:hover{
+  background-color:#bd2a2a;
+  cursor: pointer;
+}
+.logout-action:hover {
+  background-color: #890909;
 }
 a.logout-button {
   padding-top: 20px;
@@ -51,14 +86,13 @@ a.logout-button {
   width: 50px;
   height: 50px;
 }
-
 .logout-button:hover .svg-path {
   fill: #bebebe; 
 }
-.add-button:hover {
-  background-color: #45a049;
-}
 
+.teybol tr:hover {
+  background-color: #959595; 
+}
 .table-container {
   overflow-x: auto;
   border-radius: 15px;
@@ -99,9 +133,6 @@ a.logout-button {
   font-size: 20px;
   text-align: left;
 }
-.teybol tr:hover {
-  background-color: #959595; 
-}
 tbody tr:nth-child(even) {
   background-color: rgb(225, 225, 225);
   color: rgb(0, 0, 0);
@@ -116,13 +147,7 @@ tbody tr:nth-child(odd) {
 .edit-button {
   background-color: rgb(22, 94, 161);
 }
-.delete-button svg{
-  width: 13.86px;
-  height: 13.86px;
-}
-.edit-button,
-.delete-button,
-.add-button,
+
 .logout-button {
   padding: 6px;
   font-size: 16px;
@@ -161,15 +186,8 @@ svg {
     font-size: 0.9rem;
   }
 }
-@media screen and (max-width: 869px) {
-  .teybol td:nth-child(6) {
-    padding: 0;
-  }
-}
+
 @media screen and (max-width: 712px) {
-  .teybol td:nth-child(6) {
-    padding: 8px 16px 8px 0;
-  }
   .table-container {
     margin-left: 16px;
     margin-right: 16px;
@@ -199,7 +217,6 @@ svg {
   .teybol tr {
     margin-bottom: 0;
   }
- 
 
   .teybol td {
     box-sizing: border-box;
@@ -217,6 +234,8 @@ svg {
     background-color: rgb(255, 255, 255);
     
   }
+ 
+
   .teybol td::before {
     content: attr(data-label);
     position: absolute;
@@ -244,7 +263,7 @@ svg {
   .teybol td:nth-child(1), .teybol td:nth-child(4) {
     padding-bottom: 20px;
   }
-  .header h2{
+  .navbar h2{
     display: none;
   }
 }
