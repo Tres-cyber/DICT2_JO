@@ -3,6 +3,7 @@
     "postinstall": "cd resources && npm install"
   },
   "devDependencies": {
+    "@shopify/prettier-plugin-liquid": "^1.5.0",
     "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.6.5"
   }
