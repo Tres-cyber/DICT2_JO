@@ -2,308 +2,389 @@
 {% block head %}
 <title>DICT JO - Form</title>
 {% endblock %}
-{% block body %}
+{% block header %}
 <top-bar></top-bar>
-<div class="container mx-auto flex justify-center print:!m-0 print:!max-w-full">
-  <div class="relative print:!w-full">
-    {% if not readonly %}
-      <strong class="absolute left-1/2 top-1/2 z-[-1] hidden -translate-x-1/2 translate-y-1/2 rotate-[-55deg] scale-[7] text-4xl uppercase tracking-widest text-neutral-300 print:block">
-        draft
-      </strong>
-    {% endif %}
-    <print-button
-      class="absolute left-4 top-4 overflow-clip rounded-full bg-blue-950 px-4 py-2 text-sm font-semibold uppercase text-white print:hidden"
-    ></print-button>
-    <div class="z-0 flex h-[13in] w-[8.5in] flex-col items-stretch border border-neutral-700 p-[0.75in] print:!w-full print:border-none">
-      <div class="relative flex h-[0.75in] items-center justify-between">
-        <img
-          src="./assets/bagong_pilipinas.png"
-          alt="Bagong Pilipinas Logo"
-          class="h-[0.5in]"
+{% endblock %}
+{% block body %}
+<submit-form
+  v-slot="formProps"
+  {{ (readonly is same as(true) ? ('client-name-default="' ~ (jo.client_name | e('html_attr') )~'"') : '')  | raw }}
+>
+  <form action="/form.php" method="post" class="container mx-auto flex justify-center print:!m-0 print:!max-w-full">
+    <div class="relative print:!w-full">
+      {% if not readonly %}
+        <strong class="absolute left-1/2 top-1/2 z-[-1] hidden -translate-x-1/2 translate-y-1/2 rotate-[-55deg] scale-[7] text-4xl uppercase tracking-widest text-neutral-300 print:block">
+          draft
+        </strong>
+        <button
+          type="submit"
+          class="absolute bottom-8 right-8 z-10 overflow-clip rounded bg-green-950 px-4 py-2 text-sm font-semibold uppercase text-white print:hidden"
         >
-        <img
-          src="./assets/dict_header.png"
-          alt="DICT Official Header"
-          class="absolute right-1/2 h-[0.75in] translate-x-1/2"
-        >
-        <img src="./assets/elgu.png" alt="eLGU IBPLS logo" class="h-[0.5in]">
-      </div>
-      <div class="flex justify-center">
-        <h1 class="mt-4 font-serif text-3xl font-semibold uppercase">job order form</h1>
-      </div>
-      <table class="mb-[0.75in] mt-2 w-full border-collapse font-serif">
-        <tr>
-          <td
-            class="border border-black bg-neutral-200 text-start text-xs font-semibold uppercase leading-none"
-            colspan="2"
+          <font-awesome-icon icon="fa-solid fa-floppy-disk" class="mr-1"></font-awesome-icon>
+          Submit
+        </button>
+      {% endif %}
+      <print-button
+        type="button"
+        class="absolute left-4 top-4 z-10 overflow-clip rounded-full bg-blue-950 px-4 py-2 text-sm font-semibold uppercase text-white print:hidden"
+      ></print-button>
+      <div class="relative z-0 flex h-[13in] w-[8.5in] flex-col items-stretch border border-neutral-700 p-[0.75in] print:!w-full print:border-none">
+        <div class="relative flex h-[0.75in] items-center justify-between">
+          <img
+            src="./assets/bagong_pilipinas.png"
+            alt="Bagong Pilipinas Logo"
+            class="h-[0.5in]"
           >
-            Client/Worksite Details
-          </td>
-        </tr>
-        <tr>
-          <td class="w-1/2 border border-black">
-            <div class="flex items-center">
-              <label for="client_name" class="text-sm uppercase leading-none"> Name: </label>
-              <input
-                {{ readonly is same as(true) ? 'readonly' : '' }}
-                id="client_name"
-                name="client_name"
-                type="text"
-                value="{{ jo.client_name }}"
-                class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
-              >
-            </div>
-          </td>
-          <td class="w-1/2 border border-black">
-            <div class="flex items-center">
-              <label
-                for="client_contact"
-                class="text-sm uppercase leading-none"
-              >
-                Contact Number:
-              </label>
-              <input
-                {{ readonly is same as(true) ? 'readonly' : '' }}
-                id="client_contact"
-                name="client_contact"
-                type="text"
-                value="{{ jo.client_contact }}"
-                class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold leading-none"
-              >
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="border border-black" colspan="2">
-            <div class="flex items-center">
-              <label for="client_lgu" class="text-sm uppercase leading-none"> LGU: </label>
-              <input
-                {{ readonly is same as(true) ? 'readonly' : '' }}
-                id="client_lgu"
-                name="client_lgu"
-                type="text"
-                value="{{ jo.client_lgu }}"
-                class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
-              >
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="w-1/2 border border-black">
-            <div class="flex items-center">
-              <label
-                for="request_mode"
-                class="text-sm uppercase leading-none"
-              >
-                Mode of request:
-              </label>
-              <input
-                {{ readonly is same as(true) ? 'readonly' : '' }}
-                id="request_mode"
-                name="request_mode"
-                type="text"
-                value="{{ jo.request_mode | e('html_attr') }} "
-                class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold capitalize leading-none"
-              >
-            </div>
-          </td>
-          <td class="w-1/2 border border-black">
-            <div class="flex items-center">
-              <label for="date" class="text-sm uppercase leading-none"> Date: </label>
-              <date-picker
-                {{ readonly is same as(true) ? 'readonly' : '' }}
-                name="request_date"
-                date="{{ jo.request_date  | date('Y-m-d') }}"
-                class="ml-1 w-0 flex-1"
-                hide-input-icon
-                input-class-name="bg-transparent border-none rounded-none leading-none font-semibold text-sm font-serif p-0 uppercase"
-              ></date-picker>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td
-            class="border border-black bg-neutral-200 text-start text-xs font-semibold uppercase leading-none"
-            colspan="2"
+          <img
+            src="./assets/dict_header.png"
+            alt="DICT Official Header"
+            class="absolute right-1/2 h-[0.75in] translate-x-1/2"
           >
-            Job Order Details
-          </td>
-        </tr>
-        <tr>
-          <td class="w-1/2 border border-black">
-            <div class="flex items-center">
-              <span class="text-sm uppercase leading-none"> Scheduled date: </span>
-              <date-picker
-                {{ readonly is same as(true) ? 'readonly' : '' }}
-                start-date="{{ jo.scheduled_start_date | date('Y-m-d')  }}"
-                end-date="{{ jo.scheduled_end_date | date('Y-m-d')  }}"
-                name="scheduled"
-                range
-                class="ml-1 w-0 flex-1"
-                hide-input-icon
-                input-class-name="bg-transparent border-none rounded-none leading-none font-semibold text-sm font-serif p-0 uppercase"
-              ></date-picker>
-            </div>
-          </td>
-          <td class="w-1/2 border border-black">
-            <div class="flex items-center">
-              <span class="text-sm uppercase leading-none"> Job order number: </span>
-              <input
-                {{ readonly is same as(true) ? 'readonly' : '' }}
-                type="text"
-                name="job_order_number"
-                value="{{ jo.job_order_number }}"
-                class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold leading-none"
-              >
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="w-1/2 border border-black">
-            <div class="flex items-center">
-              <span class="text-sm uppercase leading-none">Issued by:</span>
-              <input
-                {{ readonly is same as(true) ? 'readonly' : '' }}
-                type="text"
-                name="issued_by"
-                value="{{ jo.issued_by }}"
-                class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
-              >
-            </div>
-          </td>
-          <td class="w-1/2 border border-black">
-            <div class="flex items-center">
-              <span class="text-sm uppercase leading-none">Approved by:</span>
-              <input
-                {{ readonly is same as(true) ? 'readonly' : '' }}
-                type="text"
-                name="approved_by"
-                value="{{ jo.approved_by }}"
-                class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
-              >
-            </div>
-          </td>
-        </tr>
-
-        <tr>
-          <td class="h-[3em] w-1/2 border border-black" colspan="2">
-            <div class="flex items-center">
-              <div class="flex flex-1 items-start">
-                <span class="mr-1 text-sm uppercase leading-[19px]"> Endorsed to: </span>
-                <multiple-select
-                  {{ readonly is same as(true) ? 'readonly' : '' }}
-                  permanent="{{ jo.performed_by | e('html_attr') }}"
-                  :selected="['{{ jo.performed_by | e('html_attr') }}']"
-                  placeholder="Add endorsee"
-                  container-class="flex flex-1 flex-wrap items-start"
-                  value-class="group/value relative mr-1 text-sm font-semibold uppercase leading-[19px]"
-                  delete-class="absolute right-0 top-0 hidden h-4 w-4 -translate-y-1/2 translate-x-1/2 rounded-full bg-red-600 font-sans text-xs font-black leading-[16px] text-white group-hover/value:block"
-                  select-class="leading-non relative flex text-sm"
-                  input-class="w-[30ch] bg-transparent text-sm font-semibold uppercase leading-none print:hidden"
-                  choices-class="absolute inset-x-0 top-[calc(100%+4px)] flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
-                  option-class="ui-active:text-blue-950 ui-active:font-bold"
-                  options=""
-                ></multiple-select>
-              </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="w-1/2 border border-black" colspan="2">
-            <div class="flex flex-col items-stretch">
-              <span class="block text-sm font-semibold uppercase leading-[19px]">Job Request Description</span>
-              <dynamic-textarea
-                {{ readonly is same as(true) ? 'readonly' : '' }}
-                class="mx-0 my-2 max-h-[10em] min-h-[2em] resize-none bg-transparent text-sm leading-none"
-              >
-                <pre>{{ jo.job_description }}</pre>
-              </dynamic-textarea>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td
-            class="border border-black bg-neutral-200 text-start text-xs font-semibold uppercase leading-none"
-            colspan="2"
-          >
-            Completion Information
-          </td>
-        </tr>
-        <tr>
-          <td class="w-1/2 border border-black" colspan="2">
-            <div class="flex flex-col items-stretch">
-              <span class="block text-sm font-semibold uppercase leading-[19px]">Actual Job Done</span>
-              <dynamic-textarea
-                {{ readonly is same as(true) ? 'readonly' : '' }}
-                class="mx-0 my-2 max-h-[15em] min-h-[2em] resize-none bg-transparent text-sm leading-none"
-              >
-                <pre>{{ jo.actual_job_done }}</pre>
-              </dynamic-textarea>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="w-1/2 border border-black" colspan="2">
-            <div class="flex h-[5em] items-end">
-              <span class="text-sm uppercase leading-[19px]"> Performed by: </span>
-              <div class="flex flex-1 flex-col items-center">
+          <img src="./assets/elgu.png" alt="eLGU IBPLS logo" class="h-[0.5in]">
+        </div>
+        <div class="flex justify-center">
+          <h1 class="mt-4 font-serif text-3xl font-semibold uppercase">job order form</h1>
+        </div>
+        <table class="mb-[0.75in] mt-2 w-full border-collapse font-serif">
+          <tr>
+            <td
+              class="border border-black bg-neutral-200 text-start text-xs font-semibold uppercase leading-none"
+              colspan="2"
+            >
+              Client/Worksite Details
+            </td>
+          </tr>
+          <tr>
+            <td class="w-1/2 border border-black">
+              <div class="flex items-center">
+                <label for="client_name" class="text-sm uppercase leading-none">Name: </label>
                 <input
                   {{ readonly is same as(true) ? 'readonly' : '' }}
+                  id="client_name"
+                  name="client_name"
                   type="text"
-                  name="performed_by"
-                  value="{{ jo.performed_by | e('html_attr') }}"
-                  class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
+                  :value="formProps.clientName"
+                  @input="(e) => formProps.setClientName(e.target.value)"
+                  class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
                 >
-                {% if jo.performer_position %}
-                  <input
-                    type="text"
-                    value="{{ jo.performer_position | e('html_attr') }}"
-                    class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
-                  >
-                {% endif %}
               </div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="w-1/2 border border-black" colspan="2">
-            <div class="flex h-[5em] items-end">
-              <span class="text-sm uppercase leading-[19px]"> Verified by: </span>
-              <div class="flex flex-1 flex-col items-center">
+            </td>
+            <td class="w-1/2 border border-black">
+              <div class="flex items-center">
+                <label
+                  for="client_contact"
+                  class="text-sm uppercase leading-none"
+                >
+                  Contact Number:
+                </label>
+                <input
+                  {{ readonly is same as(true) ? 'readonly' : '' }}
+                  id="client_contact"
+                  name="client_contact"
+                  type="text"
+                  value="{{ jo.client_contact }}"
+                  class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold leading-none"
+                >
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="border border-black" colspan="2">
+              <div class="flex items-center">
+                <label for="client_lgu" class="text-sm uppercase leading-none"> LGU: </label>
+                <input
+                  {{ readonly is same as(true) ? 'readonly' : '' }}
+                  id="client_lgu"
+                  name="client_lgu"
+                  type="text"
+                  value="{{ jo.client_lgu }}"
+                  class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
+                >
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="w-1/2 border border-black">
+              <div class="flex items-center">
+                <label
+                  for="request_mode"
+                  class="text-sm uppercase leading-none"
+                >
+                  Mode of request:
+                </label>
+                <input
+                  readonly
+                  id="request_mode"
+                  name="request_mode"
+                  type="text"
+                  value="On Site"
+                  class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold capitalize leading-none"
+                >
+              </div>
+            </td>
+            <td class="w-1/2 border border-black">
+              <div class="flex items-center">
+                <label for="date" class="text-sm uppercase leading-none"> Date: </label>
+                <date-picker
+                  {{ readonly is same as(true) ? 'readonly' : '' }}
+                  name="request_date"
+                  date="{{ jo.request_date  | date('Y-m-d') }}"
+                  class="ml-1 w-0 flex-1"
+                  hide-input-icon
+                  input-class-name="bg-transparent border-none rounded-none leading-none font-semibold text-sm font-serif p-0 uppercase"
+                ></date-picker>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="border border-black bg-neutral-200 text-start text-xs font-semibold uppercase leading-none"
+              colspan="2"
+            >
+              Job Order Details
+            </td>
+          </tr>
+          <tr>
+            <td class="w-1/2 border border-black">
+              <div class="flex items-center">
+                <span class="text-sm uppercase leading-none"> Scheduled date: </span>
+                <date-picker
+                  {{ readonly is same as(true) ? 'readonly' : '' }}
+                  start-date="{{ jo.scheduled_start_date | date('Y-m-d')  }}"
+                  end-date="{{ jo.scheduled_end_date | date('Y-m-d')  }}"
+                  name="scheduled"
+                  range
+                  class="ml-1 w-0 flex-1"
+                  hide-input-icon
+                  input-class-name="bg-transparent border-none rounded-none leading-none font-semibold text-sm font-serif p-0 uppercase"
+                ></date-picker>
+              </div>
+            </td>
+            <td class="w-1/2 border border-black">
+              <div class="flex items-center">
+                <span class="text-sm uppercase leading-none"> Job order number: </span>
                 <input
                   readonly
                   type="text"
-                  value="{{ jo.client_name | e('html_attr') }}"
-                  class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
-                  placeholder="client name"
-                >
-                <input
-                  {{ readonly is same as(true) ? 'readonly' : '' }}
-                  type="text"
-                  name="client_position"
-                  value="{{ jo.client_position | e('html_attr') }}"
-                  class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
-                  placeholder="position"
+                  name="job_order_number"
+                  value="{{ jo.job_order_number }}"
+                  class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold leading-none"
                 >
               </div>
-            </div>
-          </td>
-        </tr>
-      </table>
+            </td>
+          </tr>
+          <tr>
+            <td class="w-1/2 border border-black">
+              <div class="flex items-center">
+                <span class="text-sm uppercase leading-none">Issued by:</span>
+                {% if readonly %}
+                  <autocomplete-select
+                    readonly
+                    name="issued_by"
+                    default="{{ jo.issued_by | e('html_attr') }}"
+                    container-class="relative ml-1 flex w-0 flex-1"
+                    input-class="w-full bg-transparent text-sm font-semibold uppercase leading-none"
+                    choices-class="absolute inset-x-0 top-[calc(100%+4px)] z-30 flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
+                    option-class="ui-active:text-blue-950 ui-active:font-bold"
+                  ></autocomplete-select>
+                {% else %}
+                  <autocomplete-select
+                    name="issued_by"
+                    default="Ronald S. Bariuan"
+                    container-class="relative ml-1 flex w-0 flex-1"
+                    input-class="w-full bg-transparent text-sm font-semibold uppercase leading-none"
+                    choices-class="absolute inset-x-0 top-[calc(100%+4px)] z-30 flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
+                    option-class="ui-active:text-blue-950 ui-active:font-bold"
+                    options="{{ options | e('html_attr')}}"
+                    seperator="|"
+                  ></autocomplete-select>
+                {% endif %}
+              </div>
+            </td>
+            <td class="w-1/2 border border-black">
+              <div class="flex items-center">
+                <span class="text-sm uppercase leading-none">Approved by:</span>
+                {% if readonly %}
+                  <autocomplete-select
+                    readonly
+                    default="{{ jo.approved_by | e('html_attr') }}"
+                    container-class="relative ml-1 flex w-0 flex-1"
+                    input-class="w-full bg-transparent text-sm font-semibold uppercase leading-none"
+                    choices-class="absolute inset-x-0 top-[calc(100%+4px)] z-30 flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
+                    option-class="ui-active:text-blue-950 ui-active:font-bold"
+                  ></autocomplete-select>
+                {% else %}
+                  <autocomplete-select
+                    default="Engr. Pinky T. Jimenez, Ph.D."
+                    container-class="relative ml-1 flex w-0 flex-1"
+                    input-class="w-full bg-transparent text-sm font-semibold uppercase leading-none"
+                    choices-class="absolute inset-x-0 top-[calc(100%+4px)] z-30 flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
+                    option-class="ui-active:text-blue-950 ui-active:font-bold"
+                    options="{{ options | e('html_attr')}}"
+                    seperator="|"
+                  ></autocomplete-select>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
 
-      <div class="mt-auto flex flex-1 break-before-avoid flex-col items-stretch justify-stretch border border-black font-serif">
-        <span class="block text-sm font-semibold uppercase leading-[19px]">Remarks/Comment/Feedback</span>
-        <div class="h-0 flex-1">
-          <textarea
-            {{ readonly is same as(true) ? 'readonly' : '' }}
-            class="h-full w-full resize-none bg-transparent text-sm leading-none"
-          >{{ jo.remarks }}</textarea>
+          <tr>
+            <td class="h-[3em] w-1/2 border border-black" colspan="2">
+              <div class="flex items-center">
+                <div class="flex flex-1 items-start">
+                  <span class="mr-1 text-sm uppercase leading-[19px]"> Endorsed to: </span>
+                  {% if readonly %}
+                    <multiple-select
+                      readonly
+                      :selected="[{{ endorsee | e('html_attr') }}]"
+                      placeholder="Add endorsee"
+                      container-class="relative z-10 flex flex-1 flex-wrap items-start"
+                      value-class="group/value relative mr-1 text-sm font-semibold uppercase leading-[19px]"
+                      delete-class="absolute right-0 top-0 hidden h-4 w-4 -translate-y-1/2 translate-x-1/2 rounded-full bg-red-600 font-sans text-xs font-black leading-[16px] text-white group-hover/value:block"
+                      select-class="leading-non relative flex text-sm"
+                      input-class="w-[30ch] bg-transparent text-sm font-semibold uppercase leading-none print:hidden"
+                      choices-class="absolute inset-x-0 top-[calc(100%+4px)] flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
+                      option-class="ui-active:text-blue-950 ui-active:font-bold"
+                    ></multiple-select>
+                  {% else %}
+                    <multiple-select
+                      placeholder="Add endorsee"
+                      permanent="{{ personnel.name | e('html_attr') }}"
+                      :selected="['{{ personnel.name | e('html_attr') }}']"
+                      container-class="relative z-10 flex flex-1 flex-wrap items-start"
+                      value-class="group/value relative mr-1 text-sm font-semibold uppercase leading-[19px]"
+                      delete-class="absolute right-0 top-0 hidden h-4 w-4 -translate-y-1/2 translate-x-1/2 rounded-full bg-red-600 font-sans text-xs font-black leading-[16px] text-white group-hover/value:block"
+                      select-class="leading-non relative flex text-sm"
+                      input-class="w-[30ch] bg-transparent text-sm font-semibold uppercase leading-none print:hidden"
+                      choices-class="absolute inset-x-0 top-[calc(100%+4px)] flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
+                      option-class="ui-active:text-blue-950 ui-active:font-bold"
+
+                      options="{{ options | e('html_attr')}}"
+                      seperator="|"
+                    ></multiple-select>
+                  {% endif %}
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="w-1/2 border border-black" colspan="2">
+              <div class="flex flex-col items-stretch">
+                <span class="block text-sm font-semibold uppercase leading-[19px]">Job Request Description</span>
+                <dynamic-textarea
+                  {{ readonly is same as(true) ? 'readonly' : '' }}
+                  class="mx-0 my-2 max-h-[10em] min-h-[2em] resize-none bg-transparent text-sm leading-none"
+                  name="job_description"
+                >
+                  <pre>{{ jo.job_description }}</pre>
+                </dynamic-textarea>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="border border-black bg-neutral-200 text-start text-xs font-semibold uppercase leading-none"
+              colspan="2"
+            >
+              Completion Information
+            </td>
+          </tr>
+          <tr>
+            <td class="w-1/2 border border-black" colspan="2">
+              <div class="flex flex-col items-stretch">
+                <span class="block text-sm font-semibold uppercase leading-[19px]">Actual Job Done</span>
+                <dynamic-textarea
+                  {{ readonly is same as(true) ? 'readonly' : '' }}
+                  class="mx-0 my-2 max-h-[15em] min-h-[2em] resize-none bg-transparent text-sm leading-none"
+                  name="actual_job_done"
+                >
+                  <pre>{{ jo.actual_job_done }}</pre>
+                </dynamic-textarea>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="w-1/2 border border-black" colspan="2">
+              <div class="flex h-[5em] items-end">
+                <span class="text-sm uppercase leading-[19px]"> Performed by: </span>
+                <div class="flex flex-1 flex-col items-center">
+                  {% if readonly %}
+                    <input
+                      readonly
+                      type="text"
+                      name="performed_by"
+                      value="{{ jo.performed_by | e('html_attr') }}"
+                      class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
+                    >
+                    {% if jo.performer_position %}
+                      <input
+                        type="text"
+                        value="{{ jo.performer_position | e('html_attr') }}"
+                        class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
+                      >
+                    {% endif %}
+                  {% else %}
+                    <input
+                      readonly
+                      type="text"
+                      name="performed_by"
+                      value="{{ personnel.name | e('html_attr') }}"
+                      class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
+                    >
+                    <input
+                      readonly
+                      type="text"
+                      value="{{ personnel.position }}"
+                      class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
+                      value="{{ personnel.position | e('html_attr') }}"
+                    >
+                  {% endif %}
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="w-1/2 border border-black" colspan="2">
+              <div class="flex h-[5em] items-end">
+                <span class="text-sm uppercase leading-[19px]"> Verified by: </span>
+                <div class="flex flex-1 flex-col items-center">
+                  <input
+                    {{ readonly is same as(true) ? 'readonly' : '' }}
+                    type="text"
+                    :value="formProps.clientName"
+                    @input="(e) => formProps.setClientName(e.target.value)"
+                    class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
+                    placeholder="client name"
+                  >
+                  <input
+                    {{ readonly is same as(true) ? 'readonly' : '' }}
+                    type="text"
+                    name="client_position"
+                    value="{{ jo.client_position | e('html_attr') }}"
+                    class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
+                    placeholder="position"
+                  >
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <div class="mt-auto flex flex-1 break-before-avoid flex-col items-stretch justify-stretch border border-black font-serif">
+          <span class="block text-sm font-semibold uppercase leading-[19px]">Remarks/Comment/Feedback</span>
+          <div class="h-0 flex-1">
+            <textarea
+              {{ readonly is same as(true) ? 'readonly' : '' }}
+              class="h-full w-full resize-none bg-transparent text-sm leading-none"
+              name="remarks"
+            >{{ jo.remarks }}</textarea>
+          </div>
         </div>
+        <em class="invisible mt-4 print:visible">
+          ****Please accomplish together with Client Satisfaction Feedback Form
+        </em>
       </div>
-      <em class="invisible mt-4 print:visible">
-        ****Please accomplish together with Client Satisfaction Feedback Form
-      </em>
     </div>
-  </div>
-</div>
+  </form>
+</submit-form>
 {% endblock %}

@@ -15,6 +15,7 @@ defineOptions({
 
 const props = withDefaults(
   defineProps<{
+    default?: string;
     options?: string | string[];
     seperator?: string;
     containerClass?: string;
@@ -46,7 +47,9 @@ const options = computed(() =>
 
 const phonemesOptions = computed(() => options.value.map(metaphone));
 
-const selected = defineModel<string | null>({ default: null });
+const selected = defineModel<string | null>({
+  default: null,
+});
 const query = ref("");
 
 const filteredOptions = computed(() =>
@@ -63,6 +66,15 @@ watch(selected, () => {
   emit("select", selected.value);
 });
 
+const value = computed({
+  get() {
+    return selected.value ?? props.default ?? null;
+  },
+  set(newval) {
+    selected.value = newval;
+  },
+});
+
 function deselect() {
   selected.value = null;
 }
@@ -73,7 +85,7 @@ defineExpose({
 </script>
 
 <template>
-  <Combobox v-model="selected" nullable as="div" :class="props.containerClass">
+  <Combobox v-model="value" nullable as="div" :class="props.containerClass">
     <ComboboxInput
       @change="query = $event.target.value"
       v-bind="$attrs"

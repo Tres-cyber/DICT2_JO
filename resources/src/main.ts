@@ -15,12 +15,14 @@ import {
   faArrowDown,
   faBars,
   faEye,
+  faFloppyDisk,
   faPlus,
   faPrint,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
+import SubmitForm from "./components/SubmitForm.vue";
 
-library.add(faPrint, faBars, faEye, faTrash, faPlus, faArrowDown);
+library.add(faPrint, faBars, faEye, faTrash, faPlus, faArrowDown, faFloppyDisk);
 
 const app = createApp({});
 app.component("AutocompleteSelect", AutocompleteSelect);
@@ -28,6 +30,7 @@ app.component("DatePicker", DatePicker);
 app.component("DynamicTextarea", DynamicTextarea);
 app.component("FontAwesomeIcon", FontAwesomeIcon);
 app.component("MultipleSelect", MultipleSelect);
+app.component("SubmitForm", SubmitForm);
 app.component("PrintButton", PrintButton);
 app.component("TopBar", TopBar);
 app.mount("#app");
