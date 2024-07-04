@@ -91,7 +91,7 @@ function add(value: string | null) {
       >
         X
       </button>
-      <input :name="props.name" type="hidden" :value="value" />
+      <input :name="props.name + '[]'" type="hidden" :value="value" />
     </span>
     <div class="relative" v-if="!props.readonly">
       <AutocompleteSelect

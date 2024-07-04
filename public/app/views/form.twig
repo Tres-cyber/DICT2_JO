@@ -166,7 +166,6 @@
                 <input
                   readonly
                   type="text"
-                  name="job_order_number"
                   value="{{ jo.job_order_number }}"
                   class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold leading-none"
                 >
@@ -249,6 +248,7 @@
                   {% else %}
                     <multiple-select
                       placeholder="Add endorsee"
+                      name="endorsee"
                       permanent="{{ personnel.name | e('html_attr') }}"
                       :selected="['{{ personnel.name | e('html_attr') }}']"
                       container-class="relative z-10 flex flex-1 flex-wrap items-start"
