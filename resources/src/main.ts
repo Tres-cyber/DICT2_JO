@@ -11,9 +11,16 @@ import TopBar from "./components/TopBar.vue";
 
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faBars, faPrint } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowDown,
+  faBars,
+  faEye,
+  faPlus,
+  faPrint,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 
-library.add(faPrint, faBars);
+library.add(faPrint, faBars, faEye, faTrash, faPlus, faArrowDown);
 
 const app = createApp({});
 app.component("AutocompleteSelect", AutocompleteSelect);

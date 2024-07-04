@@ -1,5 +1,5 @@
 INSERT INTO Personnels (name, position) VALUES 
-('Engr. Pinky T. Jimenez, PECE, Ph.D.', 'Regional Director'),
+('Engr. Pinky T. Jimenez, Ph.D.', 'Regional Director'),
 ('Janet T. Catinoy', 'Planning Officer II'),
 ('Donna Andrea D. Fidel', 'PDO I'),
 ('Mark John C. Tumaliuan', 'Admin. Aide IV'),

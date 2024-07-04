@@ -6,9 +6,11 @@
 <top-bar></top-bar>
 <div class="container mx-auto flex justify-center print:!m-0 print:!max-w-full">
   <div class="relative print:!w-full">
-    <strong class="absolute left-1/2 top-1/2 z-[-1] hidden -translate-x-1/2 translate-y-1/2 rotate-[-55deg] scale-[7] text-4xl uppercase tracking-widest text-neutral-300 print:block">
-      draft
-    </strong>
+    {% if not readonly %}
+      <strong class="absolute left-1/2 top-1/2 z-[-1] hidden -translate-x-1/2 translate-y-1/2 rotate-[-55deg] scale-[7] text-4xl uppercase tracking-widest text-neutral-300 print:block">
+        draft
+      </strong>
+    {% endif %}
     <print-button
       class="absolute left-4 top-4 overflow-clip rounded-full bg-blue-950 px-4 py-2 text-sm font-semibold uppercase text-white print:hidden"
     ></print-button>
@@ -41,11 +43,13 @@
         <tr>
           <td class="w-1/2 border border-black">
             <div class="flex items-center">
-              <label for="name" class="text-sm uppercase leading-none"> Name: </label>
+              <label for="client_name" class="text-sm uppercase leading-none"> Name: </label>
               <input
-                id="name"
+                {{ readonly is same as(true) ? 'readonly' : '' }}
+                id="client_name"
+                name="client_name"
                 type="text"
-                value="Joel P. Manuel"
+                value="{{ jo.client_name }}"
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
               >
             </div>
@@ -53,15 +57,17 @@
           <td class="w-1/2 border border-black">
             <div class="flex items-center">
               <label
-                for="contact_number"
+                for="client_contact"
                 class="text-sm uppercase leading-none"
               >
                 Contact Number:
               </label>
               <input
-                id="contact_number"
+                {{ readonly is same as(true) ? 'readonly' : '' }}
+                id="client_contact"
+                name="client_contact"
                 type="text"
-                value="09168225076"
+                value="{{ jo.client_contact }}"
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold leading-none"
               >
             </div>
@@ -70,11 +76,13 @@
         <tr>
           <td class="border border-black" colspan="2">
             <div class="flex items-center">
-              <label for="lgu" class="text-sm uppercase leading-none"> LGU: </label>
+              <label for="client_lgu" class="text-sm uppercase leading-none"> LGU: </label>
               <input
-                id="lgu"
+                {{ readonly is same as(true) ? 'readonly' : '' }}
+                id="client_lgu"
+                name="client_lgu"
                 type="text"
-                value="Alcala, Cagayan"
+                value="{{ jo.client_lgu }}"
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
               >
             </div>
@@ -84,15 +92,17 @@
           <td class="w-1/2 border border-black">
             <div class="flex items-center">
               <label
-                for="mode_of_request"
+                for="request_mode"
                 class="text-sm uppercase leading-none"
               >
                 Mode of request:
               </label>
               <input
-                id="mode_of_request"
+                {{ readonly is same as(true) ? 'readonly' : '' }}
+                id="request_mode"
+                name="request_mode"
                 type="text"
-                value="On site"
+                value="{{ jo.request_mode | e('html_attr') }} "
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold capitalize leading-none"
               >
             </div>
@@ -101,7 +111,9 @@
             <div class="flex items-center">
               <label for="date" class="text-sm uppercase leading-none"> Date: </label>
               <date-picker
-                date="2024-02-23"
+                {{ readonly is same as(true) ? 'readonly' : '' }}
+                name="request_date"
+                date="{{ jo.request_date  | date('Y-m-d') }}"
                 class="ml-1 w-0 flex-1"
                 hide-input-icon
                 input-class-name="bg-transparent border-none rounded-none leading-none font-semibold text-sm font-serif p-0 uppercase"
@@ -122,9 +134,10 @@
             <div class="flex items-center">
               <span class="text-sm uppercase leading-none"> Scheduled date: </span>
               <date-picker
-                name="test"
-                start-date="2024-02-26"
-                end-date="2024-02-27"
+                {{ readonly is same as(true) ? 'readonly' : '' }}
+                start-date="{{ jo.scheduled_start_date | date('Y-m-d')  }}"
+                end-date="{{ jo.scheduled_end_date | date('Y-m-d')  }}"
+                name="scheduled"
                 range
                 class="ml-1 w-0 flex-1"
                 hide-input-icon
@@ -136,8 +149,10 @@
             <div class="flex items-center">
               <span class="text-sm uppercase leading-none"> Job order number: </span>
               <input
+                {{ readonly is same as(true) ? 'readonly' : '' }}
                 type="text"
-                value="iBPLS-R2-2024-02-26-S37"
+                name="job_order_number"
+                value="{{ jo.job_order_number }}"
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold leading-none"
               >
             </div>
@@ -148,8 +163,10 @@
             <div class="flex items-center">
               <span class="text-sm uppercase leading-none">Issued by:</span>
               <input
+                {{ readonly is same as(true) ? 'readonly' : '' }}
                 type="text"
-                value="Engr. Ronald S. Bariuan"
+                name="issued_by"
+                value="{{ jo.issued_by }}"
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
               >
             </div>
@@ -158,8 +175,10 @@
             <div class="flex items-center">
               <span class="text-sm uppercase leading-none">Approved by:</span>
               <input
+                {{ readonly is same as(true) ? 'readonly' : '' }}
                 type="text"
-                value="Engr. Pinky T. Jimenez"
+                name="approved_by"
+                value="{{ jo.approved_by }}"
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
               >
             </div>
@@ -172,8 +191,9 @@
               <div class="flex flex-1 items-start">
                 <span class="mr-1 text-sm uppercase leading-[19px]"> Endorsed to: </span>
                 <multiple-select
-                  permanent="Jaymar C. Recolizado"
-                  :selected="['Jaymar C. Recolizado','Joel P. Manuel',]"
+                  {{ readonly is same as(true) ? 'readonly' : '' }}
+                  permanent="{{ jo.performed_by | e('html_attr') }}"
+                  :selected="['{{ jo.performed_by | e('html_attr') }}']"
                   placeholder="Add endorsee"
                   container-class="flex flex-1 flex-wrap items-start"
                   value-class="group/value relative mr-1 text-sm font-semibold uppercase leading-[19px]"
@@ -182,7 +202,7 @@
                   input-class="w-[30ch] bg-transparent text-sm font-semibold uppercase leading-none print:hidden"
                   choices-class="absolute inset-x-0 top-[calc(100%+4px)] flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
                   option-class="ui-active:text-blue-950 ui-active:font-bold"
-                  options="Jaymar C. Recolizado,Joel P. Manuel"
+                  options=""
                 ></multiple-select>
               </div>
             </div>
@@ -192,9 +212,11 @@
           <td class="w-1/2 border border-black" colspan="2">
             <div class="flex flex-col items-stretch">
               <span class="block text-sm font-semibold uppercase leading-[19px]">Job Request Description</span>
-              <dynamic-textarea class="mx-0 my-2 max-h-[10em] min-h-[2em] resize-none bg-transparent text-sm leading-none">
-                Conduct eLGU training for the Staff of the Local Government Unit of Alcala and start the discussion for
-                the eReadiness Survey for the said LGU
+              <dynamic-textarea
+                {{ readonly is same as(true) ? 'readonly' : '' }}
+                class="mx-0 my-2 max-h-[10em] min-h-[2em] resize-none bg-transparent text-sm leading-none"
+              >
+                <pre>{{ jo.job_description }}</pre>
               </dynamic-textarea>
             </div>
           </td>
@@ -211,18 +233,11 @@
           <td class="w-1/2 border border-black" colspan="2">
             <div class="flex flex-col items-stretch">
               <span class="block text-sm font-semibold uppercase leading-[19px]">Actual Job Done</span>
-              <dynamic-textarea class="mx-0 my-2 max-h-[15em] min-h-[2em] resize-none bg-transparent text-sm leading-none">
-                <pre>
-Day 1 – February 26, 2024:
-
-1. Provided technical assistance to the participants from the LGU of Alcala in terms of discussion of specified technicalities in using the eGOV app.
-2. Assisted the trainers in the discussion of crucial parts in the configuration in the access control of the system.
-
-Day 2 – February 27, 2024:
-
-1. Assisted in the discussion of the recap from day 1. 
-2. Assisted the trainers in the discussion of crucial parts in the civil registry and community tax certificate transaction in the eGOV app to the eGOV admin dashboard.
-</pre>
+              <dynamic-textarea
+                {{ readonly is same as(true) ? 'readonly' : '' }}
+                class="mx-0 my-2 max-h-[15em] min-h-[2em] resize-none bg-transparent text-sm leading-none"
+              >
+                <pre>{{ jo.actual_job_done }}</pre>
               </dynamic-textarea>
             </div>
           </td>
@@ -233,15 +248,19 @@ Day 2 – February 27, 2024:
               <span class="text-sm uppercase leading-[19px]"> Performed by: </span>
               <div class="flex flex-1 flex-col items-center">
                 <input
+                  {{ readonly is same as(true) ? 'readonly' : '' }}
                   type="text"
-                  value="Jaymar C. Recolizado"
+                  name="performed_by"
+                  value="{{ jo.performed_by | e('html_attr') }}"
                   class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
                 >
-                <input
-                  type="text"
-                  value="ISA II"
-                  class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
-                >
+                {% if jo.performer_position %}
+                  <input
+                    type="text"
+                    value="{{ jo.performer_position | e('html_attr') }}"
+                    class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
+                  >
+                {% endif %}
               </div>
             </div>
           </td>
@@ -252,14 +271,19 @@ Day 2 – February 27, 2024:
               <span class="text-sm uppercase leading-[19px]"> Verified by: </span>
               <div class="flex flex-1 flex-col items-center">
                 <input
+                  readonly
                   type="text"
-                  value="Joel P. Manuel"
+                  value="{{ jo.client_name | e('html_attr') }}"
                   class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
+                  placeholder="client name"
                 >
                 <input
+                  {{ readonly is same as(true) ? 'readonly' : '' }}
                   type="text"
-                  value="BPLO LGU Alcala"
+                  name="client_position"
+                  value="{{ jo.client_position | e('html_attr') }}"
                   class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
+                  placeholder="position"
                 >
               </div>
             </div>
@@ -270,7 +294,10 @@ Day 2 – February 27, 2024:
       <div class="mt-auto flex flex-1 break-before-avoid flex-col items-stretch justify-stretch border border-black font-serif">
         <span class="block text-sm font-semibold uppercase leading-[19px]">Remarks/Comment/Feedback</span>
         <div class="h-0 flex-1">
-          <textarea class="h-full w-full resize-none bg-transparent text-sm leading-none"></textarea>
+          <textarea
+            {{ readonly is same as(true) ? 'readonly' : '' }}
+            class="h-full w-full resize-none bg-transparent text-sm leading-none"
+          >{{ jo.remarks }}</textarea>
         </div>
       </div>
       <em class="invisible mt-4 print:visible">
