@@ -1,18 +1,18 @@
 {
-  "_vendor-qJlOvuIR.js": {
-    "file": "assets/vendor-qJlOvuIR.js",
+  "_vendor-B89_hz3n.js": {
+    "file": "assets/vendor-B89_hz3n.js",
     "name": "vendor"
   },
   "main.ts": {
-    "file": "assets/main-DgJH5ALx.js",
+    "file": "assets/main-Br-zstrd.js",
     "name": "main",
     "src": "main.ts",
     "isEntry": true,
     "imports": [
-      "_vendor-qJlOvuIR.js"
+      "_vendor-B89_hz3n.js"
     ],
     "css": [
-      "assets/main-C-9GX1Dc.css"
+      "assets/main-m6xdSFbo.css"
     ]
   }
 }

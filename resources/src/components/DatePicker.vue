@@ -56,20 +56,24 @@ function formatDateRange([start, end]: [Date, Date]) {
     :enable-time-picker="false"
   />
   <template v-if="props.range">
-    <template v-for="d in date as (Date | undefined)[]">
-      <input
-        :name="props.name?.concat('[]')"
-        v-if="d !== undefined"
-        type="hidden"
-        :value="format(d, 'yyyy-MM-dd HH:mm:ss')"
-      />
-    </template>
+    <input
+      :name="props.name?.concat('[]')"
+      v-if="date !== undefined"
+      type="hidden"
+      :value="format((date as Date[])[0], 'yyyy-MM-dd')"
+    />
+    <input
+      :name="props.name?.concat('[]')"
+      v-if="date !== undefined"
+      type="hidden"
+      :value="format((date as Date[])[1] ?? (date as Date[])[0], 'yyyy-MM-dd')"
+    />
   </template>
   <template v-else>
     <input
       :name="props.name"
       type="hidden"
-      :value="format(date as Date, 'yyyy-MM-dd HH:mm:ss')"
+      :value="format(date as Date, 'yyyy-MM-dd')"
     />
   </template>
 </template>

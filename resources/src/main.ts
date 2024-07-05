@@ -30,7 +30,6 @@ app.component("DatePicker", DatePicker);
 app.component("DynamicTextarea", DynamicTextarea);
 app.component("FontAwesomeIcon", FontAwesomeIcon);
 app.component("MultipleSelect", MultipleSelect);
-app.component("SubmitForm", SubmitForm);
 app.component("PrintButton", PrintButton);
 app.component("TopBar", TopBar);
 app.mount("#app");
