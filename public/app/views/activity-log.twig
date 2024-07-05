@@ -20,10 +20,17 @@
           </tr>
         </thead>
         <tbody>
+        {% for ses in session %}
           <tr>
-            <td data-label="Name">Spongebob Squarepants</td>
-            <td data-label="Log in Time">10:00 A.M</td>
-            <td data-label="Log out Time">10:00 P.M</td>
+            <td data-label="Name">{{ ses.name }}</td>
+            <td data-label="Log in Time">{{ ses.login | date("M d, Y H:m ", "Asia/Manila") }}</td>
+            <td data-label="Log out Time">
+            {% if ses.logout is null %}
+            Still Logged In
+            {% else %}
+            {{ ses.logout | date("M d, Y H:m", "Asia/Manila") }}
+            {% endif %}
+            </td>
             <td data-label="Action">
               <a href="#" class="logout-action">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -32,6 +39,7 @@
               </a>
             </td>
           </tr>
+          {% endfor %}
         </tbody>
       </table>
     </div>
