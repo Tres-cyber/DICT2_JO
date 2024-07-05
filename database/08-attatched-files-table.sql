@@ -13,7 +13,7 @@ ALTER TABLE
         'For Revision'
     ) NOT NULL DEFAULT 'Draft' AFTER `verifier_position`;
 
-CREATE TABLE `AttatchedFiles`(
+CREATE TABLE `AttachedFiles`(
     `attatched_files_id` INT NOT NULL AUTO_INCREMENT,
     `file_type` VARCHAR(64) NOT NULL,
     `file` LONGBLOB NOT NULL,
