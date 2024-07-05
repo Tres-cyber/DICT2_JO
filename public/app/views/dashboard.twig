@@ -40,6 +40,8 @@
             <th>Date</th>
             <th>Scheduled Date</th>
             <th>Issued By</th>
+            <th>Approved By</th>
+            <th>Status</th>
             <th>Action</th>
           </tr>
         </thead>
@@ -53,6 +55,8 @@
                 {{ jo.scheduled_start_date | date("M d, Y") }}-{{ jo.scheduled_end_date | date("M d, Y") }}
               </td>
               <td data-label="Issued By">{{ jo.issued_by }}</td>
+              <td data-label="Approved By">{{ jo.verifier }}</td>
+              <td data-label="Status">{{ jo.status }}</td>
               <td data-label="Action">
                 <form action="/form.php" class="mr-1 inline-flex">
                   <input type="hidden" name="id" value="{{ jo.job_order_id }}">
