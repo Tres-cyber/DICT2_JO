@@ -6,25 +6,32 @@
 <top-bar></top-bar>
 {% endblock %}
 {% block body %}
-
-<form action="/form.php" method="post" class="container mx-auto flex justify-center print:!m-0 print:!max-w-full">
+<form
+  action="/form.php"
+  method="post"
+  class="jo-form container mx-auto flex justify-center print:!m-0 print:!max-w-full"
+>
   <div class="relative print:!w-full">
-    {% if not readonly %}
+    {% if jo.status == 'Draft' %}
       <strong class="absolute left-1/2 top-1/2 z-[-1] hidden -translate-x-1/2 translate-y-1/2 rotate-[-55deg] scale-[7] text-4xl uppercase tracking-widest text-neutral-300 print:block">
         draft
       </strong>
-      <button
-        type="submit"
-        class="absolute bottom-8 right-8 z-10 overflow-clip rounded bg-green-950 px-4 py-2 text-sm font-semibold uppercase text-white print:hidden"
-      >
-        <font-awesome-icon icon="fa-solid fa-floppy-disk" class="mr-1"></font-awesome-icon>
-        Submit
-      </button>
     {% endif %}
-    <print-button
-      type="button"
-      class="absolute left-4 top-4 z-10 overflow-clip rounded-full bg-blue-950 px-4 py-2 text-sm font-semibold uppercase text-white print:hidden"
-    ></print-button>
+    <button
+      type="submit"
+      class="absolute bottom-8 right-8 z-10 overflow-clip rounded bg-green-950 px-4 py-2 text-sm font-semibold uppercase text-white print:hidden"
+    >
+      <font-awesome-icon icon="fa-solid fa-floppy-disk" class="mr-1"></font-awesome-icon>
+      Submit
+    </button>
+    {% if showPrint %}
+      <print-button
+        type="button"
+        class="absolute left-4 top-4 z-10 overflow-clip rounded-full bg-blue-950 px-4 py-2 text-sm font-semibold uppercase text-white print:hidden"
+        {{ jo.status == 'Draft' ? 'text="Print Draft"' : '' }}
+      >
+      </print-button>
+    {% endif %}
     <div class="relative z-0 flex h-[13in] w-[8.5in] flex-col items-stretch border border-neutral-700 p-[0.75in] print:!w-full print:border-none">
       <div class="relative flex h-[0.75in] items-center justify-between">
         <img
@@ -61,6 +68,7 @@
                 name="client_name"
                 type="text"
                 value="{{ jo.client_name | e('html_attr') }}"
+                placeholder=" "
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
               >
             </div>
@@ -79,6 +87,7 @@
                 name="client_contact"
                 type="text"
                 value="{{ jo.client_contact }}"
+                placeholder=" "
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold leading-none"
               >
             </div>
@@ -87,13 +96,14 @@
         <tr>
           <td class="border border-black" colspan="2">
             <div class="flex items-center">
-              <label for="client_lgu" class="text-sm uppercase leading-none"> LGU: </label>
+              <label for="client_lgu" class="text-sm uppercase leading-none">LGU: </label>
               <input
                 {{ readonly is same as(true) ? 'readonly' : '' }}
                 id="client_lgu"
                 name="client_lgu"
                 type="text"
                 value="{{ jo.client_lgu }}"
+                placeholder=" "
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
               >
             </div>
@@ -114,6 +124,7 @@
                 name="request_mode"
                 type="text"
                 value="On Site"
+                placeholder=" "
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold capitalize leading-none"
               >
             </div>
@@ -163,6 +174,7 @@
                 readonly
                 type="text"
                 value="{{ jo.job_order_number }}"
+                placeholder=" "
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold leading-none"
               >
             </div>
@@ -271,6 +283,7 @@
                 {{ readonly is same as(true) ? 'readonly' : '' }}
                 class="mx-0 my-2 max-h-[10em] min-h-[2em] resize-none bg-transparent text-sm leading-none"
                 name="job_description"
+                placeholder=" "
               >
                 <pre>{{ jo.job_description }}</pre>
               </dynamic-textarea>
@@ -293,6 +306,7 @@
                 {{ readonly is same as(true) ? 'readonly' : '' }}
                 class="mx-0 my-2 max-h-[15em] min-h-[2em] resize-none bg-transparent text-sm leading-none"
                 name="actual_job_done"
+                placeholder=" "
               >
                 <pre>{{ jo.actual_job_done }}</pre>
               </dynamic-textarea>
@@ -310,12 +324,14 @@
                     type="text"
                     name="performed_by"
                     value="{{ jo.performed_by | e('html_attr') }}"
+                    placeholder=" "
                     class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
                   >
                   {% if jo.performer_position %}
                     <input
                       type="text"
                       value="{{ jo.performer_position | e('html_attr') }}"
+                      placeholder=" "
                       class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
                     >
                   {% endif %}
@@ -325,6 +341,7 @@
                     type="text"
                     name="performed_by"
                     value="{{ personnel.name | e('html_attr') }}"
+                    placeholder=" "
                     class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
                   >
                   <input
@@ -332,6 +349,7 @@
                     type="text"
                     value="{{ personnel.position }}"
                     class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
+                    placeholder=" "
                     value="{{ personnel.position | e('html_attr') }}"
                   >
                 {% endif %}
@@ -370,8 +388,9 @@
         <div class="h-0 flex-1">
           <textarea
             {{ readonly is same as(true) ? 'readonly' : '' }}
-            class="h-full w-full resize-none bg-transparent text-sm leading-none"
             name="remarks"
+            placeholder=" "
+            class="h-full w-full resize-none bg-transparent text-sm leading-none"
           >{{ jo.remarks }}</textarea>
         </div>
       </div>

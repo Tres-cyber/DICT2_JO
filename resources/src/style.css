@@ -9,6 +9,11 @@
   margin: 0in;
 }
 
+.jo-form input:not([readonly]):not(.-has-value):placeholder-shown,
+.jo-form textarea:not([readonly]):placeholder-shown {
+  @apply bg-red-50;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
