@@ -8,7 +8,8 @@ $sql = "
             pa.name
         FROM Sessions ses
         JOIN Accounts acc ON ses.account_id = acc.account_id
-        JOIN Personnels pa ON acc.personnel_id = pa.personnel_id
+        LEFT JOIN Personnels pa ON acc.personnel_id = pa.personnel_id
+        ORDER by ses.session_id DESC
 ";
 
 $stmt = execute($sql);

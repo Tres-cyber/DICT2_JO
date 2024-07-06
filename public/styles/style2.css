@@ -10,6 +10,41 @@ body {
   height: 100%;
   background-size: cover;
 }
+
+.dropbtn {
+  background-color: #4CAF50;
+  border-radius: 16px;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  top: 100px;
+  min-width: 100px;
+
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+.dropdown:hover .dropbtn {
+  background-color: #3e8e41;
+}
 .header {
   display: flex;
   align-items: center;
@@ -151,7 +186,15 @@ svg {
 .edit-button:last-child {
   margin-right: 0;
 }
+@media screen and (max-width: 1786px) {
+ 
+  .dropdown-content a {
+    font-size: 12px;
+    padding: 8px 8px;
+  }
+}
 @media screen and (max-width: 1174px) {
+ 
   .teybol td {
     font-size: 0.75rem;
   }
@@ -165,6 +208,11 @@ svg {
   }
 }
 @media screen and (max-width: 712px) {
+  .dropdown-content {
+    margin-top: 10px;
+    right: 10px;
+    }
+   
   .teybol td:nth-child(6) {
     padding: 8px 16px 8px 0;
   }

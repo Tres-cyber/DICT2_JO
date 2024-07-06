@@ -142,7 +142,14 @@ a.logout-button {
   align-items: center;
   justify-content: center;
 }
-
+.status-active {
+  font-weight: bold;
+  color: green;
+}
+.status-offline {
+  font-weight: bold;
+  color: red;
+}
 .teybol {
   width: 100%;
   border-collapse: collapse;
