@@ -9,8 +9,8 @@
   margin: 0in;
 }
 
-.jo-form input:not([readonly]):not(.-has-value):placeholder-shown,
-.jo-form textarea:not([readonly]):placeholder-shown {
+.jo-form input:not([readonly]),
+.jo-form textarea:not([readonly]) {
   @apply bg-red-100;
 }
 

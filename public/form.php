@@ -82,9 +82,9 @@ function fetchJO($id)
             pp.name AS performed_by,
             pp.position AS performer_position
         FROM JobOrder jo
-        JOIN Personnels pi ON jo.issued_by = pi.personnel_id
-        JOIN Personnels pa ON jo.approved_by = pa.personnel_id
-        JOIN Personnels pp ON jo.performer_id = pp.personnel_id
+        LEFT JOIN Personnels pi ON jo.issued_by = pi.personnel_id
+        LEFT JOIN Personnels pa ON jo.approved_by = pa.personnel_id
+        LEFT JOIN Personnels pp ON jo.performer_id = pp.personnel_id
         WHERE jo.job_order_id = :id
 ";
   $stmt = execute($sql, [':id' => $id]);
