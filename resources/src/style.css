@@ -11,7 +11,7 @@
 
 .jo-form input:not([readonly]):not(.-has-value):placeholder-shown,
 .jo-form textarea:not([readonly]):placeholder-shown {
-  @apply bg-red-50;
+  @apply bg-red-100;
 }
 
 @tailwind base;
