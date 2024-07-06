@@ -13,7 +13,7 @@ class ViteUtil
       . "\n" . self::cssTag($entry);
   }
 
-  private static function isDev(): bool
+  public static function isDev(): bool
   {
     return isset($_ENV['MODE_DEPLOY']) && $_ENV['MODE_DEPLOY'] === 'development';
   }

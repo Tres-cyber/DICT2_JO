@@ -1,0 +1,18 @@
+ALTER TABLE `JobOrder`
+  CHANGE `scheduled_start_date` `scheduled_start_date` DATE NULL,
+  CHANGE `scheduled_end_date` `scheduled_end_date` DATE NULL,
+  CHANGE `job_description` `job_description` TEXT NULL,
+  CHANGE `start_time` `start_time` DATETIME NULL,
+  CHANGE `end_time` `end_time` DATETIME NULL,
+  CHANGE `actual_job_done` `actual_job_done` TEXT NULL,
+  CHANGE `remarks` `remarks` TEXT NULL,
+  CHANGE `client_name` `client_name` VARCHAR(128) NULL,
+  CHANGE `client_contact` `client_contact` VARCHAR(64) NULL,
+  CHANGE `client_lgu` `client_lgu` VARCHAR(128) NULL,
+  CHANGE `request_mode` `request_mode` ENUM('On Site') NOT NULL DEFAULT 'On Site',
+  CHANGE `request_date` `request_date` DATE NULL,
+  CHANGE `issued_by` `issued_by` INT UNSIGNED NULL,
+  CHANGE `approved_by` `approved_by` INT UNSIGNED NULL,
+  CHANGE `job_order_number` `job_order_number` VARCHAR(64) NULL,
+  CHANGE `verifier` `verifier` VARCHAR(32) NULL,
+  CHANGE `verifier_position` `verifier_position` VARCHAR(32) NULL;
