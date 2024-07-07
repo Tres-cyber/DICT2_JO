@@ -13,9 +13,9 @@
     <img src="assets/logo.png" alt="" class="login-logo-two">
     <div class="login-box">
       <h1 class="login-title">Job Order System</h1>
-      {% if session.signin_err is defined %}
-        <strong>{{ session.signin_err }}</strong>
-      {% endif %}
+      {% for message in app.flashes('error') %}
+        <strong>{{ message }}</strong>
+      {% endfor %}
       <form action="/signin.php" method="post">
         <input name="email" class="input-wrapper" type="text" placeholder="Email">
         <input name="password" class="input-wrapper" type="password" placeholder="Password">

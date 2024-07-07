@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/app/setup.php';
 $account = protectRoute();
 
@@ -131,7 +132,7 @@ if (isset($_GET['id'])) {
     return $item['name'];
   }, $endorsee);
 
-  $simulateDone = \Dict\Jo\ViteUtil::isDev() && isset($_GET['done']);
+  $simulateDone = \App\Util\Env::isDev() && isset($_GET['done']);
 
   $currentDate = new DateTime();
   $endDate = new DateTime($jo['scheduled_end_date']);
