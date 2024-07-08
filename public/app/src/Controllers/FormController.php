@@ -7,6 +7,7 @@ use DateTime;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 
 class FormController extends BaseController
 {
@@ -239,10 +240,33 @@ WHERE
     $jo['endorsee'] = $_POST['joborder']['endorsee'];
     $jo['status'] = $form->get('draft')->isClicked() ? 'Draft' : 'Approved';
     $jo['job_order_number'] = $form->get('draft')->isClicked() ?
-      generateJobOrderId(getDB(), 3, '2000-01-01', true) :
+      null :
       generateJobOrderId(getDB(), 3, $jo['request_date']->format('Y-m-d'));
 
 
+
+    /** @var Session $session */
+    /*
+    $session = $request->getSession();
+    $flashes = $session->getFlashBag();
+
+    if ($form->get('submit')->isClicked()) {
+      if (!$form->isValid()) {
+        $errors = [];
+
+        foreach ($form->getErrors() as $v) {
+          $errors[] = [
+            "origin" => $v->getOrigin()->getName(),
+            "message" => $v->getMessage()
+          ];
+        }
+
+        $flashes->set('form_errors', $errors);
+      }
+      var_dump($request->getRequestUri());
+      exit();
+    }
+*/
 
     if (is_null($jo['id'])) {
       $this->insert($jo);
