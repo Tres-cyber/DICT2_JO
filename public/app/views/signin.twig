@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="./styles/style.css">
 {% endblock %}
 {% block body %}
-
 <div class="login-container">
   <div class="login-logo-wrapper">
     <img src="assets/logo.png" alt="" class="login-logo">
@@ -16,11 +15,14 @@
       {% for message in app.flashes('error') %}
         <strong>{{ message }}</strong>
       {% endfor %}
-      <form action="/signin.php" method="post">
-        <input name="email" class="input-wrapper" type="text" placeholder="Email">
-        <input name="password" class="input-wrapper" type="password" placeholder="Password">
-        <input class="input-submit self-center" type="submit" value="Sign In">
-      </form>
+      {{ form_start(form) }}
+
+      {{ form_errors(form_errors()) }}
+      {{ form_widget(form.email, {'attr' : {'placeholder' : 'Email', 'class':'input-wrapper' }}) }}
+      {{ form_widget(form.password, {'attr' : {'placeholder' : 'Email', 'class':'input-wrapper' }}) }}
+      {{ form_widget(form.submit, {'attr' : {'class':'input-submit self-center' }}) }}
+      {{ form_rest(form) }}
+      {{ form_end(form) }}
     </div>
   </div>
 </div>

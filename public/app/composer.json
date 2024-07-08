@@ -8,7 +8,8 @@
     "symfony/security-csrf": "^7.1",
     "symfony/form": "^7.1",
     "symfony/validator": "^7.1",
-    "symfony/twig-bridge": "^7.1"
+    "symfony/twig-bridge": "^7.1",
+    "symfony/translation": "^7.1"
   },
   "autoload": {
     "psr-4": {
