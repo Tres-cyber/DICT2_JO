@@ -96,7 +96,12 @@ function add(value: string | null) {
     <div class="relative" v-if="!props.readonly">
       <AutocompleteSelect
         ref="selectRef"
-        v-bind="{ ...$attrs, ...props, name: undefined }"
+        v-bind="{
+          ...$attrs,
+          ...props,
+          name: undefined,
+          inputClass: inputClass + (selected.length !== 0 ? ' -has-value' : ''),
+        }"
         :options="options.filter((v) => !selected.includes(v))"
         :container-class="selectClass"
         @select="add"

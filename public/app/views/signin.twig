@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="./styles/style.css">
 {% endblock %}
 {% block body %}
-
 <div class="login-container">
   <div class="login-logo-wrapper">
     <img src="assets/logo.png" alt="" class="login-logo">
@@ -13,14 +12,17 @@
     <img src="assets/logo.png" alt="" class="login-logo-two">
     <div class="login-box">
       <h1 class="login-title">Job Order System</h1>
-      {% if session.signin_err is defined %}
-        <strong>{{ session.signin_err }}</strong>
-      {% endif %}
-      <form action="/signin.php" method="post">
-        <input name="email" class="input-wrapper" type="text" placeholder="Email">
-        <input name="password" class="input-wrapper" type="password" placeholder="Password">
-        <input class="input-submit self-center" type="submit" value="Sign In">
-      </form>
+      {% for message in app.flashes('error') %}
+        <strong>{{ message }}</strong>
+      {% endfor %}
+      {{ form_start(form) }}
+
+      {{ form_errors(form_errors()) }}
+      {{ form_widget(form.email, {'attr' : {'placeholder' : 'Email', 'class':'input-wrapper' }}) }}
+      {{ form_widget(form.password, {'attr' : {'placeholder' : 'Email', 'class':'input-wrapper' }}) }}
+      {{ form_widget(form.submit, {'attr' : {'class':'input-submit self-center' }}) }}
+      {{ form_rest(form) }}
+      {{ form_end(form) }}
     </div>
   </div>
 </div>

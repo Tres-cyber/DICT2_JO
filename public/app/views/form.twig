@@ -6,25 +6,34 @@
 <top-bar></top-bar>
 {% endblock %}
 {% block body %}
-
-<form action="/form.php" method="post" class="container mx-auto flex justify-center print:!m-0 print:!max-w-full">
+{% set jo_editable = (jo.status == 'Draft' or jo.status == 'For Revision') %}
+{% set ci_editable = done and jo.status == 'Approved' %}
+<form
+  action="/form.php"
+  method="post"
+  class="jo-form container mx-auto flex justify-center print:!m-0 print:!max-w-full"
+>
   <div class="relative print:!w-full">
-    {% if not readonly %}
+    {% if jo.status == 'Draft' %}
       <strong class="absolute left-1/2 top-1/2 z-[-1] hidden -translate-x-1/2 translate-y-1/2 rotate-[-55deg] scale-[7] text-4xl uppercase tracking-widest text-neutral-300 print:block">
         draft
       </strong>
-      <button
-        type="submit"
-        class="absolute bottom-8 right-8 z-10 overflow-clip rounded bg-green-950 px-4 py-2 text-sm font-semibold uppercase text-white print:hidden"
-      >
-        <font-awesome-icon icon="fa-solid fa-floppy-disk" class="mr-1"></font-awesome-icon>
-        Submit
-      </button>
     {% endif %}
-    <print-button
-      type="button"
-      class="absolute left-4 top-4 z-10 overflow-clip rounded-full bg-blue-950 px-4 py-2 text-sm font-semibold uppercase text-white print:hidden"
-    ></print-button>
+    <button
+      type="submit"
+      class="absolute bottom-8 right-8 z-10 overflow-clip rounded bg-green-950 px-4 py-2 text-sm font-semibold uppercase text-white print:hidden"
+    >
+      <font-awesome-icon icon="fa-solid fa-floppy-disk" class="mr-1"></font-awesome-icon>
+      Submit
+    </button>
+    {% if not hidePrint is same as(true) %}
+      <print-button
+        type="button"
+        class="absolute left-4 top-4 z-10 overflow-clip rounded-full bg-blue-950 px-4 py-2 text-sm font-semibold uppercase text-white print:hidden"
+        {{ jo.status == 'Draft' ? 'text="Print Draft"' : '' }}
+      >
+      </print-button>
+    {% endif %}
     <div class="relative z-0 flex h-[13in] w-[8.5in] flex-col items-stretch border border-neutral-700 p-[0.75in] print:!w-full print:border-none">
       <div class="relative flex h-[0.75in] items-center justify-between">
         <img
@@ -56,11 +65,12 @@
             <div class="flex items-center">
               <label for="client_name" class="text-sm uppercase leading-none">Name: </label>
               <input
-                {{ readonly is same as(true) ? 'readonly' : '' }}
+                {{ jo_editable ? '' : 'readonly' }}
                 id="client_name"
                 name="client_name"
                 type="text"
                 value="{{ jo.client_name | e('html_attr') }}"
+                placeholder=" "
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
               >
             </div>
@@ -74,11 +84,12 @@
                 Contact Number:
               </label>
               <input
-                {{ readonly is same as(true) ? 'readonly' : '' }}
+                {{ jo_editable ? '' : 'readonly' }}
                 id="client_contact"
                 name="client_contact"
                 type="text"
                 value="{{ jo.client_contact }}"
+                placeholder=" "
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold leading-none"
               >
             </div>
@@ -87,13 +98,14 @@
         <tr>
           <td class="border border-black" colspan="2">
             <div class="flex items-center">
-              <label for="client_lgu" class="text-sm uppercase leading-none"> LGU: </label>
+              <label for="client_lgu" class="text-sm uppercase leading-none">LGU: </label>
               <input
-                {{ readonly is same as(true) ? 'readonly' : '' }}
+                {{ jo_editable ? '' : 'readonly' }}
                 id="client_lgu"
                 name="client_lgu"
                 type="text"
                 value="{{ jo.client_lgu }}"
+                placeholder=" "
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold uppercase leading-none"
               >
             </div>
@@ -114,6 +126,7 @@
                 name="request_mode"
                 type="text"
                 value="On Site"
+                placeholder=" "
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold capitalize leading-none"
               >
             </div>
@@ -122,7 +135,7 @@
             <div class="flex items-center">
               <label for="date" class="text-sm uppercase leading-none"> Date: </label>
               <date-picker
-                {{ readonly is same as(true) ? 'readonly' : '' }}
+                {{ jo_editable ? '' : 'readonly' }}
                 name="request_date"
                 date="{{ jo.request_date  | date('Y-m-d') }}"
                 class="ml-1 w-0 flex-1"
@@ -145,7 +158,7 @@
             <div class="flex items-center">
               <span class="text-sm uppercase leading-none"> Scheduled date: </span>
               <date-picker
-                {{ readonly is same as(true) ? 'readonly' : '' }}
+                {{ jo_editable ? '' : 'readonly' }}
                 start-date="{{ jo.scheduled_start_date | date('Y-m-d')  }}"
                 end-date="{{ jo.scheduled_end_date | date('Y-m-d')  }}"
                 name="scheduled"
@@ -163,6 +176,7 @@
                 readonly
                 type="text"
                 value="{{ jo.job_order_number }}"
+                placeholder=" "
                 class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold leading-none"
               >
             </div>
@@ -172,53 +186,33 @@
           <td class="w-1/2 border border-black">
             <div class="flex items-center">
               <span class="text-sm uppercase leading-none">Issued by:</span>
-              {% if readonly %}
-                <autocomplete-select
-                  readonly
-                  name="issued_by"
-                  default="{{ jo.issued_by | e('html_attr') }}"
-                  container-class="relative ml-1 flex w-0 flex-1"
-                  input-class="w-full bg-transparent text-sm font-semibold uppercase leading-none"
-                  choices-class="absolute inset-x-0 top-[calc(100%+4px)] z-30 flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
-                  option-class="ui-active:text-blue-950 ui-active:font-bold"
-                ></autocomplete-select>
-              {% else %}
-                <autocomplete-select
-                  name="issued_by"
-                  default="Ronald S. Bariuan"
-                  container-class="relative ml-1 flex w-0 flex-1"
-                  input-class="w-full bg-transparent text-sm font-semibold uppercase leading-none"
-                  choices-class="absolute inset-x-0 top-[calc(100%+4px)] z-30 flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
-                  option-class="ui-active:text-blue-950 ui-active:font-bold"
-                  options="{{ options | e('html_attr')}}"
-                  seperator="|"
-                ></autocomplete-select>
-              {% endif %}
+              <autocomplete-select
+                {{ jo_editable ? '' : 'readonly' }}
+                name="issued_by"
+                default="{{ jo.issued_by | e('html_attr') }}"
+                container-class="relative ml-1 flex w-0 flex-1"
+                input-class="w-full bg-transparent text-sm font-semibold uppercase leading-none"
+                choices-class="absolute inset-x-0 top-[calc(100%+4px)] z-30 flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
+                option-class="ui-active:text-blue-950 ui-active:font-bold"
+                options="{{ options | join('|') | e('html_attr')}}"
+                seperator="|"
+              ></autocomplete-select>
             </div>
           </td>
           <td class="w-1/2 border border-black">
             <div class="flex items-center">
               <span class="text-sm uppercase leading-none">Approved by:</span>
-              {% if readonly %}
-                <autocomplete-select
-                  readonly
-                  default="{{ jo.approved_by | e('html_attr') }}"
-                  container-class="relative ml-1 flex w-0 flex-1"
-                  input-class="w-full bg-transparent text-sm font-semibold uppercase leading-none"
-                  choices-class="absolute inset-x-0 top-[calc(100%+4px)] z-30 flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
-                  option-class="ui-active:text-blue-950 ui-active:font-bold"
-                ></autocomplete-select>
-              {% else %}
-                <autocomplete-select
-                  default="Engr. Pinky T. Jimenez, Ph.D."
-                  container-class="relative ml-1 flex w-0 flex-1"
-                  input-class="w-full bg-transparent text-sm font-semibold uppercase leading-none"
-                  choices-class="absolute inset-x-0 top-[calc(100%+4px)] z-30 flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
-                  option-class="ui-active:text-blue-950 ui-active:font-bold"
-                  options="{{ options | e('html_attr')}}"
-                  seperator="|"
-                ></autocomplete-select>
-              {% endif %}
+              <autocomplete-select
+                {{ jo_editable ? '' : 'readonly' }}
+                name="approved_by"
+                default="{{ jo.approved_by | e('html_attr') }}"
+                container-class="relative ml-1 flex w-0 flex-1"
+                input-class="w-full bg-transparent text-sm font-semibold uppercase leading-none"
+                choices-class="absolute inset-x-0 top-[calc(100%+4px)] z-30 flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
+                option-class="ui-active:text-blue-950 ui-active:font-bold"
+                options="{{ options | join('|') | e('html_attr')}}"
+                seperator="|"
+              ></autocomplete-select>
             </div>
           </td>
         </tr>
@@ -228,37 +222,22 @@
             <div class="flex items-center">
               <div class="flex flex-1 items-start">
                 <span class="mr-1 text-sm uppercase leading-[19px]"> Endorsed to: </span>
-                {% if readonly %}
-                  <multiple-select
-                    readonly
-                    :selected="[{{ endorsee | e('html_attr') }}]"
-                    placeholder="Add endorsee"
-                    container-class="relative z-10 flex flex-1 flex-wrap items-start"
-                    value-class="group/value relative mr-1 text-sm font-semibold uppercase leading-[19px]"
-                    delete-class="absolute right-0 top-0 hidden h-4 w-4 -translate-y-1/2 translate-x-1/2 rounded-full bg-red-600 font-sans text-xs font-black leading-[16px] text-white group-hover/value:block"
-                    select-class="leading-non relative flex text-sm"
-                    input-class="w-[30ch] bg-transparent text-sm font-semibold uppercase leading-none print:hidden"
-                    choices-class="absolute inset-x-0 top-[calc(100%+4px)] flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
-                    option-class="ui-active:text-blue-950 ui-active:font-bold"
-                  ></multiple-select>
-                {% else %}
-                  <multiple-select
-                    placeholder="Add endorsee"
-                    name="endorsee"
-                    permanent="{{ personnel.name | e('html_attr') }}"
-                    :selected="['{{ personnel.name | e('html_attr') }}']"
-                    container-class="relative z-10 flex flex-1 flex-wrap items-start"
-                    value-class="group/value relative mr-1 text-sm font-semibold uppercase leading-[19px]"
-                    delete-class="absolute right-0 top-0 hidden h-4 w-4 -translate-y-1/2 translate-x-1/2 rounded-full bg-red-600 font-sans text-xs font-black leading-[16px] text-white group-hover/value:block"
-                    select-class="leading-non relative flex text-sm"
-                    input-class="w-[30ch] bg-transparent text-sm font-semibold uppercase leading-none print:hidden"
-                    choices-class="absolute inset-x-0 top-[calc(100%+4px)] flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
-                    option-class="ui-active:text-blue-950 ui-active:font-bold"
+                <multiple-select
+                  {{ jo_editable ? '' : 'readonly' }}
+                  placeholder="Add endorsee"
+                  name="endorsee"
+                  :selected="[{{ endorsee | map(n => "'#{n}'") | join(',') | e('html_attr') }}]"
+                  container-class="relative z-10 flex flex-1 flex-wrap items-start"
+                  value-class="group/value relative mr-1 text-sm font-semibold uppercase leading-[19px]"
+                  delete-class="absolute right-0 top-0 hidden h-4 w-4 -translate-y-1/2 translate-x-1/2 rounded-full bg-red-600 font-sans text-xs font-black leading-[16px] text-white group-hover/value:block"
+                  select-class="leading-non relative flex text-sm"
+                  input-class="w-[30ch] bg-transparent text-sm font-semibold uppercase leading-none print:hidden"
+                  choices-class="absolute inset-x-0 top-[calc(100%+4px)] flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
+                  option-class="ui-active:text-blue-950 ui-active:font-bold"
 
-                    options="{{ options | e('html_attr')}}"
-                    seperator="|"
-                  ></multiple-select>
-                {% endif %}
+                  options="{{ options | e('html_attr')}}"
+                  seperator="|"
+                ></multiple-select>
               </div>
             </div>
           </td>
@@ -268,9 +247,10 @@
             <div class="flex flex-col items-stretch">
               <span class="block text-sm font-semibold uppercase leading-[19px]">Job Request Description</span>
               <dynamic-textarea
-                {{ readonly is same as(true) ? 'readonly' : '' }}
+                {{ jo_editable ? '' : 'readonly' }}
                 class="mx-0 my-2 max-h-[10em] min-h-[2em] resize-none bg-transparent text-sm leading-none"
                 name="job_description"
+                placeholder=" "
               >
                 <pre>{{ jo.job_description }}</pre>
               </dynamic-textarea>
@@ -290,9 +270,10 @@
             <div class="flex flex-col items-stretch">
               <span class="block text-sm font-semibold uppercase leading-[19px]">Actual Job Done</span>
               <dynamic-textarea
-                {{ readonly is same as(true) ? 'readonly' : '' }}
+                {{ ci_editable ? '' : 'readonly' }}
                 class="mx-0 my-2 max-h-[15em] min-h-[2em] resize-none bg-transparent text-sm leading-none"
                 name="actual_job_done"
+                placeholder=" "
               >
                 <pre>{{ jo.actual_job_done }}</pre>
               </dynamic-textarea>
@@ -304,37 +285,20 @@
             <div class="flex h-[5em] items-end">
               <span class="text-sm uppercase leading-[19px]"> Performed by: </span>
               <div class="flex flex-1 flex-col items-center">
-                {% if readonly %}
-                  <input
-                    readonly
-                    type="text"
-                    name="performed_by"
-                    value="{{ jo.performed_by | e('html_attr') }}"
-                    class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
-                  >
-                  {% if jo.performer_position %}
-                    <input
-                      type="text"
-                      value="{{ jo.performer_position | e('html_attr') }}"
-                      class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
-                    >
-                  {% endif %}
-                {% else %}
-                  <input
-                    readonly
-                    type="text"
-                    name="performed_by"
-                    value="{{ personnel.name | e('html_attr') }}"
-                    class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
-                  >
-                  <input
-                    readonly
-                    type="text"
-                    value="{{ personnel.position }}"
-                    class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
-                    value="{{ personnel.position | e('html_attr') }}"
-                  >
-                {% endif %}
+                <input
+                  readonly
+                  type="text"
+                  value="{{ jo.performed_by | e('html_attr') }}"
+                  placeholder=" "
+                  class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
+                >
+                <input
+                  readonly
+                  type="text"
+                  value="{{ jo.performer_position | e('html_attr') }}"
+                  placeholder=" "
+                  class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
+                >
               </div>
             </div>
           </td>
@@ -345,17 +309,18 @@
               <span class="text-sm uppercase leading-[19px]"> Verified by: </span>
               <div class="flex flex-1 flex-col items-center">
                 <input
-                  {{ readonly is same as(true) ? 'readonly' : '' }}
+                  {{ ci_editable ? '' : 'readonly' }}
                   type="text"
-                  value="{{ jo.verified_by }}"
+                  name="verifier"
+                  value="{{ jo.verified }}"
                   class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
                   placeholder="client name"
                 >
                 <input
-                  {{ readonly is same as(true) ? 'readonly' : '' }}
+                  {{ ci_editable ? '' : 'readonly' }}
                   type="text"
-                  name="client_position"
-                  value="{{ jo.client_position | e('html_attr') }}"
+                  name="verifier_position"
+                  value="{{ jo.verifier_position | e('html_attr') }}"
                   class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
                   placeholder="position"
                 >
@@ -369,9 +334,10 @@
         <span class="block text-sm font-semibold uppercase leading-[19px]">Remarks/Comment/Feedback</span>
         <div class="h-0 flex-1">
           <textarea
-            {{ readonly is same as(true) ? 'readonly' : '' }}
-            class="h-full w-full resize-none bg-transparent text-sm leading-none"
+            {{ ci_editable ? '' : 'readonly' }}
             name="remarks"
+            placeholder=" "
+            class="h-full w-full resize-none bg-transparent text-sm leading-none"
           >{{ jo.remarks }}</textarea>
         </div>
       </div>
