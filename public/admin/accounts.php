@@ -8,6 +8,7 @@ $sql = "
             pa.name
         FROM Accounts acc
         JOIN Personnels pa ON acc.personnel_id = pa.personnel_id
+        WHERE acc.deleted = false
 ";
 
 $stmt = execute($sql);
