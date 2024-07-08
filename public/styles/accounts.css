@@ -216,6 +216,130 @@ svg {
 .edit-button:last-child {
   margin-right: 0;
 }
+
+.modal-container{
+ display: flex;
+ justify-content: center;
+ padding: 1rem;
+ width: 75%;
+}
+
+.modal-dropdown{
+  padding: 8px;
+  width: 100%;
+  border: 1px solid black ;
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+
+.modal-btn{
+  background-color: #0c9239;
+  padding: 1rem;
+  display: flex;
+  justify-self: flex-start;
+  color: aliceblue;
+  border-radius: 10px;
+  transition: background-color .3s;
+}
+
+.modal-btn:hover{
+  background-color: #085020;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+  width: 90%;
+  border-radius: 10px;
+}
+
+
+.modal-content {
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  font-size: 30px;
+  text-decoration: none;
+  color: black;
+}
+
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-title{
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+
+
+.modal-label-name {
+  margin-bottom: 8px;
+  font-size: 1rem;  
+}
+
+.modal-input{
+  margin-bottom: 16px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.modal-submit{
+  align-self: center;
+  background-color: #0c9239;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  width: 150px;
+  height: 50px;
+  transition: background-color .3s;
+  margin-bottom: 16px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.modal-submit:hover {
+  background-color: #085020;
+}
+
+.modal:target {
+  display: block;
+}
+
+.modal-overlay {
+  display: none;
+  position: fixed;
+  z-index: 900;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+
+.modal:target + .modal-overlay {
+  display: block;
+}
+
 @media screen and (max-width: 1174px) {
   .teybol td {
     font-size: 0.75rem;
