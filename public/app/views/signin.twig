@@ -16,6 +16,8 @@
         <strong>{{ message }}</strong>
       {% endfor %}
       {{ form_start(form) }}
+
+     
       {{ form_widget(form.email, {'attr' : {'placeholder' : 'Email', 'class':'input-wrapper' }}) }}
       {{ form_widget(form.password, {'attr' : {'placeholder' : 'Password', 'class':'input-wrapper' }}) }}
       {{ form_widget(form.submit, {'attr' : {'class':'input-submit self-center' }}) }}

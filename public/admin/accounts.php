@@ -56,10 +56,12 @@ $sql = "
         pa.name
     FROM Accounts acc
     JOIN Personnels pa ON acc.personnel_id = pa.personnel_id
+      WHERE acc.deleted = false
 ";
   
 $stmt = execute($sql);
 $account = $stmt->fetchAll();
+<<<<<<< HEAD
 
 $stmt = execute('SELECT name FROM Personnels');
 $personnels = $stmt->fetchAll();
@@ -69,3 +71,7 @@ $options = array_map(function ($item) {
 
 echo $twig->render('accounts.twig', ['options'=> $options,'account' => $account, 'count' => count($account)]);
 ?>
+=======
+echo $twig->render('accounts.twig', ['account' => $account, 'count' => count($account)]);
+ 
+>>>>>>> origin/main

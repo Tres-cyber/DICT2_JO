@@ -1,5 +1,4 @@
 <?php
-
 require_once __DIR__ . '/app/setup.php';
 $account = protectRoute();
 
@@ -7,7 +6,7 @@ $account = protectRoute();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $jo_num = generateJobOrderId(getDB(), 3, $_POST['request_date']);
 
-  $sql = "
+$sql = "
 INSERT INTO JobOrder (
     job_order_id, project_id, scheduled_start_date, scheduled_end_date, performer_id, 
     job_description, start_time, end_time, actual_job_done, remarks,
@@ -33,7 +32,7 @@ INSERT INTO JobOrder (
     ':performer_id' => (int)$account['personnel_id'],
     ':job_description' => $_POST['job_description'],
     ':actual_job_done' => $_POST['actual_job_done'],
-    ':remarks' => $_POST['remarks'],
+    ':remarks' =>   $_POST['remarks'],
     ':client_name' => $_POST['client_name'],
     ':client_contact' => $_POST['client_contact'],
     ':client_lgu' => $_POST['client_lgu'],
@@ -45,7 +44,7 @@ INSERT INTO JobOrder (
     ':approved_by' => $approved_by,
     ':status' => 'Draft',
   ];
-
+  
   execute($sql, $args);
   $id = getDB()->lastInsertId();
 
