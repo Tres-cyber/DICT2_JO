@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/app/setup.php';
 $account = protectRoute();
 
@@ -82,9 +83,9 @@ function fetchJO($id)
             pp.name AS performed_by,
             pp.position AS performer_position
         FROM JobOrder jo
-        JOIN Personnels pi ON jo.issued_by = pi.personnel_id
-        JOIN Personnels pa ON jo.approved_by = pa.personnel_id
-        JOIN Personnels pp ON jo.performer_id = pp.personnel_id
+        LEFT JOIN Personnels pi ON jo.issued_by = pi.personnel_id
+        LEFT JOIN Personnels pa ON jo.approved_by = pa.personnel_id
+        LEFT JOIN Personnels pp ON jo.performer_id = pp.personnel_id
         WHERE jo.job_order_id = :id
 ";
   $stmt = execute($sql, [':id' => $id]);
@@ -131,7 +132,7 @@ if (isset($_GET['id'])) {
     return $item['name'];
   }, $endorsee);
 
-  $simulateDone = \Dict\Jo\ViteUtil::isDev() && isset($_GET['done']);
+  $simulateDone = \App\Util\Env::isDev() && isset($_GET['done']);
 
   $currentDate = new DateTime();
   $endDate = new DateTime($jo['scheduled_end_date']);

@@ -4,24 +4,25 @@
     :class="admin ? 'bg-[#85070F]' : 'bg-sky-800'"
   >
     <div class="container mx-auto flex items-center p-2 sm:px-0">
-      <a href="/">
+      <a href="/" class="flex items-center">
         <img
           :src="'/assets/logo.png'"
           alt="DICT logo"
           class="h-12 w-12 rounded-full sm:h-16 sm:w-16"
         />
+        <h1
+          class="ml-4 font-serif text-xl font-semibold uppercase text-white sm:hidden"
+          v-if="active"
+        >
+          {{ active }}
+        </h1>
+
+        <h1
+          class="ml-4 hidden font-serif text-2xl font-semibold uppercase text-white sm:block"
+        >
+          {{ admin ? "Administrator" : "Job Order System" }}
+        </h1>
       </a>
-      <h1
-        class="ml-4 font-serif text-xl font-semibold uppercase text-white sm:hidden"
-        v-if="active"
-      >
-        {{ active }}
-      </h1>
-      <h1
-        class="ml-4 hidden font-serif text-2xl font-semibold uppercase text-white sm:block"
-      >
-        {{ admin ? "Administrator" : "Job Order System" }}
-      </h1>
 
       <Transition
         enter-from-class="opacity-0"

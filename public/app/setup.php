@@ -10,10 +10,10 @@ session_start();
 
 $loader = new \Twig\Loader\FilesystemLoader(__DIR__ . '/views');
 $twig = new \Twig\Environment($loader, [
-  'debug' => \Dict\Jo\ViteUtil::isDev(),
+  'debug' => \App\Util\Env::isDev(),
   'autoescape' => 'html',
 ]);
 
 $twig->addGlobal('session', $_SESSION);
-if (\Dict\Jo\ViteUtil::isDev()) $twig->addExtension(new \Twig\Extension\DebugExtension());
-$twig->addFunction(new \Twig\TwigFunction('vite', [\Dict\Jo\ViteUtil::class, 'vite']));
+if (\App\Util\Env::isDev()) $twig->addExtension(new \Twig\Extension\DebugExtension());
+$twig->addFunction(new \Twig\TwigFunction('vite', [\App\Util\Vite::class, 'vite']));
