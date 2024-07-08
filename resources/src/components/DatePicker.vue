@@ -14,6 +14,8 @@ const props = withDefaults(
     endDate?: string | number | Date;
     range?: boolean;
     name?: string;
+    startName?: string;
+    endName?: string;
   }>(),
   {
     date: () => new Date(),
@@ -57,13 +59,13 @@ function formatDateRange([start, end]: [Date, Date]) {
   />
   <template v-if="props.range">
     <input
-      :name="props.name?.concat('[]')"
+      :name="props.startName"
       v-if="date !== undefined"
       type="hidden"
       :value="format((date as Date[])[0], 'yyyy-MM-dd')"
     />
     <input
-      :name="props.name?.concat('[]')"
+      :name="props.endName"
       v-if="date !== undefined"
       type="hidden"
       :value="format((date as Date[])[1] ?? (date as Date[])[0], 'yyyy-MM-dd')"

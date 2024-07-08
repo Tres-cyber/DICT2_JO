@@ -23,6 +23,7 @@ function generateJobOrderId($pdo, $projectId, $requestDate, $dummy = false)
         WHERE 
             project_id = :projectId
             AND DATE_FORMAT(request_date, '%Y-%m') = :yearMonth
+            AND status != 'Draft'
     ";
 
   // Prepare and execute the query

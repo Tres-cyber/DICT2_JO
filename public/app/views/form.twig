@@ -6,26 +6,47 @@
 <top-bar></top-bar>
 {% endblock %}
 {% block body %}
-{% set jo_editable = (jo.status == 'Draft' or jo.status == 'For Revision') %}
-{% set ci_editable = done and jo.status == 'Approved' %}
+{% set readonly = jo.status != 'Draft' %}
+
 <form
   action="/form.php"
   method="post"
   class="jo-form container mx-auto flex justify-center print:!m-0 print:!max-w-full"
 >
+  {{ form_row(form._token) }}
+
+  {% if id is defined %}
+    <input type="hidden" name="{{ field_name(form.id)}}" value="{{id}}">
+  {% endif %}
+
   <div class="relative print:!w-full">
     {% if jo.status == 'Draft' %}
       <strong class="absolute left-1/2 top-1/2 z-[-1] hidden -translate-x-1/2 translate-y-1/2 rotate-[-55deg] scale-[7] text-4xl uppercase tracking-widest text-neutral-300 print:block">
         draft
       </strong>
     {% endif %}
-    <button
-      type="submit"
-      class="absolute bottom-8 right-8 z-10 overflow-clip rounded bg-green-950 px-4 py-2 text-sm font-semibold uppercase text-white print:hidden"
-    >
-      <font-awesome-icon icon="fa-solid fa-floppy-disk" class="mr-1"></font-awesome-icon>
-      Submit
-    </button>
+
+    {% if not readonly %}
+      <div class="absolute bottom-8 right-8 z-10 flex gap-4">
+        <button
+          type="submit"
+          class="overflow-clip rounded bg-blue-950 px-4 py-2 text-sm font-semibold uppercase text-white print:hidden"
+          name="{{ field_name(form.draft) }}"
+        >
+          <font-awesome-icon icon="fa-solid fa-floppy-disk" class="mr-1"></font-awesome-icon>
+          Draft
+        </button>
+        <button
+          type="submit"
+          class="overflow-clip rounded bg-green-950 px-4 py-2 text-sm font-semibold uppercase text-white print:hidden"
+          name="{{ field_name(form.submit) }}"
+        >
+          <font-awesome-icon icon="fa-solid fa-floppy-disk" class="mr-1"></font-awesome-icon>
+          Submit
+        </button>
+      </div>
+    {% endif %}
+
     {% if not hidePrint is same as(true) %}
       <print-button
         type="button"
@@ -65,9 +86,11 @@
             <div class="flex items-center">
               <label for="client_name" class="text-sm uppercase leading-none">Name: </label>
               <input
-                {{ jo_editable ? '' : 'readonly' }}
+                {% if readonly %}
+                  readonly
+                {% endif %}
                 id="client_name"
-                name="client_name"
+                name="{{ field_name(form.client_name) }}"
                 type="text"
                 value="{{ jo.client_name | e('html_attr') }}"
                 placeholder=" "
@@ -84,9 +107,11 @@
                 Contact Number:
               </label>
               <input
-                {{ jo_editable ? '' : 'readonly' }}
+                {% if readonly %}
+                  readonly
+                {% endif %}
                 id="client_contact"
-                name="client_contact"
+                name="{{ field_name(form.client_contact) }}"
                 type="text"
                 value="{{ jo.client_contact }}"
                 placeholder=" "
@@ -100,9 +125,11 @@
             <div class="flex items-center">
               <label for="client_lgu" class="text-sm uppercase leading-none">LGU: </label>
               <input
-                {{ jo_editable ? '' : 'readonly' }}
+                {% if readonly %}
+                  readonly
+                {% endif %}
                 id="client_lgu"
-                name="client_lgu"
+                name="{{ field_name(form.client_lgu) }}"
                 type="text"
                 value="{{ jo.client_lgu }}"
                 placeholder=" "
@@ -135,8 +162,10 @@
             <div class="flex items-center">
               <label for="date" class="text-sm uppercase leading-none"> Date: </label>
               <date-picker
-                {{ jo_editable ? '' : 'readonly' }}
-                name="request_date"
+                {% if readonly %}
+                  readonly
+                {% endif %}
+                name="{{ field_name(form.request_date) }}"
                 date="{{ jo.request_date  | date('Y-m-d') }}"
                 class="ml-1 w-0 flex-1"
                 hide-input-icon
@@ -158,11 +187,14 @@
             <div class="flex items-center">
               <span class="text-sm uppercase leading-none"> Scheduled date: </span>
               <date-picker
-                {{ jo_editable ? '' : 'readonly' }}
+                {% if readonly %}
+                  readonly
+                {% endif %}
+                range
                 start-date="{{ jo.scheduled_start_date | date('Y-m-d')  }}"
                 end-date="{{ jo.scheduled_end_date | date('Y-m-d')  }}"
-                name="scheduled"
-                range
+                start-name="{{ field_name(form.start_scheduled) }}"
+                end-name="{{ field_name(form.end_scheduled) }}"
                 class="ml-1 w-0 flex-1"
                 hide-input-icon
                 input-class-name="bg-transparent border-none rounded-none leading-none font-semibold text-sm font-serif p-0 uppercase"
@@ -173,7 +205,7 @@
             <div class="flex items-center">
               <span class="text-sm uppercase leading-none"> Job order number: </span>
               <input
-                readonly
+                {{ jo_editable ? '' : 'readonly' }}
                 type="text"
                 value="{{ jo.job_order_number }}"
                 placeholder=" "
@@ -187,8 +219,10 @@
             <div class="flex items-center">
               <span class="text-sm uppercase leading-none">Issued by:</span>
               <autocomplete-select
-                {{ jo_editable ? '' : 'readonly' }}
-                name="issued_by"
+                {% if readonly %}
+                  readonly
+                {% endif %}
+                name="{{ field_name(form.issued_by) }}"
                 default="{{ jo.issued_by | e('html_attr') }}"
                 container-class="relative ml-1 flex w-0 flex-1"
                 input-class="w-full bg-transparent text-sm font-semibold uppercase leading-none"
@@ -203,8 +237,10 @@
             <div class="flex items-center">
               <span class="text-sm uppercase leading-none">Approved by:</span>
               <autocomplete-select
-                {{ jo_editable ? '' : 'readonly' }}
-                name="approved_by"
+                {% if readonly %}
+                  readonly
+                {% endif %}
+                name="{{ field_name(form.approved_by) }}"
                 default="{{ jo.approved_by | e('html_attr') }}"
                 container-class="relative ml-1 flex w-0 flex-1"
                 input-class="w-full bg-transparent text-sm font-semibold uppercase leading-none"
@@ -223,9 +259,11 @@
               <div class="flex flex-1 items-start">
                 <span class="mr-1 text-sm uppercase leading-[19px]"> Endorsed to: </span>
                 <multiple-select
-                  {{ jo_editable ? '' : 'readonly' }}
+                  {% if readonly %}
+                    readonly
+                  {% endif %}
                   placeholder="Add endorsee"
-                  name="endorsee"
+                  name="{{ field_name(form.endorsee) }}"
                   :selected="[{{ endorsee | map(n => "'#{n}'") | join(',') | e('html_attr') }}]"
                   container-class="relative z-10 flex flex-1 flex-wrap items-start"
                   value-class="group/value relative mr-1 text-sm font-semibold uppercase leading-[19px]"
@@ -235,7 +273,7 @@
                   choices-class="absolute inset-x-0 top-[calc(100%+4px)] flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
                   option-class="ui-active:text-blue-950 ui-active:font-bold"
 
-                  options="{{ options | e('html_attr')}}"
+                  options="{{ options | join('|') | e('html_attr')}}"
                   seperator="|"
                 ></multiple-select>
               </div>
@@ -247,8 +285,11 @@
             <div class="flex flex-col items-stretch">
               <span class="block text-sm font-semibold uppercase leading-[19px]">Job Request Description</span>
               <dynamic-textarea
-                {{ jo_editable ? '' : 'readonly' }}
+                {% if readonly %}
+                  readonly
+                {% endif %}
                 class="mx-0 my-2 max-h-[10em] min-h-[2em] resize-none bg-transparent text-sm leading-none"
+                name="{{ field_name(form.job_description) }}"
                 name="job_description"
                 placeholder=" "
               >
@@ -270,9 +311,11 @@
             <div class="flex flex-col items-stretch">
               <span class="block text-sm font-semibold uppercase leading-[19px]">Actual Job Done</span>
               <dynamic-textarea
-                {{ ci_editable ? '' : 'readonly' }}
+                {% if readonly %}
+                  readonly
+                {% endif %}
                 class="mx-0 my-2 max-h-[15em] min-h-[2em] resize-none bg-transparent text-sm leading-none"
-                name="actual_job_done"
+                name="{{ field_name(form.actual_job_done) }}"
                 placeholder=" "
               >
                 <pre>{{ jo.actual_job_done }}</pre>
@@ -309,17 +352,21 @@
               <span class="text-sm uppercase leading-[19px]"> Verified by: </span>
               <div class="flex flex-1 flex-col items-center">
                 <input
-                  {{ ci_editable ? '' : 'readonly' }}
+                  {% if readonly %}
+                    readonly
+                  {% endif %}
                   type="text"
-                  name="verifier"
+                  name="{{ field_name(form.verifier) }}"
                   value="{{ jo.verified }}"
                   class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
                   placeholder="client name"
                 >
                 <input
-                  {{ ci_editable ? '' : 'readonly' }}
+                  {% if readonly %}
+                    readonly
+                  {% endif %}
                   type="text"
-                  name="verifier_position"
+                  name="{{ field_name(form.verifier_position) }}"
                   value="{{ jo.verifier_position | e('html_attr') }}"
                   class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
                   placeholder="position"
@@ -334,8 +381,10 @@
         <span class="block text-sm font-semibold uppercase leading-[19px]">Remarks/Comment/Feedback</span>
         <div class="h-0 flex-1">
           <textarea
-            {{ ci_editable ? '' : 'readonly' }}
-            name="remarks"
+            {% if readonly %}
+              readonly
+            {% endif %}
+            name="{{ field_name(form.remarks) }}"
             placeholder=" "
             class="h-full w-full resize-none bg-transparent text-sm leading-none"
           >{{ jo.remarks }}</textarea>
