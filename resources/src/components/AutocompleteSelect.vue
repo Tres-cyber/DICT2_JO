@@ -15,7 +15,7 @@ defineOptions({
 
 const props = withDefaults(
   defineProps<{
-    default?: string;
+    default?: string | null;
     options?: string | string[];
     seperator?: string;
     containerClass?: string;
@@ -24,6 +24,7 @@ const props = withDefaults(
     optionClass?: string;
   }>(),
   {
+    default: null,
     options: "",
     seperator: ",",
     containerClass: "",
@@ -68,7 +69,7 @@ watch(selected, () => {
 
 const value = computed({
   get() {
-    return selected.value ?? props.default ?? null;
+    return selected.value ?? props.default;
   },
   set(newval) {
     selected.value = newval;
@@ -83,7 +84,6 @@ defineExpose({
   deselect,
 });
 </script>
-
 <template>
   <Combobox v-model="value" nullable as="div" :class="props.containerClass">
     <ComboboxInput
@@ -102,9 +102,9 @@ defineExpose({
       @after-leave="query = ''"
     >
       <ComboboxOptions :class="props.choicesClass">
-        <em v-if="filteredOptions.length == 0" class="text-neutral-600"
-          >Nothing found.</em
-        >
+        <em v-if="filteredOptions.length == 0" class="text-neutral-600">
+          Nothing found.
+        </em>
         <ComboboxOption
           v-for="option in filteredOptions"
           :key="option"

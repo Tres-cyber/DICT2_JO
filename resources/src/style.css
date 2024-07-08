@@ -9,6 +9,11 @@
   margin: 0in;
 }
 
+.jo-form input:not([readonly]),
+.jo-form textarea:not([readonly]) {
+  @apply bg-red-100;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

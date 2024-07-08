@@ -8,8 +8,8 @@ $sql = "
             pi.name AS issued_by,
             pa.name AS approved_by
         FROM JobOrder jo
-        JOIN Personnels pi ON jo.issued_by = pi.personnel_id
-        JOIN Personnels pa ON jo.approved_by = pa.personnel_id
+        LEFT JOIN Personnels pi ON jo.issued_by = pi.personnel_id
+        LEFT JOIN Personnels pa ON jo.approved_by = pa.personnel_id
         WHERE jo.performer_id = :personnel_id
 ";
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Dict\Jo;
+namespace App\Util;
 
 define("VITE_HOST", $_ENV["VITE_HOST"]);
 
-class ViteUtil
+class Vite
 {
   public static function vite(string $entry): string
   {
@@ -13,21 +13,16 @@ class ViteUtil
       . "\n" . self::cssTag($entry);
   }
 
-  private static function isDev(): bool
-  {
-    return isset($_ENV['MODE_DEPLOY']) && $_ENV['MODE_DEPLOY'] === 'development';
-  }
-
   private static function jsTag(string $entry): string
   {
-    $url = self::isDev()
+    $url = Env::isDev()
       ? VITE_HOST . '/' . $entry
       : self::assetUrl($entry);
 
     if (!$url) {
       return '';
     }
-    if (self::isDev()) {
+    if (Env::isDev()) {
       return '<script type="module" src="' . VITE_HOST . '/@vite/client"></script>' . "\n"
         . '<script type="module" src="' . $url . '"></script>';
     }
@@ -36,7 +31,7 @@ class ViteUtil
 
   private static function jsPreloadImports(string $entry): string
   {
-    if (self::isDev()) {
+    if (Env::isDev()) {
       return '';
     }
 
@@ -49,7 +44,7 @@ class ViteUtil
 
   private static function cssTag(string $entry): string
   {
-    if (self::isDev()) {
+    if (Env::isDev()) {
       return '';
     }
 

@@ -9,6 +9,8 @@
 {% block body %}
 
 <div class="container mx-auto mb-4 flex px-2 sm:px-0">
+
+ 
   <em> Showing 1-{{ count }} of {{ count }} results </em>
   <div class="ml-auto flex items-center gap-2">
     <a
@@ -25,8 +27,18 @@
       <span class="hidden sm:block">download csv</span>
       <font-awesome-icon icon="fa-solid fa-arrow-down" class="h-3 w-3" />
     </a>
+    <div class="dropdown ml-auto flex items-center gap-2" >
+    <button class="dropbtn flex flex-row-reverse items-center gap-2 rounded bg-green-900 p-2 text-xs font-bold uppercase leading-none text-white">Filter</button>
+  <div class="dropdown-content">
+    <a href="#">Date</a>
+    <a href="#">Issued By</a>
+    <a href="#">Approved By</a>
+    <a href="#">Status</a>
+  </div>
+  </div>
   </div>
 </div>
+
 <div class="table-container-3">
   <div class="table-container">
     <div class="table-container-2">
@@ -55,7 +67,7 @@
                 {{ jo.scheduled_start_date | date("M d, Y") }}-{{ jo.scheduled_end_date | date("M d, Y") }}
               </td>
               <td data-label="Issued By">{{ jo.issued_by }}</td>
-              <td data-label="Approved By">{{ jo.verifier }}</td>
+              <td data-label="Approved By">{{ jo.appxroved_by }}</td>
               <td data-label="Status">{{ jo.status }}</td>
               <td data-label="Action">
                 <form action="/form.php" class="mr-1 inline-flex">
