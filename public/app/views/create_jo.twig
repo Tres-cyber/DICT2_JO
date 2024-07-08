@@ -1,0 +1,16 @@
+{% extends 'base.twig' %}
+{% block head %}
+<title>DICT JO - New Job Order</title>
+{% endblock %}
+{% block header %}
+<top-bar></top-bar>
+{% endblock %}
+{% block body %}
+<div class="container mx-auto grid place-items-center">
+  <div class="w-full max-w-lg">
+    <h2 class="mb-4 text-2xl font-semibold">Create job order</h2>
+    {{ form(form) }}
+  </div>
+</div>
+
+{% endblock %}
