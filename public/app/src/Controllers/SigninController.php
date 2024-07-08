@@ -43,7 +43,7 @@ class SigninController extends BaseController
       }
 
       if (!is_null($account['current_session_id']) && !$account['admin']) {
-        $flashes->add('error', 'Account is alread logged in');
+        $flashes->add('error', 'Account is already logged in');
         return new RedirectResponse($request->getRequestUri());
       }
 
