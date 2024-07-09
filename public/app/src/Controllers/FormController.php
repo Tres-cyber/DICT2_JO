@@ -306,6 +306,8 @@ WHERE
 
     return $this->render('create_jo.twig', [
       'form' => $form->createView(),
+      'endorsee' => [$jo['performed_by']],
+      'options' => $options,
     ]);
   }
 
