@@ -3,7 +3,7 @@ require_once __DIR__ . '/../app/setup.php';
 $account = protectRoute(true);
 
 if (empty($_GET['id'])){
-    header('Location: /admin/personnel.php');  
+    header('Location: /admin/personnels.php');  
     exit();
 }
 
