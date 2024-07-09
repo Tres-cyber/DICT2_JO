@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -36,5 +37,15 @@ class JoborderType extends AbstractType
       ->add('remarks', TextareaType::class, ['constraints' => [new NotBlank()]])
       ->add('draft', SubmitType::class, ['label' => 'Draft'])
       ->add('submit', SubmitType::class, ['label' => 'Submit']);
+  }
+
+  public function configureOptions(OptionsResolver $resolver)
+  {
+    $resolver->setDefaults([
+      'data_class' => null,
+      'attr' => [
+        'novalidate' => 'novalidate', // comment me to reactivate the html5 validation!  🚥
+      ]
+    ]);
   }
 }

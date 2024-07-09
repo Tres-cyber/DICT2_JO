@@ -1,5 +1,5 @@
 import "@vuepic/vue-datepicker/dist/main.css";
-import "./style.css";
+import "./style.scss";
 
 import { createApp } from "vue";
 import AutocompleteSelect from "./components/AutocompleteSelect.vue";
@@ -20,7 +20,6 @@ import {
   faPrint,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
-import SubmitForm from "./components/SubmitForm.vue";
 
 library.add(faPrint, faBars, faEye, faTrash, faPlus, faArrowDown, faFloppyDisk);
 
