@@ -88,6 +88,13 @@
               >
                 Projects
               </a>
+              <a
+                href="/admin/personnels.php"
+                class="font-serif font-semibold tracking-wide text-neutral-200 hover:text-white"
+                :class="[active == 'projects' && '!text-white']"
+              >
+                Personnels
+              </a>
             </slot>
           </div>
           <a
@@ -127,6 +134,13 @@
           >
             Projects
           </a>
+          <a
+                href="/admin/personnels.php"
+                class="font-serif font-semibold tracking-wide text-neutral-200 hover:text-white"
+                :class="[active == 'projects' && '!text-white']"
+              >
+                Personnels
+              </a>
         </slot>
         <a
           href="/logout.php"
