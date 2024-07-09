@@ -5,7 +5,7 @@ services:
     depends_on:
       - database
     ports:
-      - "8080:80"
+      - "1234:80"
     environment:
       VITE_HOST: ""
       MODE_DEPLOY: production

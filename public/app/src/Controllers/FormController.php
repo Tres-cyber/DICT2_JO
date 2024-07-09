@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Form\Type\JoborderType;
 use DateTime;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -259,10 +260,10 @@ WHERE
 
 
     /** @var Session $session */
-    /*
     $session = $request->getSession();
     $flashes = $session->getFlashBag();
 
+    /*
     if ($form->get('submit')->isClicked()) {
       if (!$form->isValid()) {
         $errors = [];
@@ -275,9 +276,8 @@ WHERE
         }
 
         $flashes->set('form_errors', $errors);
+        return new RedirectResponse($request->getRequestUri());
       }
-      var_dump($request->getRequestUri());
-      exit();
     }
 */
 
@@ -292,15 +292,14 @@ WHERE
 
   public function new(Request $request)
   {
-
     $account = protectRoute();
 
-    $stmt = execute("SELECT name, position FROM Personnels WHERE personnel_id = :id", [':id' => $account['personnel_id']]);
+    $stmt = execute("SELECT name, position, project_id FROM Personnels WHERE personnel_id = :id", [':id' => $account['personnel_id']]);
     $personnel = $stmt->fetch();
 
     $stmt = execute('SELECT name FROM Personnels');
     $personnels = $stmt->fetchAll();
-    $jo_num = generateJobOrderId(getDB(), 3, '2000-01-01', true);
+    $jo_num = generateJobOrderId(getDB(), $personnel['project_id'], '2000-01-01', true);
 
     $options = array_map(function ($item) {
       return $item['name'];
@@ -321,6 +320,17 @@ WHERE
 
     $form = $this->createForm(JoborderType::class, null, ['data' => $jo]);
 
+    /** @var Session $session */
+    $session = $request->getSession();
+    $flashes = $session->getFlashBag();
+
+    if ($flashes->has('form_errors')) {
+      $errors = $flashes->get('form_errors');
+
+      foreach ($errors as $e) {
+        $form->get($e['origin'])->addError(new FormError($e['message']));
+      }
+    }
 
     return $this->render('create_jo.twig', [
       'form' => $form->createView(),
