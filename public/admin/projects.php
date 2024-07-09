@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     JOIN Personnels pa ON proj.focal_person_id = pa.personnel_id
     ";
 $stmt = execute($sql);
-$project = $stmt->fetchAll();
+$project = $stmt->fetchAll(); 
 
 $stmt = execute('SELECT name FROM Personnels');
 $personnels = $stmt->fetchAll();
