@@ -62,7 +62,7 @@ $sql = "
 $stmt = execute($sql);
 $account = $stmt->fetchAll();
 
-$stmt = execute('SELECT name FROM Personnels');
+$stmt = execute('SELECT p.* FROM Personnels p LEFT JOIN Accounts a ON p.personnel_id = a.personnel_id WHERE a.personnel_id IS NULL');
 $personnels = $stmt->fetchAll();
 $options = array_map(function ($item) {
   return $item['name'];
