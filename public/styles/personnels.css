@@ -156,14 +156,14 @@ svg {
   margin-right: 0;
 }
 
-.modal-container{
+.c-modal-container{
   display: flex;
   margin-left: 10rem;
   padding: 1rem;
   width: 75%;
  }
  
- .modal-dropdown{
+ .c-modal-dropdown{
    padding: 8px;
    width: 100%;
    border: 1px solid black ;
@@ -171,7 +171,7 @@ svg {
    margin-bottom: 16px;
  }
  
- .modal-btn{
+ .c-modal-btn{
    background-color: #0c9239;
    padding: 1rem;
    display: flex;
@@ -181,11 +181,11 @@ svg {
    transition: background-color .3s;
  }
  
- .modal-btn:hover{
+ .c-modal-btn:hover{
    background-color: #085020;
  }
  
- .modal {
+ .c-modal {
    display: none;
    position: fixed;
    z-index: 1000;
@@ -201,11 +201,11 @@ svg {
  }
  
  
- .modal-content {
+ .c-modal-content {
    position: relative;
  }
  
- .close {
+ .c-close {
    position: absolute;
    top: -10px;
    right: 20px;
@@ -215,24 +215,24 @@ svg {
  }
  
  
- form {
+ .c-form {
    display: flex;
    flex-direction: column;
  }
  
- .modal-title{
+ .c-modal-title{
    text-align: center;
    font-size: 1.5rem;
  }
  
  
  
- .modal-label-name {
+ .c-modal-label-name {
    margin-bottom: 8px;
    font-size: 1rem;  
  }
  
- .modal-input{
+ .c-modal-input{
    margin-bottom: 16px;
    padding: 8px;
    font-size: 16px;
@@ -240,7 +240,7 @@ svg {
    border-radius: 10px;
  }
  
- .modal-submit{
+ .c-modal-submit{
    align-self: center;
    background-color: #0c9239;
    color: white;
@@ -255,15 +255,15 @@ svg {
    font-size: 16px;
  }
  
- .modal-submit:hover {
+ .c-modal-submit:hover {
    background-color: #085020;
  }
  
- .modal:target {
+ .c-modal:target {
    display: block;
  }
  
- .modal-overlay {
+ .c-modal-overlay {
    display: none;
    position: fixed;
    z-index: 900;
@@ -275,7 +275,7 @@ svg {
  }
  
  
- .modal:target + .modal-overlay {
+ .c-modal:target + .c-modal-overlay {
    display: block;
  }
  
