@@ -22,6 +22,7 @@ const props = withDefaults(
     inputClass?: string;
     choicesClass?: string;
     optionClass?: string;
+    includeDelimeter?: boolean;
   }>(),
   {
     permanent: () => [],
@@ -36,6 +37,7 @@ const props = withDefaults(
     inputClass: "",
     choicesClass: "",
     optionClass: "",
+    includeDelimeter: true,
   },
 );
 
@@ -78,11 +80,13 @@ function add(value: string | null) {
     <span v-for="(value, i) in selected" :key="value" :class="props.valueClass">
       {{ value
       }}{{
-        i === selected.length - 1
-          ? ""
-          : i === selected.length - 2
-            ? ", and "
-            : ", "
+        props.includeDelimeter
+          ? i === selected.length - 1
+            ? ""
+            : i === selected.length - 2
+              ? ", and "
+              : ", "
+          : ""
       }}
       <button
         v-if="!permanent.includes(value) && !props.readonly"

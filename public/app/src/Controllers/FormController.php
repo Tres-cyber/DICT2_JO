@@ -236,8 +236,10 @@ WHERE
       return new Response("Bad request", 400);
     }
 
+    $endorsee = isset($_POST['joborder']['endorsee']) ? $_POST['joborder']['endorsee'] : [];
+
     $jo = $form->getData();
-    $jo['endorsee'] = $_POST['joborder']['endorsee'];
+    $jo['endorsee'] = $endorsee;
     $jo['status'] = $form->get('draft')->isClicked() ? 'Draft' : 'Approved';
     $jo['job_order_number'] = $form->get('draft')->isClicked() ?
       null :
@@ -280,18 +282,18 @@ WHERE
   public function new(Request $request)
   {
     $account = protectRoute();
-    $form = $this->createForm(JoborderType::class);
 
     $stmt = execute("SELECT name, position FROM Personnels WHERE personnel_id = :id", [':id' => $account['personnel_id']]);
     $personnel = $stmt->fetch();
 
     $stmt = execute('SELECT name FROM Personnels');
     $personnels = $stmt->fetchAll();
+    $jo_num = generateJobOrderId(getDB(), 3, '2000-01-01', true);
+
     $options = array_map(function ($item) {
       return $item['name'];
     }, $personnels);
 
-    $jo_num = generateJobOrderId(getDB(), 3, '2000-01-01', true);
     $jo = [
       'status' => 'Draft',
       'job_order_number' => $jo_num,
@@ -299,12 +301,11 @@ WHERE
       'performer_position' => $personnel['position'],
     ];
 
-    return $this->render('form.twig', [
+    $form = $this->createForm(JoborderType::class, $jo);
+
+
+    return $this->render('create_jo.twig', [
       'form' => $form->createView(),
-      'jo' => $jo,
-      'options' => $options,
-      'endorsee' => [$personnel['name']],
-      'name' => $personnel['name'],
     ]);
   }
 

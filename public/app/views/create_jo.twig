@@ -7,9 +7,111 @@
 {% endblock %}
 {% block body %}
 <div class="container mx-auto grid place-items-center">
-  <div class="w-full max-w-lg">
-    <h2 class="mb-4 text-2xl font-semibold">Create job order</h2>
-    {{ form(form) }}
+  <div class="card w-full max-w-2xl">
+    <div class="card-body">
+      <h3 class="card-title mb-3">Create job order</h3>
+      {{ form_start(form) }}
+
+      <div>
+        <h5>Client Information</h5>
+
+        <div class="form-floating mb-3">
+          {{ form_widget(form.client_name, {'attr': {'placeholder': ' ' }}) }}
+          {{ form_label(form.client_name) }}
+        </div>
+
+        <div class="form-floating mb-3">
+          {{ form_widget(form.client_lgu, {'attr': {'placeholder': ' ' }}) }}
+          {{ form_label(form.client_lgu) }}
+        </div>
+
+        <div class="row g-3">
+          <div class="form-floating col mb-3">
+            {{ form_widget(form.client_contact, {'attr': {'placeholder': ' ' }}) }}
+            {{ form_label(form.client_contact) }}
+          </div>
+          <div class="form-floating col mb-3">
+            {{ form_widget(form.request_date, {'attr': {'placeholder': ' ' }}) }}
+            {{ form_label(form.request_date) }}
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h5>Job Order Details</h5>
+
+        <div class="row g-3">
+          <div class="form-floating col mb-3">
+            {{ form_widget(form.start_scheduled, {'attr': {'placeholder': ' ' }}) }}
+            {{ form_label(form.start_scheduled) }}
+          </div>
+          <div class="form-floating col mb-3">
+            {{ form_widget(form.end_scheduled, {'attr': {'placeholder': ' ' }}) }}
+            {{ form_label(form.end_scheduled) }}
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="form-floating col mb-3">
+            {{ form_widget(form.issued_by, {'attr': {'placeholder': ' ' }}) }}
+            {{ form_label(form.issued_by) }}
+          </div>
+          <div class="form-floating col mb-3">
+            {{ form_widget(form.approved_by, {'attr': {'placeholder': ' ' }}) }}
+            {{ form_label(form.approved_by) }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          {{ form_label(form.endorsee) }}
+          <multiple-select
+            {% if readonly %}
+              readonly
+            {% endif %}
+            placeholder="Add endorsee"
+            name="{{ field_name(form.endorsee) }}"
+            :selected="[{{ endorsee | default([]) | map(n => "'#{n}'") | join(',') | e('html_attr') }}]"
+            container-class="row"
+            value-class="flex"
+            delete-class="btn btn-sm btn-danger mb-2 ml-auto"
+            select-class="leading-non row relative flex text-sm"
+            input-class="form-control"
+            choices-class="absolute inset-x-0 top-[calc(100%+4px)] flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
+            option-class="ui-active:text-blue-950 ui-active:font-bold"
+            :include-delimeter="false"
+            options="{{ options | default([1,2,3]) | join('|') | e('html_attr')}}"
+            seperator="|"
+          ></multiple-select>
+        </div>
+
+        {{ form_row(form.job_description, {'widge_attr': {'rows' : 7 }}) }}
+      </div>
+      <div>
+        <h5>Completion Information</h5>
+        {{ form_row(form.actual_job_done) }}
+
+        <div class="row g-3">
+          <div class="form-floating col mb-3">
+            {{ form_widget(form.verifier, {'attr': {'placeholder': ' ' }}) }}
+            {{ form_label(form.verifier) }}
+          </div>
+          <div class="form-floating col mb-3">
+            {{ form_widget(form.verifier_position, {'attr': {'placeholder': ' ' }}) }}
+            {{ form_label(form.verifier_position) }}
+          </div>
+        </div>
+
+        {{ form_row(form.remarks) }}
+      </div>
+
+      <div class="row gap-2">
+        {{ form_widget(form.draft, {'attr': {'class': 'btn btn-primary col' }}) }}
+        {{ form_widget(form.submit, {'attr': {'class': 'btn btn-success col' }}) }}
+      </div>
+
+      {{ form_rest(form) }}
+      {{ form_end(form) }}
+    </div>
   </div>
 </div>
 

@@ -151,7 +151,7 @@
           </span>
         </a>
       </nav>
-      <button class="ml-auto md:hidden" @click="toggled = true">
+      <button class="btn ml-auto md:hidden" @click="toggled = true">
         <font-awesome-icon icon="fa-solid fa-bars" class="h-8 text-white" />
       </button>
     </div>

@@ -59,7 +59,7 @@ abstract class BaseController
     $this->twig->addExtension(new TranslationExtension($translator));
 
 
-    $formEngine = new TwigRendererEngine(['tailwind_layout.html.twig'], $this->twig);
+    $formEngine = new TwigRendererEngine(['bootstrap_5_layout.html.twig'], $this->twig);
     $this->twig->addRuntimeLoader(new FactoryRuntimeLoader([
       FormRenderer::class => function () use ($formEngine, $csrfManager) {
         return new FormRenderer($formEngine, $csrfManager);

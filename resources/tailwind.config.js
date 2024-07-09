@@ -12,17 +12,7 @@ export default {
       mono: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
     },
     extend: {
-      container: {
-        center: true,
-        padding: "1rem",
-        screens: {
-          sm: "540px",
-          md: "720px",
-          lg: "960px",
-          xl: "1140px",
-          "2xl": "1320px",
-        },
-      },
+      container: false,
       screens: {
         sm: "576px",
         md: "768px",
