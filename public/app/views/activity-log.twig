@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="../styles/admin_index.css">
 {% endblock %}
 {% block header %}
-<top-bar admin active="activities"></top-bar>
 {% endblock %}
 {% block body %}
 <div class="table-container-3">
@@ -19,20 +18,20 @@
           </tr>
         </thead>
         <tbody>
-        {% for ses in session %}
-          <tr>
-            <td data-label="Name">
-            {{ ses.name | default("Admin")}}</td>
-            <td data-label="Log in Time">{{ ses.login | date("M d, Y H:i ", "Asia/Manila") }}</td>
-            <td data-label="Log out Time">
-            {% if ses.logout is null %}
-            Still Logged In
-            {% else %}
-            {{ ses.logout | date("M d, Y H:i", "Asia/Manila") }}
-            {% endif %}
-            </td>
-           
-          </tr>
+          {% for ses in session %}
+            <tr>
+              <td data-label="Name">
+                {{ ses.name | default("Admin") }}
+              </td>
+              <td data-label="Log in Time">{{ ses.login | date("M d, Y H:i ", "Asia/Manila") }}</td>
+              <td data-label="Log out Time">
+                {% if ses.logout is null %}
+                  Still Logged In
+                {% else %}
+                  {{ ses.logout | date("M d, Y H:i", "Asia/Manila") }}
+                {% endif %}
+              </td>
+            </tr>
           {% endfor %}
         </tbody>
       </table>

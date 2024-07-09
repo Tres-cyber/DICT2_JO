@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="/styles/style2.css">
 {% endblock %}
 {% block header %}
-<top-bar></top-bar>
 {% endblock %}
 {% block body %}
 <nav aria-label="Breadcrumb">
@@ -22,9 +21,9 @@
 </nav>
 
 <div class="container mx-auto grid place-items-center">
-  <div class="card w-full max-w-2xl">
+  <div class="card tw-w-full tw-max-w-2xl tw-mx-auto">
     <div class="card-body">
-      <h3 class="card-title mb-3 text-lg font-medium">Create job order</h3>
+      <h3 class="card-title mb-3">Create job order</h3>
       {{ form_start(form) }}
 
       {{ form_errors(form) }}
@@ -73,6 +72,26 @@
 
         <div class="mb-3">
           {{ form_label(form.endorsee) }}
+
+          <select
+            class="form-control"
+            {% if readonly %}
+              readonly
+            {% endif %}
+            multiple
+            name="{{ field_name(form.endorsee) }}"
+          >
+            {% for option in options %}
+              <option
+                value="{{ option }}"
+                {% if option in endorsee %}
+                  selected
+                {% endif %}
+              >
+                {{ option }}
+              </option>
+            {% endfor %}
+          </select>
           <multiple-select
             {% if readonly %}
               readonly

@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="..\styles\projects.css">
 {% endblock %}
 {% block header %}
-<top-bar admin active="projects"></top-bar>
 {% endblock %}
 {% block body %}
 
@@ -16,16 +15,11 @@
     <h2 class="c-modal-title">Add Project</h2>
     <form class="c-form" method="post" action="/admin/projects.php">
       <label for="name" class="c-modal-label-name">Focal Person:</label>
-         <autocomplete-select
-                name="focal_person"
-                container-class="relative w-full "
-                input-class="c-modal-dropdown" 
-                choices-class="absolute inset-x-0 top-[calc(100%+4px)] z-30 flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
-                option-class="ui-active:text-blue-950 ui-active:font-bold"
-                options="{{ options | join('|') | e('html_attr')}}"
-                seperator="|"
-                required
-              ></autocomplete-select>
+      <select name="focal_person" class="c-modal-dropdown">
+      {% for  option in options %}
+      <option value="{{ option }}">{{ option }}</option>
+      {% endfor %}
+      </select>
       <label for="project_code" class="c-modal-label-name">Short Code</label>
       <input class="c-modal-input" type="text" id="project_code" name="project_code" required>
       <label for="project_name"class="c-modal-label-name">Project Name:</label>
@@ -46,22 +40,18 @@
             <h2 class="c-modal-title">Edit Project</h2>
             <form class="c-form" method="post" action="/admin/edit_project.php" enctype="multipart/form-data">
                  <label for="name" class="c-modal-label-name">Focal Person:</label>
-         <autocomplete-select
-                name="focal_person"
-                container-class="relative w-full "
-                input-class="c-modal-dropdown" 
-                choices-class="absolute inset-x-0 top-[calc(100%+4px)] z-30 flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
-                option-class="ui-active:text-blue-950 ui-active:font-bold"
-                options="{{ options | join('|') | e('html_attr')}}"
-                seperator="|"
-                required
-              ></autocomplete-select>
-      <label for="project_code" class="c-modal-label-name">Short Code</label>
-      <input class="c-modal-input" type="text" id="project_code" name="project_code" required>
-      <label for="project_name"class="c-modal-label-name">Project Name:</label>
-      <input class="c-modal-input" type="text" id="project_name" name="project_name" required>
-      <label for="logo"class="c-modal-label-name">Icon:</label>
-      <input class="c-modal-input" type="file" id="logo" name="project_logo">
+
+                <select name="focal_person" class="c-modal-dropdown">
+                {% for  option in options %}
+                <option value="{{ option }}">{{ option }}</option>
+                {% endfor %}
+                </select>
+                <label for="project_code" class="c-modal-label-name">Short Code</label>
+                <input class="c-modal-input" type="text" id="project_code" name="project_code" required>
+                <label for="project_name"class="c-modal-label-name">Project Name:</label>
+                <input class="c-modal-input" type="text" id="project_name" name="project_name" required>
+                <label for="logo"class="c-modal-label-name">Icon:</label>
+                <input class="c-modal-input" type="file" id="logo" name="project_logo">
                 
                 <input type="hidden" name="id" id="edit-project-id" value="1">
                 <button type="submit" class="c-modal-submit">Save Project</button>

@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  prefix: "tw-",
   content: [
     "../public/**/*.{php,html,twig}",
     "./src/**/*.{js,ts,tsx,jsx,html,vue}",
@@ -22,8 +23,5 @@ export default {
       },
     },
   },
-  plugins: [
-    require("@headlessui/tailwindcss"),
-    require("@tailwindcss/forms")({ strategy: "class" }),
-  ],
+  plugins: [require("@headlessui/tailwindcss")],
 };
