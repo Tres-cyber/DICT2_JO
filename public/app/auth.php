@@ -7,8 +7,8 @@ function protectRoute($admin = false)
 {
   static $account = null;
 
+  $session = new Session(new PhpBridgeSessionStorage());
   if ($account  === null) {
-    $session = new Session(new PhpBridgeSessionStorage());
     if (!$session->has('session_id')) {
       header('Location: /signin.php');
       exit();
@@ -26,7 +26,7 @@ function protectRoute($admin = false)
   }
 
   if ($admin && !$account['admin']) {
-    $_SESSION['signin_err'] = 'Unauthorized path';
+    $session->getFlashBag()->add('error', 'Unauthorized access');
     header('Location: /signin.php');
     exit();
   }

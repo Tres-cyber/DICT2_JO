@@ -4,7 +4,6 @@ $account = protectRoute();
 
 $searchQuery = isset($_GET['search_query']) ? $_GET['search_query'] : '';
 
-
 $sql = "
     SELECT
         *,
@@ -18,7 +17,7 @@ $sql = "
 
 
 if (!empty($searchQuery)) {
-    $sql .= " AND (jo.client_name LIKE :search_query OR
+  $sql .= " AND (jo.client_name LIKE :search_query OR
         jo.job_order_number LIKE :search_query OR
         pi.name LIKE :search_query OR
         jo.request_date LIKE :search_query OR
@@ -26,14 +25,14 @@ if (!empty($searchQuery)) {
         jo.scheduled_end_date LIKE :search_query OR
         jo.status LIKE :search_query OR
         pa.name LIKE :search_query)";
-    $params = [
-        ':personnel_id' => $account['personnel_id'],
-        ':search_query' => '%' . $searchQuery . '%'
-    ];
+  $params = [
+    ':personnel_id' => $account['personnel_id'],
+    ':search_query' => '%' . $searchQuery . '%'
+  ];
 } else {
-    $params = [
-        ':personnel_id' => $account['personnel_id']
-    ];
+  $params = [
+    ':personnel_id' => $account['personnel_id']
+  ];
 }
 
 $stmt = execute($sql, $params);

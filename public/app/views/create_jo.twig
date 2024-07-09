@@ -24,7 +24,7 @@
 <div class="container mx-auto grid place-items-center">
   <div class="card w-full max-w-2xl">
     <div class="card-body">
-      <h3 class="card-title mb-3">Create job order</h3>
+      <h3 class="card-title mb-3 text-lg font-medium">Create job order</h3>
       {{ form_start(form) }}
 
       <div>
@@ -66,16 +66,8 @@
           </div>
         </div>
 
-        <div class="row g-3">
-          <div class="form-floating col mb-3">
-            {{ form_widget(form.issued_by, {'attr': {'placeholder': ' ' }}) }}
-            {{ form_label(form.issued_by) }}
-          </div>
-          <div class="form-floating col mb-3">
-            {{ form_widget(form.approved_by, {'attr': {'placeholder': ' ' }}) }}
-            {{ form_label(form.approved_by) }}
-          </div>
-        </div>
+        {{ form_row(form.issued_by) }}
+        {{ form_row(form.approved_by) }}
 
         <div class="mb-3">
           {{ form_label(form.endorsee) }}

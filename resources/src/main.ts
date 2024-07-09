@@ -16,12 +16,22 @@ import {
   faBars,
   faEye,
   faFloppyDisk,
+  faPen,
   faPlus,
   faPrint,
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faPrint, faBars, faEye, faTrash, faPlus, faArrowDown, faFloppyDisk);
+library.add(
+  faPrint,
+  faBars,
+  faEye,
+  faTrash,
+  faPlus,
+  faArrowDown,
+  faFloppyDisk,
+  faPen,
+);
 
 const app = createApp({});
 app.component("AutocompleteSelect", AutocompleteSelect);

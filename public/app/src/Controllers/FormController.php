@@ -19,11 +19,13 @@ class FormController extends BaseController
             pi.name AS issued_by,
             pa.name AS approved_by,
             pp.name AS performed_by,
-            pp.position AS performer_position
+            pp.position AS performer_position,
+            pr.project_logo
         FROM JobOrder jo
         LEFT JOIN Personnels pi ON jo.issued_by = pi.personnel_id
         LEFT JOIN Personnels pa ON jo.approved_by = pa.personnel_id
         LEFT JOIN Personnels pp ON jo.performer_id = pp.personnel_id
+        LEFT JOIN Projects pr ON jo.project_id = pr.project_id
         WHERE jo.job_order_id = :id
 ";
     $stmt = execute($sql, [':id' => $id]);
@@ -93,7 +95,7 @@ INSERT INTO JobOrder (
     client_name, verifier_position, client_contact, client_lgu, request_mode,
     request_date, issued_by, approved_by, job_order_number, status, verifier
 ) VALUES (
-    :job_order_id, 3, :scheduled_start_date, :scheduled_end_date, :performer_id, :job_description, 
+    :job_order_id, :project_id, :scheduled_start_date, :scheduled_end_date, :performer_id, :job_description, 
     CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, :actual_job_done, :remarks, :client_name, :verifier_position,
     :client_contact, :client_lgu, 'On Site', :request_date, :issued_by,
     :approved_by, :job_order_number, :status, :verifier
@@ -102,11 +104,19 @@ INSERT INTO JobOrder (
     $issued_by = execute("SELECT personnel_id FROM Personnels WHERE name = :n", ['n' => $jo['issued_by']])->fetchColumn();
     if (!$issued_by) $issued_by = null;
 
+    $stmt = execute("SELECT name, position, project_id FROM Personnels WHERE personnel_id = :id", [':id' => $account['personnel_id']]);
+    $personnel = $stmt->fetch();
+
+    $approved_by = execute("SELECT personnel_id FROM Personnels WHERE name = :n", ['n' => $jo['approved_by']])->fetchColumn();
+    if (!$approved_by) $approved_by = null;
+
+
     $approved_by = execute("SELECT personnel_id FROM Personnels WHERE name = :n", ['n' => $jo['approved_by']])->fetchColumn();
     if (!$approved_by) $approved_by = null;
 
     $args = [
       ':job_order_id' => NULL,
+      ':project_id' => $personnel['project_id'],
       ':scheduled_start_date' => $jo['start_scheduled']->format('Y-m-d'),
       ':scheduled_end_date' => $jo['end_scheduled']->format('Y-m-d'),
       ':performer_id' => (int)$account['personnel_id'],
@@ -127,9 +137,6 @@ INSERT INTO JobOrder (
 
     execute($sql, $args);
     $id = getDB()->lastInsertId();
-
-    $stmt = execute("SELECT name, position FROM Personnels WHERE personnel_id = :id", [':id' => $account['personnel_id']]);
-    $personnel = $stmt->fetch();
 
     $endorsee = array_unique(array_merge($jo['endorsee'], [$personnel['name']]));
 
@@ -229,6 +236,7 @@ WHERE
 
   public function create(Request $request)
   {
+    $account = protectRoute();
     $form = $this->createForm(JoborderType::class);
 
     $form->handleRequest($request);
@@ -238,12 +246,15 @@ WHERE
 
     $endorsee = isset($_POST['joborder']['endorsee']) ? $_POST['joborder']['endorsee'] : [];
 
+    $stmt = execute("SELECT name, position, project_id FROM Personnels WHERE personnel_id = :id", [':id' => $account['personnel_id']]);
+    $personnel = $stmt->fetch();
+
     $jo = $form->getData();
     $jo['endorsee'] = $endorsee;
     $jo['status'] = $form->get('draft')->isClicked() ? 'Draft' : 'Approved';
     $jo['job_order_number'] = $form->get('draft')->isClicked() ?
       null :
-      generateJobOrderId(getDB(), 3, $jo['request_date']->format('Y-m-d'));
+      generateJobOrderId(getDB(), $personnel['project_id'], $jo['request_date']->format('Y-m-d'));
 
 
 
@@ -281,6 +292,7 @@ WHERE
 
   public function new(Request $request)
   {
+
     $account = protectRoute();
 
     $stmt = execute("SELECT name, position FROM Personnels WHERE personnel_id = :id", [':id' => $account['personnel_id']]);
@@ -301,7 +313,13 @@ WHERE
       'performer_position' => $personnel['position'],
     ];
 
-    $form = $this->createForm(JoborderType::class, $jo);
+    $id  = $request->query->get('edit');
+    if (!is_null($id)) {
+      $jo = $this->fetchJO($id);
+      $jo['id'] = $id;
+    }
+
+    $form = $this->createForm(JoborderType::class, null, ['data' => $jo]);
 
 
     return $this->render('create_jo.twig', [
