@@ -3,6 +3,7 @@
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -17,6 +18,22 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class JoborderType extends AbstractType
 {
+  function getChoices()
+  {
+    static $choice = null;
+    if ($choice !== null) return $choice;
+
+    $stmt = execute('SELECT name FROM Personnels');
+    $personnels = $stmt->fetchAll();
+
+    $choice = [];
+    foreach ($personnels as $p) {
+      $choice[$p['name']] = $p['name'];
+    }
+
+    return $choice;
+  }
+
   function buildForm(FormBuilderInterface $builder, array $options)
   {
     $builder
@@ -27,8 +44,8 @@ class JoborderType extends AbstractType
       ->add('request_date', DateType::class, ['data' => new \DateTime(), 'constraints' => [new NotBlank(), new Date()]])
       ->add('start_scheduled', DateType::class, ['data' => new \DateTime(), 'constraints' => [new NotBlank(), new Date()]])
       ->add('end_scheduled', DateType::class, ['data' => new \DateTime(), 'constraints' => [new NotBlank(), new Date()]])
-      ->add('issued_by', TextType::class, ['constraints' => [new NotBlank()]])
-      ->add('approved_by', TextType::class, ['constraints' => [new NotBlank()]])
+      ->add('issued_by', ChoiceType::class, ['choices' => $this->getChoices(), 'constraints' => [new NotBlank()]])
+      ->add('approved_by', ChoiceType::class, ['choices' => $this->getChoices(), 'constraints' => [new NotBlank()]])
       ->add('endorsee', CollectionType::class, ['entry_type' => TextType::class, 'constraints' => [new NotBlank()]])
       ->add('job_description', TextareaType::class, ['constraints' => [new NotBlank()]])
       ->add('actual_job_done', TextareaType::class, ['constraints' => [new NotBlank()]])
@@ -43,8 +60,9 @@ class JoborderType extends AbstractType
   {
     $resolver->setDefaults([
       'data_class' => null,
+      'choices' => [],
       'attr' => [
-        'novalidate' => 'novalidate', // comment me to reactivate the html5 validation!  🚥
+        'novalidate' => 'novalidate',
       ]
     ]);
   }

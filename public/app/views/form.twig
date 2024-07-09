@@ -6,9 +6,9 @@
 <top-bar></top-bar>
 {% endblock %}
 {% block body %}
-{% set readonly = jo.status != 'Draft' %}
+{% set readonly = true %}
 
-<nav aria-label="Breadcrumb print:hidden">
+<nav aria-label="Breadcrumb" class="print:hidden">
   <ol class="flex p-4">
     <li class="flex items-center">
       <a href="/dashboard.php" class="text-blue-500 hover:text-blue-600 hover:underline">Home</a>
@@ -81,7 +81,7 @@
           alt="DICT Official Header"
           class="absolute right-1/2 h-[0.75in] translate-x-1/2"
         >
-        <img src="./assets/elgu.png" alt="eLGU IBPLS logo" class="h-[0.5in]">
+        <img src="{{jo.project_logo}}" alt="eLGU IBPLS logo" class="h-[0.5in]">
       </div>
       <div class="flex justify-center">
         <h1 class="mt-4 font-serif text-3xl font-semibold uppercase">job order form</h1>
