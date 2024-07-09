@@ -16,7 +16,7 @@ $sql = "
     WHERE jo.performer_id = :personnel_id
 ";
 
-// Add search condition if search query is provided
+
 if (!empty($searchQuery)) {
     $sql .= " AND (jo.client_name LIKE :search_query OR
         jo.job_order_number LIKE :search_query OR

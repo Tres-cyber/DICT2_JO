@@ -8,33 +8,33 @@
 {% endblock %}
 {% block body %}
 
-<div class="modal-container">
-<a href="#modal" class="modal-btn">Add Account</a>
-<div id="modal" class="modal">
-  <div class="modal-content">
-    <a href="#" class="close">&times;</a>
-    <h2 class="modal-title">Register</h2>
-    <form method="post" action="/admin/accounts.php">
-      <label for="name" class="modal-label-name">Name:</label>
+<div class="c-modal-container">
+<a href="#modal" class="c-modal-btn">Add Account</a>
+<div id="modal" class="c-modal">
+  <div class="c-modal-content">
+    <a href="#" class="c-close">&times;</a>
+    <h2 class="c-modal-title">Register</h2>
+    <form class="c-form" method="post" action="/admin/accounts.php">
+      <label for="name" class="c-modal-label-name">Name:</label>
          <autocomplete-select
                 name="name"
                 container-class="relative w-full "
-                input-class="modal-dropdown" 
+                input-class="c-modal-dropdown" 
                 choices-class="absolute inset-x-0 top-[calc(100%+4px)] z-30 flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
                 option-class="ui-active:text-blue-950 ui-active:font-bold"
                 options="{{ options | join('|') | e('html_attr')}}"
                 seperator="|"
                 required
               ></autocomplete-select>
-      <label for="email" class="modal-label-name">Email</label>
-      <input class="modal-input" type="email" id="email" name="email" value="{{acc.email}}" required>
-      <label for="password"class="modal-label-name">Password:</label>
-      <input class="modal-input" type="password" id="password" name="password_hash" value="{{acc.password_hash}}" required>
-      <button class="modal-submit" type="submit">Register</button>
+      <label for="email" class="c-modal-label-name">Email</label>
+      <input class="c-modal-input" type="email" id="email" name="email" value="{{acc.email}}" required>
+      <label for="password"class="c-modal-label-name">Password:</label>
+      <input class="c-modal-input" type="password" id="password" name="password_hash" value="{{acc.password_hash}}" required>
+      <button class="c-modal-submit" type="submit">Register</button>
     </form>
   </div>
 </div>
-<div class="modal-overlay"></div>
+<div class="c-modal-overlay"></div>
 </div>
 <div class="table-container-3">
   <div class="table-container">
