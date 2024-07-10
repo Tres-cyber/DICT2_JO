@@ -1,10 +1,10 @@
 {% extends 'base.twig' %}
 {% block head %}
-<title>DICT JO - Dashboard</title>
+<title>ADMIN | Job Orders</title>
 <link rel="stylesheet" href="/styles/style2.css">
 {% endblock %}
 {% block header %}
-<top-bar ></top-bar>
+<top-bar admin></top-bar>
 {% endblock %}
 {% block body %}
 <nav aria-label="Breadcrumb">
@@ -17,8 +17,8 @@
 
 <div class="container mx-auto mb-4 flex px-2 sm:px-0">
 
- {% if total_count > 1 %}
-  <em>Showing {{ start_index }}-{{ end_index }} of {{ total_count }} results</em>
+ {% if total_count > 0 %}
+  <em> Showing 1-{{ count }} of {{ total_count }} results </em>
   {% else %}
  <em> Nothing Found. </em>
   {% endif %}
@@ -48,7 +48,7 @@
   </div>
   </div>
 <div class="search" style="margin-left: 20px; margin-bottom:10px;">
-  <form action="dashboard.php" method="GET">
+  <form action="job_orders.php" method="GET">
       <input type="text" name="search_query" placeholder="Search..." style="background-color: dark-green;">
       <button type="submit" class="search-button" style="background-color: green; color: white; border-radius:4px; padding:0.2rem">Search</button>
   </form>
@@ -66,6 +66,7 @@
         <thead>
           <tr>
             <th>Job Order Number</th>
+            <th>Performed By</th>
             <th>Name</th>
             <th>Date</th>
             <th>Scheduled Date</th>
@@ -79,6 +80,7 @@
           {% for jo in joborders %}
             <tr>
               <td data-label="Job Order Number">{{ jo.job_order_number }}</td>
+              <td data-label="Performed By">{{ jo.performed_by   }}</td>
               <td data-label="Name">{{ jo.client_name }}</td>
               <td data-label="Date">{{ jo.request_date | date("M d, Y") }}</td>
               <td data-label="Scheduled Date">
@@ -124,15 +126,15 @@
 </div>
 <div class="pagination">
         {% if current_page > 1 %}
-            <a href="/dashboard.php?p={{ current_page - 1 }}{% if search_query %}&search_query={{ search_query }}{% endif %}">Prev</a>
+            <a href="/admin/job_orders.php?p={{ current_page - 1 }}{% if search_query %}&search_query={{ search_query }}{% endif %}">Prev</a>
         {% endif %}
         {% if total_count > 1 %}
         {% for n in range(1,total_pages) %}
-         <a href="/dashboard.php?p={{ n }}{% if search_query %}&search_query={{ search_query }}{% endif %}">{{ n }}</a>
+         <a href="/admin/job_orders.php?p={{ n }}{% if search_query %}&search_query={{ search_query }}{% endif %}">{{ n }}</a>
          {% endfor %}
          {% endif %}
         {% if current_page < total_pages %}
-            <a href="/dashboard.php?p={{ current_page + 1 }}{% if search_query %}&search_query={{ search_query }}{% endif %}">Next</a>
+            <a href="/admin/job_orders.php?p={{ current_page + 1 }}{% if search_query %}&search_query={{ search_query }}{% endif %}">Next</a>
         {% endif %}
     </div>
 {% endblock %}

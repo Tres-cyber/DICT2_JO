@@ -68,6 +68,13 @@
           <div v-if="admin" class="flex w-8/12 flex-col gap-6 [&_a]:uppercase">
             <slot>
               <a
+                href="/admin/job_orders.php"
+                class="font-serif font-semibold tracking-wide text-neutral-200 hover:text-white"
+                :class="[active == 'activities' && '!text-white']"
+              >
+                Job Orders
+              </a>
+              <a
                 href="/admin/activities.php"
                 class="font-serif font-semibold tracking-wide text-neutral-200 hover:text-white"
                 :class="[active == 'activities' && '!text-white']"
@@ -113,6 +120,13 @@
       </Transition>
       <nav ref="sidebar" class="ml-auto hidden items-center gap-4 md:flex">
         <slot v-if="admin">
+          <a
+                href="/admin/job_orders.php"
+                class="font-serif font-semibold tracking-wide text-neutral-200 hover:text-white"
+                :class="[active == 'activities' && '!text-white']"
+              >
+                Job Orders
+              </a>
           <a
             href="/admin/activities.php"
             class="font-serif font-semibold tracking-wide text-neutral-200 hover:text-white"
