@@ -6,6 +6,10 @@
   margin: 0in;
 }
 
+:root {
+  --bs-navbar-brand-font-size: 24px;
+}
+
 .jo-form input:not([readonly]),
 .jo-form textarea:not([readonly]) {
   @apply tw-bg-red-100;

@@ -7,40 +7,39 @@
 {% endblock %}
 {% block body %}
 
-<div class="c-modal-container tw-hidden">
-  <a href="#modal" class="c-modal-btn">Add Account</a>
-  <div id="modal" class="c-modal">
-    <div class="c-modal-content">
-      <a href="#" class="c-close">&times;</a>
-      <h2 class="c-modal-title">Register</h2>
-      <form class="c-form" method="post" action="/admin/accounts.php">
-        <label for="name" class="c-modal-label-name">Name:</label>
-        <select name="focal_person" class="c-modal-dropdown">
+<div class="modal fade" id="AddBackDrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Account</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+       <form method="post" action="/admin/accounts.php">
+        <label for="name" class="form-label">Name: </label>
+         <select name="name" class="form-select mb-3">
           {% for option in options %}
             <option value="{{ option }}">{{ option }}</option>
           {% endfor %}
         </select>
-        <label for="email" class="c-modal-label-name">Email</label>
-        <input class="c-modal-input" type="email" id="email" name="email" value="{{acc.email}}" required>
-        <label for="password" class="c-modal-label-name">Password:</label>
-        <input
-          class="c-modal-input"
-          type="password"
-          id="password"
-          name="password_hash"
-          value="{{acc.password_hash}}"
-          required
-        >
-        <button class="c-modal-submit" type="submit">Register</button>
+        <label for="email" class="form-label">Email: </label>
+        <input type="email" class="form-control mb-3" aria-label="email" id="email" name="email" value="{{acc.email}}" aria-describedby="addon-wrapping">
+        <label for="password" class="form-label">Password: </label>
+        <input type="password" class="form-control mb-3" aria-label="password" aria-describedby="addon-wrapping" type="password" id="password"  name="password_hash" value="{{acc.password_hash}}"  required>    
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Register</button>
+      </div>
       </form>
     </div>
   </div>
-  <div class="c-modal-overlay"></div>
 </div>
-
 
   <div class="container mt-5">
     <div class="col col-md-8 col-lg-6 table-responsive mx-auto">
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#AddBackDrop">
+        Add Account
+    </button>
       <table class="table table-light border table-hover  table-striped ">
         <thead>
           <tr>
@@ -49,7 +48,7 @@
             <th>Action</th>
           </tr>
         </thead>
-        <tbody class="table-group-divider">>
+        <tbody class="table-group-divider">
           {% for acc in account %}
             <tr>
               <td data-label="Account Name">{{ acc.name }}</td>
