@@ -16,23 +16,23 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-       <form method="post" action="/admin/projects.php">
-        <label for="basic-url" class="form-label">Focal Person: </label>
-         <select name="focal_person" class="form-select mb-3">
+       <form method="post" action="/admin/edit_project.php">
+        <label for="name" class="form-label">Focal Person: </label>
+         <select name="focal_person" class="form-select mb-3" id="focal_input">
           {% for option in options %}
             <option value="{{ option }}">{{ option }}</option>
           {% endfor %}
         </select>
-        <label for="basic-url" class="form-label">Short Code: </label>
-        <input type="text" class="form-control mb-3" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
-        <label for="basic-url" class="form-label">Project Name: </label>
-        <input type="text" class="form-control mb-3" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
-        <label class="form-label" for="inputGroupFile01">Upload</label>
-        <input type="file" class="form-control" id="inputGroupFile01">
+        <label for="project_code" class="form-label">Short Code: </label>
+        <input type="text" class="form-control mb-3" aria-label="code" aria-describedby="addon-wrapping" id="edit-project-code" name="project_code">
+        <label for="project_name" class="form-label">Project Name: </label>
+        <input type="text" class="form-control mb-3" aria-label="project_name" aria-describedby="addon-wrapping" id="edit-project-name" name="project_name">
+        <label class="form-label" for="logo">Upload</label>
+        <input type="file" class="form-control" id="edit-logo" name="project_logo">
       
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Save Project</button>
+        <button type="submit" class="btn btn-primary">Save Project</button>
       </div>
       </form>
     </div>
@@ -48,22 +48,22 @@
       </div>
       <div class="modal-body">
        <form method="post" action="/admin/projects.php">
-        <label for="basic-url" class="form-label">Focal Person: </label>
+        <label for="name" class="form-label">Focal Person: </label>
          <select name="focal_person" class="form-select mb-3">
           {% for option in options %}
             <option value="{{ option }}">{{ option }}</option>
           {% endfor %}
         </select>
-        <label for="basic-url" class="form-label">Short Code: </label>
-        <input type="text" class="form-control mb-3" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
-        <label for="basic-url" class="form-label">Project Name: </label>
-        <input type="text" class="form-control mb-3" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
-        <label class="form-label" for="inputGroupFile01">Upload</label>
-        <input type="file" class="form-control" id="inputGroupFile01">
+        <label for="project_code" class="form-label">Short Code: </label>
+        <input type="text" class="form-control mb-3" aria-label="code" aria-describedby="addon-wrapping" id="project_code" name="project_code">
+        <label for="project_name" class="form-label">Project Name: </label>
+        <input type="text" class="form-control mb-3" aria-label="name" aria-describedby="addon-wrapping" id="project_name" name="project_name">
+        <label class="form-label" for="logo">Upload</label>
+        <input type="file" class="form-control" id="logo" name="project_logo">
       
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Add Project</button>
+        <button type="submit" class="btn btn-primary">Add Project</button>
       </div>
       </form>
     </div>
@@ -75,7 +75,7 @@
     <div class="col col-md-8 col-lg-6 table-responsive mx-auto">
      <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#AddBackDrop">
         Add Project
-         </button>
+      </button>
       <table class="table table-light border table-hover  table-striped ">
         <thead>
           <tr>
