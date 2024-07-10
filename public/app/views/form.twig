@@ -7,7 +7,7 @@
 {% block body %}
 {% set readonly = true %}
 
-<nav aria-label="Breadcrumb" class="print:hidden">
+<nav aria-label="Breadcrumb" class="print:tw-hidden">
   <ol class="flex p-4">
     <li class="flex items-center">
       <a href="/dashboard.php" class="text-blue-500 hover:text-blue-600 hover:underline">Home</a>
@@ -24,7 +24,7 @@
 <form
   action="#"
   method="post"
-  class="jo-form tw-mx-auto tw-flex tw-justify-center tw-print:!m-0 tw-print:!max-w-full container"
+  class="jo-form tw-mx-auto tw-flex tw-justify-center print:!tw-m-0 print:!tw-max-w-full"
 >
   {{ form_row(form._token) }}
 
@@ -32,9 +32,9 @@
     <input type="hidden" name="{{ field_name(form.id)}}" value="{{id}}">
   {% endif %}
 
-  <div class="tw-relative tw-print:!w-full">
+  <div class="tw-relative print:!tw-w-full">
     {% if jo.status == 'Draft' %}
-      <strong class="tw-absolute tw-left-1/2 tw-top-1/2 tw-z-[-1] tw-hidden -tw-translate-x-1/2 tw-translate-y-1/2 tw-rotate-[-55deg] tw-scale-[7] tw-text-4xl tw-uppercase tw-tracking-widest tw-text-neutral-300 tw-print:block">
+      <strong class="tw-absolute tw-left-1/2 tw-top-1/2 tw-z-[-1] tw-hidden -tw-translate-x-1/2 tw-translate-y-1/2 tw-rotate-[-55deg] tw-scale-[7] tw-text-4xl tw-uppercase tw-tracking-widest tw-text-neutral-300 print:tw-block">
         draft
       </strong>
     {% endif %}
@@ -43,7 +43,7 @@
       <div class="tw-absolute tw-bottom-8 tw-right-8 tw-z-10 tw-flex tw-gap-4">
         <button
           type="submit"
-          class="tw-overflow-clip tw-rounded tw-bg-blue-950 tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-uppercase tw-text-white tw-print:hidden"
+          class="tw-overflow-clip tw-rounded tw-bg-blue-950 tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-uppercase tw-text-white print:tw-hidden"
           name="{{ field_name(form.draft) }}"
         >
           <i class="fa-solid fa-floppy-disk"></i>
@@ -51,7 +51,7 @@
         </button>
         <button
           type="submit"
-          class="tw-overflow-clip tw-rounded tw-bg-green-950 tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-uppercase tw-text-white tw-print:hidden"
+          class="tw-overflow-clip tw-rounded tw-bg-green-950 tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-uppercase tw-text-white print:tw-hidden"
           name="{{ field_name(form.submit) }}"
         >
           <i class="fa-solid fa-floppy-disk"></i>
@@ -63,12 +63,12 @@
     {% if not hidePrint is same as(true) %}
       <print-button
         type="button"
-        class="tw-absolute tw-left-4 tw-top-4 tw-z-10 tw-overflow-clip tw-rounded-full tw-bg-blue-950 tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-uppercase tw-text-white tw-print:hidden"
+        class="tw-absolute tw-left-4 tw-top-4 tw-z-10 tw-overflow-clip tw-rounded-full tw-bg-blue-950 tw-px-4 tw-py-2 tw-text-sm tw-font-semibold tw-uppercase tw-text-white print:tw-hidden"
         {{ jo.status == 'Draft' ? 'text="Print Draft"' : '' }}
       >
       </print-button>
     {% endif %}
-    <div class="tw-relative tw-z-0 tw-flex tw-h-[13in] tw-w-[8.5in] tw-flex-col tw-items-stretch tw-border tw-border-neutral-700 tw-p-[0.75in] tw-print:!w-full tw-print:border-none">
+    <div class="tw-relative tw-z-0 tw-flex tw-h-[13in] tw-w-[8.5in] tw-flex-col tw-items-stretch tw-border tw-border-neutral-700 tw-p-[0.75in] print:!tw-w-full print:tw-border-none">
       <div class="tw-relative tw-flex tw-h-[0.75in] tw-items-center tw-justify-between">
         <img
           src="./assets/bagong_pilipinas.png"
@@ -82,7 +82,7 @@
         >
         <img src="{{jo.project_logo}}" alt="eLGU IBPLS logo" class="tw-h-[0.5in]">
       </div>
-      <div class="flex justify-center">
+      <div class="tw-flex tw-justify-center">
         <h1 class="tw-mt-4 tw-font-serif tw-text-3xl tw-font-semibold tw-uppercase">job order form</h1>
       </div>
       <table class="tw-mb-[0.75in] tw-mt-2 tw-w-full tw-border-collapse tw-font-serif">
@@ -171,9 +171,9 @@
               >
             </div>
           </td>
-          <td class="w-1/2 border border-black">
-            <div class="flex items-center">
-              <label for="date" class="text-sm uppercase leading-none"> Date: </label>
+          <td class="tw-w-1/2 tw-border tw-border-black">
+            <div class="tw-flex tw-items-center">
+              <label for="date" class="tw-text-sm tw-uppercase tw-leading-none"> Date: </label>
               <input
                 type="date"
                 {% if readonly %}
@@ -181,50 +181,50 @@
                 {% endif %}
                 name="{{ field_name(form.request_date) }}"
                 value="{{ jo.request_date  | date('Y-m-d') }}"
-                class="ml-1 w-0 flex-1 rounded-none border-none bg-transparent p-0 font-serif text-sm font-semibold uppercase leading-none"
+                class="tw-ml-1 tw-w-0 tw-flex-1 tw-rounded-none tw-border-none tw-bg-transparent tw-p-0 tw-font-serif tw-text-sm tw-font-semibold tw-uppercase tw-leading-none"
               >
             </div>
           </td>
         </tr>
         <tr>
           <td
-            class="border border-black bg-neutral-200 text-start text-xs font-semibold uppercase leading-none"
+            class="tw-border tw-border-black tw-bg-neutral-200 tw-text-start tw-text-xs tw-font-semibold tw-uppercase tw-leading-none"
             colspan="2"
           >
             Job Order Details
           </td>
         </tr>
         <tr>
-          <td class="w-1/2 border border-black">
-            <div class="flex items-center">
-              <span class="text-sm uppercase leading-none"> Scheduled date: </span>
+          <td class="tw-w-1/2 tw-border tw-border-black">
+            <div class="tw-flex tw-items-center">
+              <span class="tw-text-sm tw-uppercase tw-leading-none"> Scheduled date: </span>
               <input
                   readonly
                   type="text"
 
                 value="{{ jo.scheduled_start_date | date('Y-m-d')  }} - {{ jo.scheduled_end_date | date('Y-m-d')  }}"
                 name="{{ field_name(form.start_scheduled) }}"
-                class="ml-1 w-0 flex-1 bg-transparent border-none rounded-none leading-none font-semibold text-sm font-serif p-0 uppercase"
+                class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-border-none tw-rounded-none tw-leading-none tw-font-semibold tw-text-sm tw-font-serif tw-p-0 tw-uppercase"
               ></date-picker>
             </div>
           </td>
-          <td class="w-1/2 border border-black">
-            <div class="flex items-center">
-              <span class="text-sm uppercase leading-none"> Job order number: </span>
+          <td class="tw-w-1/2 tw-border tw-border-black">
+            <div class="tw-flex tw-items-center">
+              <span class="tw-text-sm tw-uppercase tw-leading-none"> Job order number: </span>
               <input
                 {{ jo_editable ? '' : 'readonly' }}
                 type="text"
                 value="{{ jo.job_order_number }}"
                 placeholder=" "
-                class="ml-1 w-0 flex-1 bg-transparent text-sm font-semibold leading-none"
+                class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-sm tw-font-semibold tw-leading-none"
               >
             </div>
           </td>
         </tr>
         <tr>
-          <td class="w-1/2 border border-black">
-            <div class="flex items-center">
-              <span class="text-sm uppercase leading-none">Issued by:</span>
+          <td class="tw-w-1/2 tw-border tw-border-black">
+            <div class="tw-flex tw-items-center">
+              <span class="tw-text-sm tw-uppercase tw-leading-none">Issued by:</span>
               <select
                 {% if readonly %}
                   readonly
@@ -244,9 +244,9 @@
               </select>
             </div>
           </td>
-          <td class="w-1/2 border border-black">
-            <div class="flex items-center">
-              <span class="text-sm uppercase leading-none">Approved by:</span>
+          <td class="tw-w-1/2 tw-border tw-border-black">
+            <div class="tw-flex tw-items-center">
+              <span class="tw-text-sm tw-uppercase tw-leading-none">Approved by:</span>
               <select
                 {% if readonly %}
                   readonly
@@ -269,10 +269,10 @@
         </tr>
 
         <tr>
-          <td class="h-[3em] w-1/2 border border-black" colspan="2">
-            <div class="flex items-center">
-              <div class="flex flex-1 items-start">
-                <span class="mr-1 text-sm uppercase leading-[19px]"> Endorsed to: </span>
+          <td class="tw-h-[3em] tw-w-1/2 tw-border tw-border-black" colspan="2">
+            <div class="tw-flex tw-items-center">
+              <div class="tw-flex tw-flex-1 tw-items-start">
+                <span class="tw-mr-1 tw-text-sm tw-uppercase tw-leading-[19px]"> Endorsed to: </span>
 
               <select
                 {% if readonly %}
@@ -297,14 +297,14 @@
           </td>
         </tr>
         <tr>
-          <td class="w-1/2 border border-black" colspan="2">
-            <div class="flex flex-col items-stretch">
-              <span class="block text-sm font-semibold uppercase leading-[19px]">Job Request Description</span>
+          <td class="tw-w-1/2 tw-border tw-border-black" colspan="2">
+            <div class="tw-flex tw-flex-col tw-items-stretch">
+              <span class="tw-block tw-text-sm tw-font-semibold tw-uppercase tw-leading-[19px]">Job Request Description</span>
               <textarea
                 {% if readonly %}
                   readonly
                 {% endif %}
-                class="mx-0 my-2 max-h-[10em] min-h-[2em] resize-none bg-transparent text-sm leading-none"
+                class="tw-mx-0 tw-my-2 max-h-[10em] tw-min-h-[2em] tw-resize-none tw-bg-transparent tw-text-sm tw-leading-none"
                 name="{{ field_name(form.job_description) }}"
                 name="job_description"
                 placeholder=" "
@@ -316,21 +316,21 @@
         </tr>
         <tr>
           <td
-            class="border border-black bg-neutral-200 text-start text-xs font-semibold uppercase leading-none"
+            class="tw-border tw-border-black tw-bg-neutral-200 tw-text-start tw-text-xs tw-font-semibold tw-uppercase tw-leading-none"
             colspan="2"
           >
             Completion Information
           </td>
         </tr>
         <tr>
-          <td class="w-1/2 border border-black" colspan="2">
-            <div class="flex flex-col items-stretch">
-              <span class="block text-sm font-semibold uppercase leading-[19px]">Actual Job Done</span>
+          <td class="tw-w-1/2 tw-border tw-border-black" colspan="2">
+            <div class="tw-flex tw-flex-col tw-items-stretch">
+              <span class="tw-block tw-text-sm tw-font-semibold tw-uppercase tw-leading-[19px]">Actual Job Done</span>
               <textarea
                 {% if readonly %}
                   readonly
                 {% endif %}
-                class="mx-0 my-2 max-h-[15em] min-h-[2em] resize-none bg-transparent text-sm leading-none"
+                class="tw-mx-0 tw-my-2 tw-max-h-[15em] tw-min-h-[2em] tw-resize-none tw-bg-transparent tw-text-sm tw-leading-none"
                 name="{{ field_name(form.actual_job_done) }}"
                 placeholder=" "
               >
@@ -340,33 +340,33 @@
           </td>
         </tr>
         <tr>
-          <td class="w-1/2 border border-black" colspan="2">
-            <div class="flex h-[5em] items-end">
-              <span class="text-sm uppercase leading-[19px]"> Performed by: </span>
-              <div class="flex flex-1 flex-col items-center">
+          <td class="tw-w-1/2 tw-border tw-border-black" colspan="2">
+            <div class="tw-flex tw-h-[5em] tw-items-end">
+              <span class="tw-text-sm tw-uppercase tw-leading-[19px]"> Performed by: </span>
+              <div class="tw-flex tw-flex-1 tw-flex-col tw-items-center">
                 <input
                   readonly
                   type="text"
                   value="{{ jo.performed_by | e('html_attr') }}"
                   placeholder=" "
-                  class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
+                  class="tw-w-full tw-bg-transparent tw-text-center tw-text-sm tw-font-semibold tw-uppercase tw-leading-none"
                 >
                 <input
                   readonly
                   type="text"
                   value="{{ jo.performer_position | e('html_attr') }}"
                   placeholder=" "
-                  class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
+                  class="tw-w-full tw-bg-transparent tw-text-center tw-text-xs tw-font-medium tw-uppercase tw-italic tw-leading-none"
                 >
               </div>
             </div>
           </td>
         </tr>
         <tr>
-          <td class="w-1/2 border border-black" colspan="2">
-            <div class="flex h-[5em] items-end">
-              <span class="text-sm uppercase leading-[19px]"> Verified by: </span>
-              <div class="flex flex-1 flex-col items-center">
+          <td class="tw-w-1/2 tw-border tw-border-black" colspan="2">
+            <div class="tw-flex tw-h-[5em] tw-items-end">
+              <span class="tw-text-sm tw-uppercase tw-leading-[19px]"> Verified by: </span>
+              <div class="tw-flex tw-flex-1 tw-flex-col tw-items-center">
                 <input
                   {% if readonly %}
                     readonly
@@ -374,7 +374,7 @@
                   type="text"
                   name="{{ field_name(form.verifier) }}"
                   value="{{ jo.verifier }}"
-                  class="w-full bg-transparent text-center text-sm font-semibold uppercase leading-none"
+                  class="tw-w-full tw-bg-transparent tw-text-center tw-text-sm tw-font-semibold tw-uppercase tw-leading-none"
                   placeholder="client name"
                 >
                 <input
@@ -384,7 +384,7 @@
                   type="text"
                   name="{{ field_name(form.verifier_position) }}"
                   value="{{ jo.verifier_position | e('html_attr') }}"
-                  class="w-full bg-transparent text-center text-xs font-medium uppercase italic leading-none"
+                  class="tw-w-full tw-bg-transparent tw-text-center tw-text-xs tw-font-medium tw-uppercase tw-italic tw-leading-none"
                   placeholder="position"
                 >
               </div>
@@ -393,20 +393,20 @@
         </tr>
       </table>
 
-      <div class="mt-auto flex flex-1 break-before-avoid flex-col items-stretch justify-stretch border border-black font-serif">
-        <span class="block text-sm font-semibold uppercase leading-[19px]">Remarks/Comment/Feedback</span>
-        <div class="h-0 flex-1">
+      <div class="tw-mt-auto tw-flex tw-flex-1 tw-break-before-avoid tw-flex-col tw-items-stretch tw-justify-stretch tw-border tw-border-black tw-font-serif">
+        <span class="tw-block tw-text-sm tw-font-semibold tw-uppercase tw-leading-[19px]">Remarks/Comment/Feedback</span>
+        <div class="tw-h-0 tw-flex-1">
           <textarea
             {% if readonly %}
               readonly
             {% endif %}
             name="{{ field_name(form.remarks) }}"
             placeholder=" "
-            class="h-full w-full resize-none bg-transparent text-sm leading-none"
+            class="tw-h-full tw-w-full tw-resize-none tw-bg-transparent tw-text-sm tw-leading-none"
           >{{ jo.remarks }}</textarea>
         </div>
       </div>
-      <em class="invisible mt-4 print:visible">
+      <em class="tw-invisible tw-mt-4 print:tw-visible">
         ****Please accomplish together with Client Satisfaction Feedback Form
       </em>
     </div>
