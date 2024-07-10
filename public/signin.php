@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\PhpBridgeSessionStorage;
 
-
 $session = new Session(new  PhpBridgeSessionStorage());
 $request = Request::createFromGlobals();
 $request->setSession($session);

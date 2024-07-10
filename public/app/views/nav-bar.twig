@@ -1,6 +1,6 @@
-<nav class="navbar sticky-top navbar-expand-lg" style="background-color: #e3f2fd;">
+<nav class="navbar sticky-top navbar-expand-lg {% if app.user.admin %}bg-danger{% else %}bg-primary{% endif %}" data-bs-theme="dark">
   <div class="container">
-    <a class="navbar-brand fw-semibold fs-2" href="#">
+    <a class="navbar-brand fw-semibold fs-2" href="/">
       <img src="/assets/logo.png" alt="Logo" class="d-inline-block align-text-center tw-w-14 tw-h-14 rounded-circle">
       DICT
     </a>
@@ -17,9 +17,7 @@
     </button>
     <div class="offcanvas offcanvas-end" id="navbarNavDropdown">
       <ul class="navbar-nav fs-5 ms-lg-auto px-lg-2 py-lg-3 gap-3 p-5">
-        <li class="nav-item">
-          <a class="nav-link{% if current == 'joborders' %} active" aria-current="page{%endif%}" href="#">Job Orders</a>
-        </li>
+        {% if app.user.admin %}
         <li class="nav-item">
           <a class="nav-link{% if current == 'activities' %} active" aria-current="page{%endif%}" href="/admin/activities.php">Activities</a>
         </li>
@@ -32,7 +30,12 @@
         <li class="nav-item mr-5">
           <a class="nav-link{% if current == 'personnels' %} active" aria-current="page{%endif%}" href="/admin/personnels.php">Personnels</a>
         </li>
-        <button class="btn btn-primary align-self-center">Logout</button>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link{% if current == 'dashboard' %} active" aria-current="page{%endif%}" href="#">Dashboards</a>
+        </li>
+        {% endif %}
+        <a href="/logout.php" class="btn btn-secondary align-self-center">Logout</a>
       </ul>
     </div>
   </div>

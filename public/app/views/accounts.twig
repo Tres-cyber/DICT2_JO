@@ -4,7 +4,6 @@
 {% endblock %}
 {% block header %}
 {% set current = 'accounts' %}
-{% set admin = true %}
 {% include 'nav-bar.twig' %}
 {% endblock %}
 {% block body %}
@@ -68,7 +67,7 @@
     <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#AddBackDrop">
       Add Account
     </button>
-    <table class="table-light table-hover table-striped table  border ">
+    <table class="table-light table-striped table  border ">
       <thead>
         <tr>
           <th>Account Name</th>

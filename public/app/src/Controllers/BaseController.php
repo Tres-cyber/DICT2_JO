@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Validator\ValidatorExtension;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\Forms;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\PhpBridgeSessionStorage;
@@ -68,9 +69,16 @@ abstract class BaseController
 
     $app = new class {
       public $session = null;
+      public $user = null;
+      public $request = null;
+      public $debug = false;
+
       public function __construct()
       {
         $this->session = new Session(new PhpBridgeSessionStorage());
+        $this->request = Request::createFromGlobals();
+        $this->request->setSession($this->session);
+        $this->debug = Env::isDev();
       }
 
       public function flashes(string $name)
@@ -78,6 +86,7 @@ abstract class BaseController
         return $this->session->getFlashBag()->get($name);
       }
     };
+    $app->user = $this->getUser();
     $this->twig->addGlobal('app', $app);
 
     $validator = Validation::createValidator();
@@ -100,5 +109,53 @@ abstract class BaseController
   protected function createForm(string $type, mixed $data = null, array $options = []): FormInterface
   {
     return $this->formFactory->create($type, $data, $options);
+  }
+
+  protected function getUser(): ?array
+  {
+    static $account = null;
+
+    $session = new Session(new PhpBridgeSessionStorage());
+    if ($account  === null) {
+      if (!$session->has('session_id')) {
+        return null;
+      }
+
+      $session_id = $session->get('session_id');
+
+      $stmt = execute("
+      SELECT 
+        acc.account_id, acc.personnel_id, acc.admin,
+        per.name, per.position, per.project_id
+      FROM Accounts acc
+      LEFT JOIN Personnels per ON acc.personnel_id = per.personnel_id
+      WHERE 
+        current_session_id = :session_id AND deleted = 0
+    ", [':session_id' => $session_id]);
+      $account = $stmt->fetch();
+    }
+
+    if (!$account) {
+      return null;
+    }
+
+    return $account;
+  }
+
+  protected function allowRoles($role = 'any'): ?array
+  {
+    $account = $this->getUser();
+
+    if (!$account) {
+      header('Location: /signin.php');
+      exit();
+    }
+
+    if ($role == 'admin' && !$account['admin']) {
+      header('Location: /signin.php');
+      exit();
+    }
+
+    return $account;
   }
 }

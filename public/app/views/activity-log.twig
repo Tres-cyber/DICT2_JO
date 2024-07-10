@@ -3,40 +3,38 @@
 <title>ADMIN | Activities</title>
 {% endblock %}
 {% block header %}
- {% include 'nav-bar.twig'%}
+{% set current = "activities" %}
+{% include 'nav-bar.twig' %}
 {% endblock %}
 {% block body %}
-  <div class="container mt-5">
-    <div class="col col-md-8 col-lg-6 table-responsive  mx-auto">
-      <table class="table table-light border table-hover  table-striped ">
-        <thead>
+<div class="container mt-5">
+  <div class="col col-md-9 col-lg-8 col-xl-7 col-xxl-6 table-responsive mx-auto">
+    <table class="table-light table-striped table border">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Log in Time</th>
+          <th>Log out Time</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        {% for ses in session %}
           <tr>
-            <th >Name</th>
-            <th>Log in Time</th>
-            <th>Log out Time</th>
+            <td data-label="Name">
+              {{ ses.name | default("Admin") }}
+            </td>
+            <td data-label="Log in Time">{{ ses.login | date("M d, Y H:i ", "Asia/Manila") }}</td>
+            <td data-label="Log out Time">
+              {% if ses.logout is null %}
+                Still Logged In
+              {% else %}
+                {{ ses.logout | date("M d, Y H:i", "Asia/Manila") }}
+              {% endif %}
+            </td>
           </tr>
-        </thead>
-        <tbody class="table-group-divider">
-          {% for ses in session %}
-            <tr>
-              <td data-label="Name">
-                {{ ses.name | default("Admin") }}
-              </td>
-              <td data-label="Log in Time">{{ ses.login | date("M d, Y H:i ", "Asia/Manila") }}</td>
-              <td data-label="Log out Time">
-                {% if ses.logout is null %}
-                  Still Logged In
-                {% else %}
-                  {{ ses.logout | date("M d, Y H:i", "Asia/Manila") }}
-                {% endif %}
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
+        {% endfor %}
+      </tbody>
+    </table>
   </div>
 </div>
 {% endblock %}
-
- 
