@@ -1,27 +1,30 @@
 {% extends 'base.twig' %}
 {% block head %}
 <title>DICT JO - Sign IN</title>
-<link rel="stylesheet" href="./styles/style.css">
 {% endblock %}
 {% block body %}
-<div class="login-container">
-  <div class="login-logo-wrapper">
-    <img src="assets/logo.png" alt="" class="login-logo">
+ <div class="container vh-100 d-flex justify-content-center align-items-center">
+      <div class="card w-100 tw-p-5 shadow-lg p-3 mb-5 bg-body" style="max-width: 800px;">
+          <div class="row g-0">
+              <div class="col-12 col-md-6 d-flex justify-content-center align-items-center">
+                  <img src="assets/logo.png" class="img-fluid p-5" alt="Logo">
+              </div>
+              <div class="col-12 col-md-6">
+                  <div class="card-body p-4">
+                      <h2 class="card-title text-center pb-5">Job Order System</h2>
+                   
+                    {{ form_start(form) }}
+                     {% for message in app.flashes('error') %}
+                      <strong>{{ message }}</strong>
+                    {% endfor %}
+                    {{ form_widget(form.email, {'attr' : {'placeholder' : 'Email', 'class':'form-control border border-black p-2 mb-3' }}) }}
+                    {{ form_widget(form.password, {'attr' : {'placeholder' : 'Password', 'class':'form-control border border-black p-2 mb-3' }}) }}
+                    {{ form_widget(form.submit, {'attr' : {'class':'btn btn-primary align-self-center ' }}) }} {{ form_rest(form) }}
+                    {{ form_end(form) }}
+                  </div>
+              </div>
+          </div>
+      </div>
   </div>
-  <div class="login-wrapper-2">
-    <img src="assets/logo.png" alt="" class="login-logo-two">
-    <div class="login-box">
-      <h1 class="login-title">Job Order System</h1>
-      {% for message in app.flashes('error') %}
-        <strong>{{ message }}</strong>
-      {% endfor %}
-      {{ form_start(form) }}
-      {{ form_widget(form.email, {'attr' : {'placeholder' : 'Email', 'class':'input-wrapper form-controll' }}) }}
-      {{ form_widget(form.password, {'attr' : {'placeholder' : 'Password', 'class':'input-wrapper form-control' }}) }}
-      {{ form_widget(form.submit, {'attr' : {'class':'btn btn-primary' }}) }} {{ form_rest(form) }}:
-      {{ form_end(form) }}
-    </div>
-  </div>
-</div>
 
 {% endblock %}
