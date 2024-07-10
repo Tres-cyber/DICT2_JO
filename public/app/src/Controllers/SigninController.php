@@ -25,6 +25,7 @@ class SigninController extends BaseController
       return new Response("Bad Request", 400);
     }
 
+    $account = null;
     if ($form->isValid()) {
       $signin = $form->getData();
       $stmt = execute("SELECT account_id, personnel_id, current_session_id, password_hash, admin FROM Accounts WHERE email = :email AND deleted = 0", [
@@ -63,11 +64,11 @@ class SigninController extends BaseController
       );
       $session->set('session_id', $newSessionId);
     }
+
     if ($account['admin'] && is_null($account['personnel_id'])) {
-      header('Location: /admin/index.php');
+      return new RedirectResponse('/admin/index.php');
     } else {
-      header('Location: /dashboard.php');
+      return new RedirectResponse('/dashboard.php');
     }
-    exit();
   }
 }

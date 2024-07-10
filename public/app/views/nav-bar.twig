@@ -1,41 +1,40 @@
-<nav class="navbar sticky-top navbar-expand-lg"  style="background-color: #e3f2fd;">
+<nav class="navbar sticky-top navbar-expand-lg" style="background-color: #e3f2fd;">
   <div class="container">
-     <a class="navbar-brand fw-semibold fs-2" href="#">
+    <a class="navbar-brand fw-semibold fs-2" href="#">
       <img src="/assets/logo.png" alt="Logo" class="d-inline-block align-text-center tw-w-14 tw-h-14 rounded-circle">
       DICT
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="offcanvas offcanvas-end" id="navbarNavDropdown">
-      <ul class="navbar-nav fs-5 gap-3 ms-lg-auto p-5 px-lg-2 py-lg-3">
+      <ul class="navbar-nav fs-5 ms-lg-auto px-lg-2 py-lg-3 gap-3 p-5">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">
-            Activities
-          </a>
+          <a class="nav-link{% if current == 'joborders' %} active" aria-current="page{%endif%}" href="#">Job Orders</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="#">
-            Accounts
-          </a>
-        </li>
-         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="#">
-            Project
-          </a>
+          <a class="nav-link{% if current == 'activities' %} active" aria-current="page{%endif%}" href="/admin/activities.php">Activities</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="#">
-            Personnel
-          </a>
+          <a class="nav-link{% if current == 'accounts' %} active" aria-current="page{%endif%}" href="/admin/accounts.php">Accounts</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link{% if current == 'projects' %} active" aria-current="page{%endif%}" href="/admin/projects.php">Projects</a>
         </li>
         <li class="nav-item mr-5">
-          <a class="nav-link" aria-current="page" href="#">
-            Job Orders
-          </a>
+          <a class="nav-link{% if current == 'personnels' %} active" aria-current="page{%endif%}" href="/admin/personnels.php">Personnels</a>
         </li>
         <button class="btn btn-primary align-self-center">Logout</button>
       </ul>
     </div>
   </div>
 </nav>
+
