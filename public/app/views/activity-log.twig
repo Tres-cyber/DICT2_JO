@@ -1,23 +1,22 @@
 {% extends 'base.twig' %}
 {% block head %}
 <title>ADMIN | Activities</title>
-<link rel="stylesheet" href="../styles/admin_index.css">
 {% endblock %}
 {% block header %}
+ {% include 'nav-bar.twig'%}
 {% endblock %}
 {% block body %}
-<div class="table-container-3">
-  <div class="table-container">
-    <div class="table-container-2">
-      <table class="teybol">
+  <div class="container mt-5">
+    <div class="col col-md-8 col-lg-6 table-responsive  mx-auto">
+      <table class="table table-light border table-hover  table-striped ">
         <thead>
           <tr>
-            <th>Name</th>
+            <th >Name</th>
             <th>Log in Time</th>
             <th>Log out Time</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody class="table-group-divider">
           {% for ses in session %}
             <tr>
               <td data-label="Name">
@@ -39,3 +38,5 @@
   </div>
 </div>
 {% endblock %}
+
+ 
