@@ -3,7 +3,7 @@
 <title>DICT JO - Form</title>
 {% endblock %}
 {% block header %}
-<top-bar></top-bar>
+<top-bar {% if admin %}admin{% endif %}></top-bar>
 {% endblock %}
 {% block body %}
 {% set readonly = true %}
@@ -11,7 +11,7 @@
 <nav aria-label="Breadcrumb" class="print:hidden">
   <ol class="flex p-4">
     <li class="flex items-center">
-      <a href="/dashboard.php" class="text-blue-500 hover:text-blue-600 hover:underline">Home</a>
+      <a href="/admin/job_orders.php" class="text-blue-500 hover:text-blue-600 hover:underline">Home</a>
       <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 448 512" transform="rotate(90)">
         <path d="M201.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 205.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"/>
       </svg>
@@ -21,6 +21,7 @@
     </li>
   </ol>
 </nav>
+
 
 <form
   action="#"
