@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use Exception;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -92,19 +93,35 @@ class AccountsController extends BaseController
     return new RedirectResponse('/admin/accounts.php');
   }
 
-  public function show(Request $request)
+  private function getAccounts()
   {
     $sql = "
     SELECT
-        *,
+        acc.account_id,
+        acc.current_session_id,
         pa.name
     FROM Accounts acc
     JOIN Personnels pa ON acc.personnel_id = pa.personnel_id
-      WHERE acc.deleted = 0
+    WHERE acc.deleted = 0
+    ORDER BY acc.current_session_id DESC
 ";
 
     $stmt = execute($sql);
     $account = $stmt->fetchAll();
+
+    return $account;
+  }
+
+  public function json(Request $request)
+  {
+    $account = $this->getAccounts();
+    return new JsonResponse($account);
+  }
+
+  public function show(Request $request)
+  {
+
+    $account = $this->getAccounts();
 
     $stmt = execute('SELECT DISTINCT p.name FROM Personnels p LEFT JOIN Accounts a ON p.personnel_id = a.personnel_id WHERE a.personnel_id IS NULL OR a.deleted = true');
     $personnels = $stmt->fetchAll();

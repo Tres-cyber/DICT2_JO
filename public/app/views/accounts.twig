@@ -75,35 +75,29 @@
           <th>Action</th>
         </tr>
       </thead>
-      <tbody class="table-group-divider">
-        {% for acc in account %}
+      <tbody class="table-group-divider" x-data="poll('/admin/accounts.php?json')">
+        <template x-for="acc in data" :key="acc.account_id">
           <tr>
-            <td data-label="Account Name">{{ acc.name }}</td>
+            <td data-label="Account Name" x-text="acc.name"></td>
             <td
               data-label="Session Status"
-              class="{% if acc.current_session_id is null %}status-offline{% else %}status-active{% endif %}"
-            >
-              {% if acc.current_session_id is null %}
-                Offline
-              {% else %}
-                Active
-              {% endif %}
-            </td>
+              x-text="acc.current_session_id == null ? 'Offline' : 'Active'"
+            ></td>
             <td data-label="Action">
               <div class="d-flex flex-no-wrap gap-1">
-                <a href="/admin/logout-user.php?id={{ acc.current_session_id }}" class="btn btn-sm btn-primary">
+                <a :href="'/admin/accounts.php?logout=' + acc.current_session_id" class="btn btn-sm btn-primary">
                   <i class="fa-solid fa-right-from-bracket"></i>
                 </a>
                 <button class="btn btn-sm btn-secondary">
                   <i class="fa-solid fa-rotate-right"></i>
                 </button>
-                <a href="/admin/delete_user.php?id={{ acc.account_id }}" class="btn btn-sm btn-danger">
+                <a :href="'/admin/accounts.php?delete=' + acc.account_id" class="btn btn-sm btn-danger">
                   <i class="fa-solid fa-trash"></i>
                 </a>
               </div>
             </td>
           </tr>
-        {% endfor %}
+        </template>
       </tbody>
     </table>
   </div>

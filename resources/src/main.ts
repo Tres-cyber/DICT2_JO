@@ -1,3 +1,4 @@
+import Alpine from "alpinejs";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./tailwind-base.scss";
@@ -14,6 +15,7 @@ import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
 import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
 import { faPrint } from "@fortawesome/free-solid-svg-icons/faPrint";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import poll from "./components/poll";
 
 library.add(
   faPrint,
@@ -28,3 +30,9 @@ library.add(
   faRightFromBracket,
 );
 dom.watch();
+
+(window as any).Alpine = Alpine;
+
+Alpine.data("poll", poll);
+
+Alpine.start();

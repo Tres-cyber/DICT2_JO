@@ -15,6 +15,8 @@ $controller = new AccountsController();
 
 if ($request->isMethod('POST')) {
   $req = $controller->create($request);
+} else if ($request->query->has('json')) {
+  $req = $controller->json($request);
 } else if ($request->query->has('logout')) {
   $req = $controller->logout($request);
 } else if ($request->query->has('delete')) {
@@ -22,4 +24,5 @@ if ($request->isMethod('POST')) {
 } else {
   $req = $controller->show($request);
 }
+
 $req->send();
