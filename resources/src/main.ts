@@ -1,5 +1,6 @@
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./tailwind-base.scss";
 import "./style.css";
 
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
