@@ -49,10 +49,9 @@ $sql = "
 $params = [];
 
 if (!empty($searchQuery)) {
-    $sql .= " WHERE (jo.client_name LIKE :search_query OR
+    $sql .= " AND (jo.client_name LIKE :search_query OR
         jo.job_order_number LIKE :search_query OR
         pi.name LIKE :search_query OR
-        pp.name LIKE :search_query OR
         jo.request_date LIKE :search_query OR
         jo.scheduled_start_date LIKE :search_query OR
         jo.scheduled_end_date LIKE :search_query OR
@@ -67,12 +66,18 @@ $sql .= " LIMIT 8 OFFSET " . $offset;
 $stmt = execute($sql, $params);
 $job_orders = $stmt->fetchAll();
 
+
+$startIndex = $offset + 1;
+$endIndex = min($offset + count($job_orders), $totalCount);
+
 echo $twig->render('job_orders.twig', [
     'joborders' => $job_orders,
     'count' => count($job_orders),
-    'total_count' => $totalCount,
     'current_page' => $p,
     'total_pages' => $totalPages,
-    'search_query' => $searchQuery
+    'search_query' => $searchQuery,
+    'total_count' => $totalCount,
+    'start_index' => $startIndex,  
+    'end_index' => $endIndex       
 ]);
 

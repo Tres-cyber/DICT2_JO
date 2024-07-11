@@ -6,7 +6,7 @@ $searchQuery = isset($_GET['search_query']) ? $_GET['search_query'] : '';
 $p = isset($_GET['p']) ? (int)$_GET['p'] : 1;
 if ($p < 1) $p = 1;
 
-// Query to count total job orders
+
 $countSql = "
     SELECT COUNT(*) as total
     FROM JobOrder jo
@@ -35,7 +35,7 @@ $countStmt = execute($countSql, $countParams);
 $totalCount = $countStmt->fetchColumn();
 $totalPages = ceil($totalCount / 8);
 
-// Main query to get job orders
+
 $sql = "
     SELECT
         *,
@@ -69,7 +69,7 @@ $sql .= " LIMIT 8 OFFSET " . $offset;
 $stmt = execute($sql, $params);
 $job_orders = $stmt->fetchAll();
 
-// Calculate the start and end indices for the current page
+
 $startIndex = $offset + 1;
 $endIndex = min($offset + count($job_orders), $totalCount);
 
@@ -80,7 +80,7 @@ echo $twig->render('dashboard.twig', [
     'total_pages' => $totalPages,
     'search_query' => $searchQuery,
     'total_count' => $totalCount,
-    'start_index' => $startIndex,  // Start index for the current page
-    'end_index' => $endIndex       // End index for the current page
+    'start_index' => $startIndex,  
+    'end_index' => $endIndex       
 ]);
 ?>
