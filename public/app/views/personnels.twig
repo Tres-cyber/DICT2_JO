@@ -24,7 +24,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <form method="post" action="/admin/edit_personnel.php">
-        <input type="hidden" id="edit-personnel-id">
+        <input type="hidden" id="edit-personnel-id" name="id">
         <div class="modal-body">
           <label for="edit-name" class="form-label">Name: </label>
           <input
@@ -51,7 +51,7 @@
           </select>
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Edit</button>
+          <button type="submit" class="btn btn-success">Save</button>
         </div>
       </form>
     </div>
@@ -131,7 +131,7 @@
             <td data-label="Action">
               <div class="d-flex flex-no-wrap gap-1">
                 <button
-                  onclick="setPersonnelId({{ per.personnel_id }})"
+                  onclick="setPersonnelId({{ per.personnel_id }}, '{{ per.name }}', '{{ per.position }}', '{{ per.project_name }}')"
                   class="btn btn-sm btn-primary"
                   data-bs-toggle="modal"
                   data-bs-target="#EditBackDrop"
@@ -150,8 +150,12 @@
   </div>
 </div>
 <script>
-  function setPersonnelId(personnel_id) {
-    document.getElementById('edit-personnel-id').value = personnel_id;
-  }
+  function setPersonnelId(personnel_id, name, position, project_name) {
+console.log(personnel_id)
+        document.getElementById('edit-personnel-id').value = personnel_id;
+        document.getElementById('edit-name').value = name;
+        document.getElementById('edit-position').value = position;
+        document.getElementById('projects-input').value = project_name;
+    }
 </script>
 {% endblock %}
