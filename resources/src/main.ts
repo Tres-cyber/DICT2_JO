@@ -16,6 +16,8 @@ import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
 import { faPrint } from "@fortawesome/free-solid-svg-icons/faPrint";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import poll from "./components/poll";
+import autocomplete from "./components/autocomplete";
+import dateRange from "./components/dateRange";
 
 library.add(
   faPrint,
@@ -34,5 +36,7 @@ dom.watch();
 (window as any).Alpine = Alpine;
 
 Alpine.data("poll", poll);
+Alpine.data("autocomplete", autocomplete);
+Alpine.data("dateRange", dateRange);
 
 Alpine.start();

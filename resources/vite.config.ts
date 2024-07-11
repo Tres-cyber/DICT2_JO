@@ -27,7 +27,7 @@ export default defineConfig({
 
   resolve: {
     alias: {
-      vue: "vue/dist/vue.esm-bundler.js",
+      moment: path.resolve(__dirname, "node_modules/moment/moment.js"),
     },
   },
 });
