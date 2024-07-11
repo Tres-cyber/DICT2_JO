@@ -24,7 +24,6 @@
     class="jo-form tw-mx-auto tw-flex tw-justify-center print:!tw-m-0 print:!tw-max-w-full"
   >
     {{ form_row(form._token) }}
-
     {% if id is defined %}
       <input type="hidden" name="{{ field_name(form.id)}}" value="{{id}}">
     {% endif %}

@@ -8,7 +8,7 @@ if (empty($_GET['id'])) {
 }
 
 $project_id = (int) $_GET['id'];
-execute("DELETE FROM Projects WHERE project_id = :project_id", [':project_id' => $project_id]);
+execute("UPDATE Projects SET deleted = 1 WHERE project_id = :project_id", [':project_id' => $project_id]);
 
 header('Location: /admin/projects.php');
 exit();

@@ -38,9 +38,6 @@ class FormController extends BaseController
   {
     $account = protectRoute();
 
-    $stmt = execute("SELECT name, position FROM Personnels WHERE personnel_id = :id", [':id' => $account['personnel_id']]);
-    $personnel = $stmt->fetch();
-
     $stmt = execute('SELECT name FROM Personnels');
     $personnels = $stmt->fetchAll();
     $options = array_map(function ($item) {
@@ -53,7 +50,7 @@ class FormController extends BaseController
     if (!$jo) {
       return $this->render('404.twig');
     }
-    if ($jo['performer_id'] !== $account['personnel_id']) {
+    if ($jo['performer_id'] !== $account['personnel_id'] and !$account['admin']) {
       header('Location: /dashboard.php');
       exit();
     }
@@ -76,11 +73,12 @@ class FormController extends BaseController
     $form = $this->createForm(JoborderType::class);
 
     return $this->render('form.twig', [
+      'admin' => $account['admin'],
       'form' => $form->createView(),
       'jo' => $jo,
       'endorsee' => $names,
       'options' => $options,
-      'name' => $personnel['name'],
+      'name' => $jo['performed_by'],
       'done' => $jo['status'] == 'Approved' && ($simulateDone || $due),
       'id' => $id,
     ]);

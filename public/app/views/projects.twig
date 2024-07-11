@@ -145,10 +145,10 @@
               <div class="d-flex flex-no-wrap gap-1">
                 <a
                   href="#"
-                  onclick="setProjectId({{ proj.project_id }})"
                   class="btn btn-sm btn-primary"
                   data-bs-toggle="modal"
                   data-bs-target="#EditBackDrop"
+                  onclick="setProjectId({{ proj.project_id }}, '{{ proj.name }}', '{{ proj.project_code }}', '{{ proj.project_name }}', '{{ proj.project_logo }}')"
                 >
                   <i class="fa-solid fa-pen tw-h-3 tw-w-3"></i>
                 </a>
@@ -165,8 +165,19 @@
 </div>
 
 <script>
-  function setProjectId(project_id) {
+  function setProjectId(project_id, name, project_code, project_name, project_logo) {
     document.getElementById('edit-project-id').value = project_id;
+    document.getElementById('focal-input').value = name;
+    document.getElementById('edit-project_code').value = project_code;
+    document.getElementById('edit-project-name').value = project_name;
+
+    var img = document.getElementById('edit-logo');
+
+    if (project_logo) {
+      img.src = project_logo;
+    } else {
+      img.src = '/storage/default.png';
+    }
   }
 </script>
 
