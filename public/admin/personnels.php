@@ -40,7 +40,7 @@ $sql = "
 $stmt = execute($sql);
 $personnel = $stmt->fetchAll();
 
-$stmt = execute('SELECT project_name FROM Projects');
+$stmt = execute('SELECT project_name FROM Projects WHERE deleted =0');
 $projects = $stmt->fetchAll();
 $options = array_map(function ($item) {
   return $item['project_name'];
