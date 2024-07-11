@@ -19,6 +19,9 @@
       <ul class="navbar-nav fs-5 ms-lg-auto px-lg-2 py-lg-3 gap-3 p-5">
         {% if app.user.admin %}
         <li class="nav-item">
+          <a class="nav-link{% if current == 'job_orders' %} active" aria-current="page{%endif%}" href="/admin/job_orders.php">Job Orders</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link{% if current == 'activities' %} active" aria-current="page{%endif%}" href="/admin/activities.php">Activities</a>
         </li>
         <li class="nav-item">

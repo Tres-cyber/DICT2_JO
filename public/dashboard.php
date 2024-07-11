@@ -19,6 +19,7 @@ $countParams = [
     ':personnel_id' => $account['personnel_id']
 ];
 
+// Conditionally add WHERE clause for search query
 if (!empty($searchQuery)) {
     $countSql .= " AND (jo.client_name LIKE :search_query OR
         jo.job_order_number LIKE :search_query OR
@@ -51,6 +52,7 @@ $params = [
     ':personnel_id' => $account['personnel_id']
 ];
 
+// Conditionally add WHERE clause for search query
 if (!empty($searchQuery)) {
     $sql .= " AND (jo.client_name LIKE :search_query OR
         jo.job_order_number LIKE :search_query OR
@@ -63,13 +65,14 @@ if (!empty($searchQuery)) {
     $params[':search_query'] = '%' . $searchQuery . '%';
 }
 
+$sql .= " ORDER BY jo.job_order_id DESC"; // Always order by some column to ensure consistent results
+
 $offset = 8 * ($p - 1);
 $sql .= " LIMIT 8 OFFSET " . $offset;
 
 $stmt = execute($sql, $params);
 $job_orders = $stmt->fetchAll();
 
-// Calculate the start and end indices for the current page
 $startIndex = $offset + 1;
 $endIndex = min($offset + count($job_orders), $totalCount);
 
@@ -80,7 +83,7 @@ echo $twig->render('dashboard.twig', [
     'total_pages' => $totalPages,
     'search_query' => $searchQuery,
     'total_count' => $totalCount,
-    'start_index' => $startIndex,  // Start index for the current page
-    'end_index' => $endIndex       // End index for the current page
+    'start_index' => $startIndex,
+    'end_index' => $endIndex
 ]);
 ?>
