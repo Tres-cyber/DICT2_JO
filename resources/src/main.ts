@@ -18,6 +18,8 @@ import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import poll from "./components/poll";
 import autocomplete from "./components/autocomplete";
 import dateRange from "./components/dateRange";
+import multipleSelect from "./components/multipleSelect";
+import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
 
 library.add(
   faPrint,
@@ -30,11 +32,15 @@ library.add(
   faPen,
   faRotateRight,
   faRightFromBracket,
+  faXmark,
 );
 dom.watch();
 
 (window as any).Alpine = Alpine;
 
+Alpine.data("autocomplete", autocomplete);
+Alpine.data("dateRange", dateRange);
+Alpine.data("multipleSelect", multipleSelect);
 Alpine.data("poll", poll);
 Alpine.data("autocomplete", autocomplete);
 Alpine.data("dateRange", dateRange);
