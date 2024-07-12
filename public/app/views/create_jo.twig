@@ -4,6 +4,12 @@
 <script id="options" type="application/json">
   {{ options | json_encode |raw }}
 </script>
+<script id="endorsee" type="application/json">
+  {{ form.vars.value.endorsee | json_encode | raw }}
+</script>
+<script id="permanent" type="application/json">
+  {{ [app.user.name] | json_encode | raw }}
+</script>
 {% endblock %}
 {% block header %}
 {% include 'nav-bar.twig' %}
@@ -62,11 +68,15 @@
         <div class="form-floating mb-3" x-data="dateRange()">
           <input type="text" class="form-control" placeholder=" ">
           <label class="form-label">Scheduled date</label>
-          <input type="hidden" name="{{ field_name(form.start_scheduled) }}">
-          <input type="hidden" name="{{ field_name(form.end_scheduled) }}">
+          <input type="hidden" name="{{ field_name(form.start_scheduled) }}" :value="format(startDate)">
+          <input type="hidden" name="{{ field_name(form.end_scheduled) }}" :value="format(endDate)">
         </div>
 
-        <div class="dropdown form-floating mb-3" x-data="autocomplete('options')" x-bind="container">
+        <div
+          class="dropdown form-floating mb-3"
+          x-data="autocomplete('options', {{ ("'" ~ form.vars.value.issued_by ~ "'") | e('html_attr')}})"
+          x-bind="container"
+        >
           <input type="hidden" :value="selected" name="{{ field_name(form.issued_by) }}">
           <input type="text" class="form-control" x-model="query" x-bind="input" x-ref="input" placeholder=" ">
           {{ form_label(form.issued_by) }}
@@ -90,7 +100,11 @@
           </ul>
         </div>
 
-        <div class="dropdown form-floating mb-3" x-data="autocomplete('options')" x-bind="container">
+        <div
+          class="dropdown form-floating mb-3"
+          x-data="autocomplete('options', {{ ("'" ~ form.vars.value.approved_by ~ "'") | e('html_attr')}})"
+          x-bind="container"
+        >
           <input type="hidden" :value="selected" name="{{ field_name(form.approved_by) }}">
           <input type="text" class="form-control" x-model="query" x-bind="input" x-ref="input" placeholder=" ">
           {{ form_label(form.approved_by) }}
@@ -114,28 +128,64 @@
           </ul>
         </div>
 
-        <div class="mb-3">
+        <div x-data="multipleSelect('endorsee', 'permanent')">
           {{ form_label(form.endorsee) }}
 
-          <select
-            class="form-control"
-            {% if readonly %}
-              readonly
-            {% endif %}
-            multiple
-            name="{{ field_name(form.endorsee) }}"
-          >
-            {% for option in options %}
-              <option
-                value="{{ option }}"
-                {% if option in endorsee %}
-                  selected
-                {% endif %}
+          <template x-for="val,i in values" :key="val">
+            <div class="input-group mb-2">
+              <input
+                type="text"
+                class="form-control"
+                readonly
+                :name="'{{field_name(form.endorsee)}}['+ i +']'"
+                :value="val"
               >
-                {{ option }}
-              </option>
-            {% endfor %}
-          </select>
+              <button
+                type="button"
+                class="btn btn-outline-danger"
+                type="button"
+                id="button-addon2"
+                :disabled="permanent.includes(val)"
+                @click="remove(val)"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </template>
+
+          <div
+            class="dropdown mb-3"
+            x-data="autocomplete('options', '')"
+            x-bind="container"
+            @select="ev => { add(ev.detail); selected = ''; }"
+          >
+            <input
+              type="text"
+              class="form-control"
+              x-model="query"
+              x-bind="input"
+              x-ref="input"
+              placeholder="Add endorsee"
+            >
+            <ul class="dropdown-menu tw-inset-x-0 tw-max-h-[30vh] overflow-y-scroll" :class="{'show':show}">
+              <template x-if="filteredOptions.length === 0">
+                <li>
+                  <em class="dropdown-item disabled">No results found</em>
+                </li>
+              </template>
+              <template x-for="opt, i in filteredOptions" :key="opt">
+                <li>
+                  <button
+                    type="button"
+                    class="dropdown-item"
+                    :class="{'active': selectedIndex == i}"
+                    @click="select(i)"
+                    x-text="opt"
+                  ></button>
+                </li>
+              </template>
+            </ul>
+          </div>
         </div>
 
         {{ form_row(form.job_description, {'widge_attr': {'rows' : 7 }}) }}

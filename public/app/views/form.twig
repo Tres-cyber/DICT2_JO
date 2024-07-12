@@ -4,9 +4,6 @@
 {% endblock %}
 {% block header %}
 {% include 'nav-bar.twig' %}
-{% endblock %}
-{% block body %}
-{% set readonly = true %}
 
 <div class="container mt-4">
   <nav aria-label="breadcrumb">
@@ -17,17 +14,13 @@
   </nav>
 </div>
 
+{% endblock %}
+{% block body %}
+
 <div class="tw">
-  <form
-    action="#"
-    method="post"
+  <div
     class="jo-form tw-mx-auto tw-flex tw-justify-center print:!tw-m-0 print:!tw-max-w-full"
   >
-    {{ form_row(form._token) }}
-    {% if id is defined %}
-      <input type="hidden" name="{{ field_name(form.id)}}" value="{{id}}">
-    {% endif %}
-
     <div class="tw-relative print:!tw-w-full">
       {% if jo.status == 'Draft' %}
         <strong class="tw-absolute tw-left-1/2 tw-top-1/2 tw-z-[-1] tw-hidden -tw-translate-x-1/2 tw-translate-y-1/2 tw-rotate-[-55deg] tw-scale-[7] tw-text-4xl tw-uppercase tw-tracking-widest tw-text-neutral-300 print:tw-block">
@@ -39,6 +32,7 @@
         <button
           type="button"
           class="button-print btn btn-primary tw-absolute tw-left-4 tw-top-4 tw-z-10 print:tw-hidden"
+          onclick="window.print()"
         >
           <i class="fa-solid fa-print"></i>
           Print
@@ -65,7 +59,7 @@
         <table class="tw-mb-[0.75in] tw-mt-2 tw-w-full tw-border-collapse tw-font-serif">
           <tr>
             <td
-              class="tw-border tw-border-black tw-bg-neutral-200 tw-text-start tw-text-xs tw-font-semibold tw-uppercase tw-leading-none"
+              class="tw-border tw-border-black tw-bg-neutral-200 tw-text-start tw-text-xs tw-font-semibold tw-uppercase"
               colspan="2"
             >
               Client/Worksite Details
@@ -110,39 +104,31 @@
               <div class="tw-flex tw-items-center">
                 <label
                   for="request_mode"
-                  class="tw-text-sm tw-uppercase tw-leading-none"
+                  class="tw-text-sm tw-uppercase"
                 >
                   Mode of request:
                 </label>
-                <input
-                  readonly
-                  id="request_mode"
-                  name="request_mode"
-                  type="text"
-                  value="On Site"
-                  placeholder=" "
-                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-sm tw-font-semibold tw-capitalize tw-leading-none"
+                <span
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-sm tw-font-semibold tw-capitalize"
                 >
+                  On Site
+                </span>
               </div>
             </td>
             <td class="tw-w-1/2 tw-border tw-border-black">
               <div class="tw-flex tw-items-center">
-                <label for="date" class="tw-text-sm tw-uppercase tw-leading-none"> Date: </label>
-                <input
-                  type="date"
-                  {% if readonly %}
-                    readonly
-                  {% endif %}
-                  name="{{ field_name(form.request_date) }}"
-                  value="{{ jo.request_date  | date('Y-m-d') }}"
-                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-rounded-none tw-border-none tw-bg-transparent tw-p-0 tw-font-serif tw-text-sm tw-font-semibold tw-uppercase tw-leading-none"
+                <label for="date" class="tw-text-sm tw-uppercase"> Date: </label>
+                <span
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-rounded-none tw-border-none tw-bg-transparent tw-p-0 tw-font-serif tw-text-sm tw-font-semibold tw-uppercase"
                 >
+                  {{ jo.request_date  | date('F d, Y') }}
+                </span>
               </div>
             </td>
           </tr>
           <tr>
             <td
-              class="tw-border tw-border-black tw-bg-neutral-200 tw-text-start tw-text-xs tw-font-semibold tw-uppercase tw-leading-none"
+              class="tw-border tw-border-black tw-bg-neutral-200 tw-text-start tw-text-xs tw-font-semibold tw-uppercase"
               colspan="2"
             >
               Job Order Details
@@ -151,36 +137,31 @@
           <tr>
             <td class="tw-w-1/2 tw-border tw-border-black">
               <div class="tw-flex tw-items-center">
-                <span class="tw-text-sm tw-uppercase tw-leading-none"> Scheduled date: </span>
-                <input
-                  readonly
-                  type="text"
-
-                  value="{{ jo.scheduled_start_date | date('Y-m-d')  }} - {{ jo.scheduled_end_date | date('Y-m-d')  }}"
-                  name="{{ field_name(form.start_scheduled) }}"
-                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-border-none tw-rounded-none tw-leading-none tw-font-semibold tw-text-sm tw-font-serif tw-p-0 tw-uppercase"
+                <span class="tw-text-sm tw-uppercase"> Scheduled date: </span>
+                <span
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-border-none tw-rounded-none tw-font-semibold tw-text-sm tw-font-serif tw-p-0 tw-uppercase"
                 >
+                  {{ jo.scheduled_start_date | date('M d, Y') }} - {{ jo.scheduled_end_date | date('M d, Y') }}
+                </span>
               </div>
             </td>
             <td class="tw-w-1/2 tw-border tw-border-black">
               <div class="tw-flex tw-items-center">
-                <span class="tw-text-sm tw-uppercase tw-leading-none"> Job order number: </span>
-                <input
-                  {{ jo_editable ? '' : 'readonly' }}
-                  type="text"
-                  value="{{ jo.job_order_number }}"
-                  placeholder=" "
-                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-sm tw-font-semibold tw-leading-none"
+                <span class="tw-text-sm tw-uppercase"> Job order number: </span>
+                <span
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-sm tw-font-semibold"
                 >
+                  {{ jo.job_order_number }}
+                </span>
               </div>
             </td>
           </tr>
           <tr>
             <td class="tw-w-1/2 tw-border tw-border-black">
               <div class="tw-flex tw-items-center">
-                <span class="tw-text-sm tw-uppercase tw-leading-none">Issued by:</span>
+                <span class="tw-text-sm tw-uppercase">Issued by:</span>
                 <span
-                  class="tw-ml-1 tw-flex tw-w-0 tw-flex-1 tw-text-sm tw-font-semibold tw-uppercase tw-leading-none"
+                  class="tw-ml-1 tw-flex tw-w-0 tw-flex-1 tw-text-sm tw-font-semibold tw-uppercase"
                 >
                   {{ jo.issued_by }}
                 </span>
@@ -188,9 +169,9 @@
             </td>
             <td class="tw-w-1/2 tw-border tw-border-black">
               <div class="tw-flex tw-items-center">
-                <span class="tw-text-sm tw-uppercase tw-leading-none">Approved by:</span>
+                <span class="tw-text-sm tw-uppercase">Approved by:</span>
                 <span
-                  class="tw-ml-1 tw-flex tw-w-0 tw-flex-1 tw-text-sm tw-font-semibold tw-uppercase tw-leading-none"
+                  class="tw-ml-1 tw-flex tw-w-0 tw-flex-1 tw-text-sm tw-font-semibold tw-uppercase"
                 >
                   {{ jo.approved_by }}
                 </span>
@@ -202,8 +183,8 @@
             <td class="tw-h-[3em] tw-w-1/2 tw-border tw-border-black" colspan="2">
               <div class="tw-flex tw-items-center">
                 <div class="tw-flex tw-flex-1 tw-items-start">
-                  <span class="tw-mr-1 tw-text-sm tw-uppercase tw-leading-none"> Endorsed to: </span>
-                  <span class="tw-relative tw-ml-1 tw-flex tw-w-0 tw-flex-1 tw-text-sm tw-font-semibold tw-uppercase tw-leading-none">
+                  <span class="tw-mr-1 tw-text-sm tw-uppercase"> Endorsed to: </span>
+                  <span class="tw-relative tw-ml-1 tw-flex tw-w-0 tw-flex-1 tw-text-sm tw-font-semibold tw-uppercase">
                     {% set count = endorsee|length %}
                     {% for name in endorsee %}
                       {% if loop.index == count %}
@@ -225,23 +206,17 @@
                 <span class="tw-block tw-text-sm tw-font-semibold tw-uppercase tw-leading-[19px]"
                   >Job Request Description</span
                 >
-                <textarea
-                  {% if readonly %}
-                    readonly
-                  {% endif %}
-                  class="tw-mx-0 tw-my-2 tw-min-h-[2em] tw-resize-none tw-bg-transparent tw-text-sm tw-leading-none max-h-[10em]"
-                  name="{{ field_name(form.job_description) }}"
-                  name="job_description"
-                  placeholder=" "
+                <div
+                  class="tw-mx-0 tw-my-2 tw-min-h-[2em] tw-resize-none tw-bg-transparent tw-text-sm max-h-[10em]"
                 >
-                {{ jo.job_description }}
-              </textarea>
+                  {{ jo.job_description }}
+                </div>
               </div>
             </td>
           </tr>
           <tr>
             <td
-              class="tw-border tw-border-black tw-bg-neutral-200 tw-text-start tw-text-xs tw-font-semibold tw-uppercase tw-leading-none"
+              class="tw-border tw-border-black tw-bg-neutral-200 tw-text-start tw-text-xs tw-font-semibold tw-uppercase"
               colspan="2"
             >
               Completion Information
@@ -251,16 +226,11 @@
             <td class="tw-w-1/2 tw-border tw-border-black" colspan="2">
               <div class="tw-flex tw-flex-col tw-items-stretch">
                 <span class="tw-block tw-text-sm tw-font-semibold tw-uppercase tw-leading-[19px]">Actual Job Done</span>
-                <textarea
-                  {% if readonly %}
-                    readonly
-                  {% endif %}
-                  class="tw-mx-0 tw-my-2 tw-max-h-[15em] tw-min-h-[2em] tw-resize-none tw-bg-transparent tw-text-sm tw-leading-none"
-                  name="{{ field_name(form.actual_job_done) }}"
-                  placeholder=" "
+                <div
+                  class="tw-mx-0 tw-my-2 tw-max-h-[15em] tw-min-h-[2em] tw-resize-none tw-bg-transparent tw-text-sm"
                 >
-                {{ jo.actual_job_done }}
-              </textarea>
+                  {{ jo.actual_job_done }}
+                </div>
               </div>
             </td>
           </tr>
@@ -269,20 +239,17 @@
               <div class="tw-flex tw-h-[5em] tw-items-end">
                 <span class="tw-text-sm tw-uppercase tw-leading-[19px]"> Performed by: </span>
                 <div class="tw-flex tw-flex-1 tw-flex-col tw-items-center">
-                  <input
+                  <span
                     readonly
-                    type="text"
-                    value="{{ jo.performed_by | e('html_attr') }}"
-                    placeholder=" "
-                    class="tw-w-full tw-bg-transparent tw-text-center tw-text-sm tw-font-semibold tw-uppercase tw-leading-none"
+                    class="tw-w-full tw-bg-transparent tw-text-center tw-text-sm tw-font-semibold tw-uppercase"
                   >
-                  <input
-                    readonly
-                    type="text"
-                    value="{{ jo.performer_position | e('html_attr') }}"
-                    placeholder=" "
-                    class="tw-w-full tw-bg-transparent tw-text-center tw-text-xs tw-font-medium tw-uppercase tw-italic tw-leading-none"
+                    {{- jo.performed_by }}
+                  </span>
+                  <span
+                    class="tw-w-full tw-bg-transparent tw-text-center tw-text-xs tw-font-medium tw-uppercase tw-italic"
                   >
+                    {{ jo.performer_position | e('html_attr') }}
+                  </span>
                 </div>
               </div>
             </td>
@@ -292,26 +259,16 @@
               <div class="tw-flex tw-h-[5em] tw-items-end">
                 <span class="tw-text-sm tw-uppercase tw-leading-[19px]"> Verified by: </span>
                 <div class="tw-flex tw-flex-1 tw-flex-col tw-items-center">
-                  <input
-                    {% if readonly %}
-                      readonly
-                    {% endif %}
-                    type="text"
-                    name="{{ field_name(form.verifier) }}"
-                    value="{{ jo.verifier }}"
-                    class="tw-w-full tw-bg-transparent tw-text-center tw-text-sm tw-font-semibold tw-uppercase tw-leading-none"
-                    placeholder="client name"
+                  <span
+                    class="tw-w-full tw-bg-transparent tw-text-center tw-text-sm tw-font-semibold tw-uppercase"
                   >
-                  <input
-                    {% if readonly %}
-                      readonly
-                    {% endif %}
-                    type="text"
-                    name="{{ field_name(form.verifier_position) }}"
-                    value="{{ jo.verifier_position | e('html_attr') }}"
-                    class="tw-w-full tw-bg-transparent tw-text-center tw-text-xs tw-font-medium tw-uppercase tw-italic tw-leading-none"
-                    placeholder="position"
+                    {{ jo.verifier }}
+                  </span>
+                  <span
+                    class="tw-w-full tw-bg-transparent tw-text-center tw-text-xs tw-font-medium tw-uppercase tw-italic"
                   >
+                    {{ jo.verifier_position | e('html_attr') }}
+                  </span>
                 </div>
               </div>
             </td>
@@ -323,14 +280,11 @@
             >Remarks/Comment/Feedback</span
           >
           <div class="tw-h-0 tw-flex-1">
-            <textarea
-              {% if readonly %}
-                readonly
-              {% endif %}
-              name="{{ field_name(form.remarks) }}"
-              placeholder=" "
-              class="tw-h-full tw-w-full tw-resize-none tw-bg-transparent tw-text-sm tw-leading-none"
-            >{{ jo.remarks }}</textarea>
+            <div
+              class="tw-h-full tw-w-full tw-resize-none tw-bg-transparent tw-text-sm"
+            >
+              {{ jo.remarks }}
+            </div>
           </div>
         </div>
         <em class="tw-invisible tw-mt-4 print:tw-visible">
@@ -338,6 +292,6 @@
         </em>
       </div>
     </div>
-  </form>
+  </div>
 </div>
 {% endblock %}

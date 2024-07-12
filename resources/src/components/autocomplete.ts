@@ -1,10 +1,11 @@
 import { metaphone } from "metaphone";
 import { AlpineComponent } from "alpinejs";
 
-interface AutocompleteData {
+type AutocompleteData = {
   show: boolean;
   options: string[];
   query: string;
+  ignored: string[];
   phonemesOptions: string[];
   selected: string;
   filteredOptions: string[];
@@ -12,14 +13,18 @@ interface AutocompleteData {
   container: any;
   input: any;
   select(n: number): void;
-}
+};
 
-export default (optionId: string): AlpineComponent<AutocompleteData> => ({
+export default (
+  optionId: string,
+  initial: string = "",
+): AlpineComponent<AutocompleteData> => ({
   show: false,
   options: [] as string[],
-  selected: "",
+  selected: initial,
   selectedIndex: 0,
-  query: "",
+  query: initial,
+  ignored: [],
 
   init() {
     const jsonEl = document.getElementById(optionId);
@@ -37,6 +42,14 @@ export default (optionId: string): AlpineComponent<AutocompleteData> => ({
         this.query = this.selected;
       }
     });
+
+    this.$watch("selected", (s) => {
+      this.$dispatch("select", s);
+    });
+
+    this.$watch("values", (v) => {
+      this.ignored = v;
+    });
   },
 
   get phonemesOptions(): string[] {
@@ -46,8 +59,9 @@ export default (optionId: string): AlpineComponent<AutocompleteData> => ({
   get filteredOptions(): string[] {
     return this.options.filter(
       (opt, i) =>
-        opt.toLowerCase().includes(this.query.toLowerCase()) ||
-        this.phonemesOptions[i].includes(metaphone(this.query)),
+        !this.ignored.includes(opt) &&
+        (opt.toLowerCase().includes(this.query.toLowerCase()) ||
+          this.phonemesOptions[i].includes(metaphone(this.query))),
     );
   },
 
