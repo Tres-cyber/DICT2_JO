@@ -269,14 +269,15 @@ WHERE
     $session = $request->getSession();
     $flashes = $session->getFlashBag();
 
-    /*
     if ($form->get('submit')->isClicked()) {
       if (!$form->isValid()) {
         $errors = [];
 
-        foreach ($form->getErrors() as $v) {
+        foreach ($form->getErrors(true, true) as $v) {
+          $origin = $v->getOrigin()->getName();
+          if ($origin === 'endorsee') continue;
           $errors[] = [
-            "origin" => $v->getOrigin()->getName(),
+            "origin" => $origin,
             "message" => $v->getMessage()
           ];
         }
@@ -285,7 +286,6 @@ WHERE
         return new RedirectResponse($request->getRequestUri());
       }
     }
-*/
 
     if (is_null($jo['id'])) {
       $this->insert($jo);
@@ -333,6 +333,11 @@ WHERE
 
     if ($flashes->has('form_errors')) {
       $errors = $flashes->get('form_errors');
+
+      echo "<pre>";
+      var_dump($errors);
+      echo "</pre>";
+      exit();
 
       foreach ($errors as $e) {
         $form->get($e['origin'])->addError(new FormError($e['message']));
