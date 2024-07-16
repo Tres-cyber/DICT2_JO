@@ -3,6 +3,7 @@ require_once __DIR__ . '/../app/setup.php';
 $account = protectRoute(true);
 
 $searchQuery = isset($_GET['search_query']) ? $_GET['search_query'] : '';
+$sortOption = isset($_GET['sort']) ? $_GET['sort'] : '';
 $p = isset($_GET['p']) ? (int)$_GET['p'] : 1;
 if ($p < 1) $p = 1;
 
@@ -62,8 +63,25 @@ if (!empty($searchQuery)) {
         pa.name LIKE :search_query)";
     $params[':search_query'] = '%' . $searchQuery . '%';
 }
+switch ($sortOption) {
+    case 'date_asc':
+        $sql .= " ORDER BY jo.request_date ASC";
+        break;
+    case 'date_desc':
+        $sql .= " ORDER BY jo.request_date DESC";
+        break;
+    case 'issued_by':
+        $sql .= " ORDER BY pi.name ASC";
+        break;
+    case 'approved_by':
+        $sql .= " ORDER BY pa.name ASC";
+        break;
+    default:
+        $sql .= " ORDER BY jo.job_order_id DESC"; 
+        break;
+}
 
-$sql .= " ORDER BY jo.job_order_id DESC"; // Always order by some column to ensure consistent results
+
 
 $offset = 8 * ($p - 1);
 $sql .= " LIMIT 8 OFFSET " . $offset;
@@ -82,6 +100,7 @@ echo $twig->render('job_orders.twig', [
     'search_query' => $searchQuery,
     'total_count' => $totalCount,
     'start_index' => $startIndex,
-    'end_index' => $endIndex
+    'end_index' => $endIndex,
+    'sort_option' => $sortOption 
 ]);
 ?>

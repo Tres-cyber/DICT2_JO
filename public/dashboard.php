@@ -3,10 +3,11 @@ require_once __DIR__ . '/app/setup.php';
 $account = protectRoute();
 
 $searchQuery = isset($_GET['search_query']) ? $_GET['search_query'] : '';
+$sortOption = isset($_GET['sort']) ? $_GET['sort'] : '';
 $p = isset($_GET['p']) ? (int)$_GET['p'] : 1;
 if ($p < 1) $p = 1;
 
-// Query to count total job orders
+
 $countSql = "
     SELECT COUNT(*) as total
     FROM JobOrder jo
@@ -19,7 +20,7 @@ $countParams = [
     ':personnel_id' => $account['personnel_id']
 ];
 
-// Conditionally add WHERE clause for search query
+
 if (!empty($searchQuery)) {
     $countSql .= " AND (jo.client_name LIKE :search_query OR
         jo.job_order_number LIKE :search_query OR
@@ -36,7 +37,7 @@ $countStmt = execute($countSql, $countParams);
 $totalCount = $countStmt->fetchColumn();
 $totalPages = ceil($totalCount / 8);
 
-// Main query to get job orders
+
 $sql = "
     SELECT
         *,
@@ -52,7 +53,7 @@ $params = [
     ':personnel_id' => $account['personnel_id']
 ];
 
-// Conditionally add WHERE clause for search query
+
 if (!empty($searchQuery)) {
     $sql .= " AND (jo.client_name LIKE :search_query OR
         jo.job_order_number LIKE :search_query OR
@@ -65,7 +66,24 @@ if (!empty($searchQuery)) {
     $params[':search_query'] = '%' . $searchQuery . '%';
 }
 
-$sql .= " ORDER BY jo.job_order_id DESC"; // Always order by some column to ensure consistent results
+
+switch ($sortOption) {
+    case 'date_asc':
+        $sql .= " ORDER BY jo.request_date ASC";
+        break;
+    case 'date_desc':
+        $sql .= " ORDER BY jo.request_date DESC";
+        break;
+    case 'issued_by':
+        $sql .= " ORDER BY pi.name ASC";
+        break;
+    case 'approved_by':
+        $sql .= " ORDER BY pa.name ASC";
+        break;
+    default:
+        $sql .= " ORDER BY jo.job_order_id DESC"; 
+        break;
+}
 
 $offset = 8 * ($p - 1);
 $sql .= " LIMIT 8 OFFSET " . $offset;
@@ -84,6 +102,7 @@ echo $twig->render('dashboard.twig', [
     'search_query' => $searchQuery,
     'total_count' => $totalCount,
     'start_index' => $startIndex,
-    'end_index' => $endIndex
+    'end_index' => $endIndex,
+    'sort_option' => $sortOption 
 ]);
 ?>

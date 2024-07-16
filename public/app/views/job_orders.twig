@@ -31,17 +31,17 @@
         <span class="hidden sm:block">add</span>
         <i class="fa-solid fa-plus"></i>
       </a>
-      {# <div class="dropdown">
-        <button class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          Filter
-        </button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Date</a>
-          <a class="dropdown-item" href="#">Issued By</a>
-          <a class="dropdown-item" href="#">Approved By</a>
-          <a class="dropdown-item" href="#">Status</a>
-        </div>
-      </div> #}
+      <div class="dropdown">
+    <button class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        Filter
+    </button>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="?sort=date_asc&search_query={{ search_query }}">Date Ascending</a>
+        <a class="dropdown-item" href="?sort=date_desc&search_query={{ search_query }}">Date Descending</a>
+        <a class="dropdown-item" href="?sort=issued_by&search_query={{ search_query }}">Issued By</a>
+        <a class="dropdown-item" href="?sort=approved_by&search_query={{ search_query }}">Approved By</a>
+    </div>
+</div>
       <form action="job_orders.php" method="GET" class="input-group">
         <input class="form-control form-control-sm" type="text" name="search_query" placeholder="Search...">
         <button
@@ -117,26 +117,25 @@
   <ul class="pagination">
     {% if current_page > 1 %}
       <li class="page-item">
-        <a class="page-link" href="/admin/job_orders.php?p={{ current_page - 1 }}{% if search_query %}&search_query={{ search_query }}{% endif %}">Prev</a>
+        <a class="page-link" href="/job_orders.php?p={{ current_page - 1 }}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if sort_option %}&sort={{ sort_option }}{% endif %}">Prev</a>
       </li>
     {% endif %}
 
-    {% for n in range(1, total_pages ) %}
+    {% for n in range(1, total_pages) %}
       {% if total_pages > 0 %}
         <li class="page-item {% if n == current_page %}active{% endif %}">
-          <a class="page-link" href="/admin/job_orders.php?p={{ n }}{% if search_query %}&search_query={{ search_query }}{% endif %}">{{ n }}</a>
+          <a class="page-link" href="job_orders.php?p={{ n }}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if sort_option %}&sort={{ sort_option }}{% endif %}">{{ n }}</a>
         </li>
       {% endif %}
     {% endfor %}
 
     {% if current_page < total_pages and total_pages > 1 %}
       <li class="page-item">
-        <a class="page-link" href="/admin/job_orders.php?p={{ current_page + 1 }}{% if search_query %}&search_query={{ search_query }}{% endif %}">Next</a>
+        <a class="page-link" href="job_orders.php?p={{ current_page + 1 }}{% if search_query %}&search_query={{ search_query }}{% endif %}{% if sort_option %}&sort={{ sort_option }}{% endif %}">Next</a>
       </li>
     {% endif %}
   </ul>
 </nav>
-
 
 
 
