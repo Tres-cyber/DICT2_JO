@@ -10,9 +10,14 @@
   --bs-navbar-brand-font-size: 24px;
 }
 
-.jo-form input:not([readonly]),
-.jo-form textarea:not([readonly]) {
-  @apply tw-bg-red-100;
+.form-label::after {
+  background: transparent !important;
+}
+
+@media print {
+  header {
+    display: none !important;
+  }
 }
 
 @tailwind components;

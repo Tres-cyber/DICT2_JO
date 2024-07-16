@@ -1,24 +1,29 @@
 {% extends 'base.twig' %}
 {% block head %}
 <title>DICT JO - New Job Order</title>
+<script id="options" type="application/json">
+  {{ options | json_encode |raw }}
+</script>
+<script id="endorsee" type="application/json">
+  {{ form.vars.value.endorsee | json_encode | raw }}
+</script>
+<script id="permanent" type="application/json">
+  {{ [app.user.name] | json_encode | raw }}
+</script>
 {% endblock %}
 {% block header %}
 {% include 'nav-bar.twig' %}
 {% endblock %}
 {% block body %}
-<nav aria-label="Breadcrumb">
-  <ol class="flex p-4">
-    <li class="flex items-center">
-      <a href="/dashboard.php" class="text-blue-500 hover:text-blue-600 hover:underline">Home</a>
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 448 512" transform="rotate(90)">
-        <path d="M201.4 137.4c12.5-12.5 32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L224 205.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l160-160z"/>
-      </svg>
-    </li>
-    <li class="flex items-center text-gray-500">
-      <span class="mx-2">Create</span>
-    </li>
-  </ol>
-</nav>
+
+<div class="container mt-4">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/dashboard.php">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Create or edit</li>
+    </ol>
+  </nav>
+</div>
 
 <div class="container mx-auto grid place-items-center">
   <div class="card tw-w-full tw-max-w-2xl tw-mx-auto">
@@ -27,6 +32,8 @@
       {{ form_start(form) }}
 
       {{ form_errors(form) }}
+
+      <hr>
 
       <div>
         <h5>Client Information</h5>
@@ -42,88 +49,158 @@
         </div>
 
         <div class="row g-3">
-          <div class="form-floating col mb-3">
+          <div class="form-floating col-12 col-md mb-3">
             {{ form_widget(form.client_contact, {'attr': {'placeholder': ' ' }}) }}
             {{ form_label(form.client_contact) }}
           </div>
-          <div class="form-floating col mb-3">
+          <div class="form-floating col-12 col-md mb-3">
             {{ form_widget(form.request_date, {'attr': {'placeholder': ' ' }}) }}
             {{ form_label(form.request_date) }}
           </div>
         </div>
       </div>
 
+      <hr>
+
       <div>
         <h5>Job Order Details</h5>
 
-        <div class="row g-3">
-          <div class="form-floating col mb-3">
-            {{ form_widget(form.start_scheduled, {'attr': {'placeholder': ' ' }}) }}
-            {{ form_label(form.start_scheduled) }}
-          </div>
-          <div class="form-floating col mb-3">
-            {{ form_widget(form.end_scheduled, {'attr': {'placeholder': ' ' }}) }}
-            {{ form_label(form.end_scheduled) }}
-          </div>
+        <div class="form-floating mb-3" x-data="dateRange()">
+          <input type="text" class="form-control" placeholder=" ">
+          <label class="form-label">Scheduled date</label>
+          <input type="hidden" name="{{ field_name(form.start_scheduled) }}" :value="format(startDate)">
+          <input type="hidden" name="{{ field_name(form.end_scheduled) }}" :value="format(endDate)">
         </div>
 
-        {{ form_row(form.issued_by) }}
-        {{ form_row(form.approved_by) }}
+        <div
+          class="dropdown form-floating mb-3"
+          x-data="autocomplete('options', {{ ("'" ~ form.vars.value.issued_by ~ "'") | e('html_attr')}})"
+          x-bind="container"
+        >
+          <input type="hidden" :value="selected" name="{{ field_name(form.issued_by) }}">
+          <input type="text" class="form-control" x-model="query" x-bind="input" x-ref="input" placeholder=" ">
+          {{ form_label(form.issued_by) }}
+          <ul class="dropdown-menu tw-inset-x-0 tw-max-h-[30vh] overflow-y-scroll" :class="{'show':show}">
+            <template x-if="filteredOptions.length === 0">
+              <li>
+                <em class="dropdown-item disabled">No results found</em>
+              </li>
+            </template>
+            <template x-for="opt, i in filteredOptions" :key="opt">
+              <li>
+                <button
+                  type="button"
+                  class="dropdown-item"
+                  :class="{'active': selectedIndex == i}"
+                  @click="select(i)"
+                  x-text="opt"
+                ></button>
+              </li>
+            </template>
+          </ul>
+        </div>
 
-        <div class="mb-3">
+        <div
+          class="dropdown form-floating mb-3"
+          x-data="autocomplete('options', {{ ("'" ~ form.vars.value.approved_by ~ "'") | e('html_attr')}})"
+          x-bind="container"
+        >
+          <input type="hidden" :value="selected" name="{{ field_name(form.approved_by) }}">
+          <input type="text" class="form-control" x-model="query" x-bind="input" x-ref="input" placeholder=" ">
+          {{ form_label(form.approved_by) }}
+          <ul class="dropdown-menu tw-inset-x-0 tw-max-h-[30vh] overflow-y-scroll" :class="{'show':show}">
+            <template x-if="filteredOptions.length === 0">
+              <li>
+                <em class="dropdown-item disabled">No results found</em>
+              </li>
+            </template>
+            <template x-for="opt, i in filteredOptions" :key="opt">
+              <li>
+                <button
+                  type="button"
+                  class="dropdown-item"
+                  :class="{'active': selectedIndex == i}"
+                  @click="select(i)"
+                  x-text="opt"
+                ></button>
+              </li>
+            </template>
+          </ul>
+        </div>
+
+        <div x-data="multipleSelect('endorsee', 'permanent')">
           {{ form_label(form.endorsee) }}
 
-          <select
-            class="form-control"
-            {% if readonly %}
-              readonly
-            {% endif %}
-            multiple
-            name="{{ field_name(form.endorsee) }}"
-          >
-            {% for option in options %}
-              <option
-                value="{{ option }}"
-                {% if option in endorsee %}
-                  selected
-                {% endif %}
+          <template x-for="val,i in values" :key="val">
+            <div class="input-group mb-2">
+              <input
+                type="text"
+                class="form-control"
+                readonly
+                :name="'{{field_name(form.endorsee)}}['+ i +']'"
+                :value="val"
               >
-                {{ option }}
-              </option>
-            {% endfor %}
-          </select>
-          <multiple-select
-            {% if readonly %}
-              readonly
-            {% endif %}
-            placeholder="Add endorsee"
-            name="{{ field_name(form.endorsee) }}"
-            :selected="[{{ endorsee | default([]) | map(n => "'#{n}'") | join(',') | e('html_attr') }}]"
-            container-class="row"
-            value-class="flex"
-            delete-class="btn btn-sm btn-danger mb-2 ml-auto"
-            select-class="leading-non row relative flex text-sm"
-            input-class="form-control"
-            choices-class="absolute inset-x-0 top-[calc(100%+4px)] flex h-60 flex-col gap-1 overflow-y-scroll rounded border border-neutral-400 bg-white p-2"
-            option-class="ui-active:text-blue-950 ui-active:font-bold"
-            :include-delimeter="false"
-            options="{{ options | default([1,2,3]) | join('|') | e('html_attr')}}"
-            seperator="|"
-          ></multiple-select>
+              <button
+                type="button"
+                class="btn btn-outline-danger"
+                type="button"
+                id="button-addon2"
+                :disabled="permanent.includes(val)"
+                @click="remove(val)"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </template>
+
+          <div
+            class="dropdown mb-3"
+            x-data="autocomplete('options', '')"
+            x-bind="container"
+            @select="ev => { add(ev.detail); selected = ''; }"
+          >
+            <input
+              type="text"
+              class="form-control"
+              x-model="query"
+              x-bind="input"
+              x-ref="input"
+              placeholder="Add endorsee"
+            >
+            <ul class="dropdown-menu tw-inset-x-0 tw-max-h-[30vh] overflow-y-scroll" :class="{'show':show}">
+              <template x-if="filteredOptions.length === 0">
+                <li>
+                  <em class="dropdown-item disabled">No results found</em>
+                </li>
+              </template>
+              <template x-for="opt, i in filteredOptions" :key="opt">
+                <li>
+                  <button
+                    type="button"
+                    class="dropdown-item"
+                    :class="{'active': selectedIndex == i}"
+                    @click="select(i)"
+                    x-text="opt"
+                  ></button>
+                </li>
+              </template>
+            </ul>
+          </div>
         </div>
 
         {{ form_row(form.job_description, {'widge_attr': {'rows' : 7 }}) }}
       </div>
+      <hr>
       <div>
         <h5>Completion Information</h5>
         {{ form_row(form.actual_job_done) }}
 
         <div class="row g-3">
-          <div class="form-floating col mb-3">
+          <div class="form-floating col-12 col-md mb-3">
             {{ form_widget(form.verifier, {'attr': {'placeholder': ' ' }}) }}
             {{ form_label(form.verifier) }}
           </div>
-          <div class="form-floating col mb-3">
+          <div class="form-floating col-12 col-md mb-3">
             {{ form_widget(form.verifier_position, {'attr': {'placeholder': ' ' }}) }}
             {{ form_label(form.verifier_position) }}
           </div>
@@ -132,9 +209,9 @@
         {{ form_row(form.remarks) }}
       </div>
 
-      <div class="row gap-2">
-        {{ form_widget(form.draft, {'attr': {'class': 'btn btn-primary col' }}) }}
-        {{ form_widget(form.submit, {'attr': {'class': 'btn btn-success col' }}) }}
+      <div class="row gap-2 p-2">
+        {{ form_widget(form.draft, {'attr': {'class': 'btn btn-primary col-12 col-md' }}) }}
+        {{ form_widget(form.submit, {'attr': {'class': 'btn btn-success col-12 col-md' }}) }}
       </div>
 
       {{ form_rest(form) }}
@@ -142,5 +219,4 @@
     </div>
   </div>
 </div>
-
 {% endblock %}

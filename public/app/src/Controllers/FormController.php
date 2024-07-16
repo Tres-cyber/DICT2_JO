@@ -31,7 +31,21 @@ class FormController extends BaseController
 ";
     $stmt = execute($sql, [':id' => $id]);
 
-    return $stmt->fetch();
+    $jo =  $stmt->fetch();
+    if (!$jo) return false;
+
+    $stmt = execute("SELECT p.name 
+        FROM EndorsedPersonnels ep
+        JOIN Personnels p ON ep.personnel_id = p.personnel_id
+        WHERE ep.job_order_id = :id
+    ", [':id' => $id]);
+    $endorsee = $stmt->fetchAll();
+    $names = array_map(function ($item) {
+      return $item['name'];
+    }, $endorsee);
+
+    $jo['endorsee'] = $names;
+    return $jo;
   }
 
   public function show(Request $request)
@@ -55,15 +69,6 @@ class FormController extends BaseController
       exit();
     }
 
-    $stmt = execute("SELECT p.name 
-        FROM EndorsedPersonnels ep
-        JOIN Personnels p ON ep.personnel_id = p.personnel_id
-        WHERE ep.job_order_id = :id
-    ", [':id' => $id]);
-    $endorsee = $stmt->fetchAll();
-    $names = array_map(function ($item) {
-      return $item['name'];
-    }, $endorsee);
     $simulateDone = \App\Util\Env::isDev() && $request->query->has('done');
 
     $currentDate = new DateTime();
@@ -76,7 +81,7 @@ class FormController extends BaseController
       'admin' => $account['admin'],
       'form' => $form->createView(),
       'jo' => $jo,
-      'endorsee' => $names,
+      'endorsee' => $jo['endorsee'],
       'options' => $options,
       'name' => $jo['performed_by'],
       'done' => $jo['status'] == 'Approved' && ($simulateDone || $due),
@@ -158,9 +163,12 @@ INSERT INTO JobOrder (
   private function update($jo)
   {
     $account = protectRoute();
+    $stmt = execute("SELECT name, position, project_id FROM Personnels WHERE personnel_id = :id", [':id' => $account['personnel_id']]);
+    $personnel = $stmt->fetch();
+
     $sql = "
 UPDATE JobOrder SET
-    project_id = 3,
+    project_id = :project_id,
     scheduled_start_date = :scheduled_start_date,
     scheduled_end_date = :scheduled_end_date,
     performer_id = :performer_id,
@@ -191,6 +199,7 @@ WHERE
     if (!$approved_by) $approved_by = null;
 
     $args = [
+      ':project_id' => $personnel['project_id'],
       ':job_order_id' => $jo['id'],
       ':scheduled_start_date' => $jo['start_scheduled']->format('Y-m-d'),
       ':scheduled_end_date' => $jo['end_scheduled']->format('Y-m-d'),
@@ -212,9 +221,8 @@ WHERE
 
     execute($sql, $args);
 
-    $stmt = execute("SELECT name, position FROM Personnels WHERE personnel_id = :id", [':id' => $account['personnel_id']]);
+    execute("DELETE FROM EndorsedPersonnels WHERE job_order_id = :id", ['id' => $jo['id']]);
 
-    $personnel = $stmt->fetch();
     $endorsee = array_unique(array_merge($jo['endorsee'], [$personnel['name']]));
 
     $sql = "INSERT INTO EndorsedPersonnels (job_order_id, personnel_id) VALUES (:job_order_id, :personnel_id)";
@@ -261,14 +269,15 @@ WHERE
     $session = $request->getSession();
     $flashes = $session->getFlashBag();
 
-    /*
     if ($form->get('submit')->isClicked()) {
       if (!$form->isValid()) {
         $errors = [];
 
-        foreach ($form->getErrors() as $v) {
+        foreach ($form->getErrors(true, true) as $v) {
+          $origin = $v->getOrigin()->getName();
+          if ($origin === 'endorsee') continue;
           $errors[] = [
-            "origin" => $v->getOrigin()->getName(),
+            "origin" => $origin,
             "message" => $v->getMessage()
           ];
         }
@@ -277,7 +286,6 @@ WHERE
         return new RedirectResponse($request->getRequestUri());
       }
     }
-*/
 
     if (is_null($jo['id'])) {
       $this->insert($jo);
@@ -308,6 +316,7 @@ WHERE
       'job_order_number' => $jo_num,
       'performed_by' => $personnel['name'],
       'performer_position' => $personnel['position'],
+      'endorsee' => [$personnel['name']],
     ];
 
     $id  = $request->query->get('edit');
@@ -325,6 +334,11 @@ WHERE
     if ($flashes->has('form_errors')) {
       $errors = $flashes->get('form_errors');
 
+      echo "<pre>";
+      var_dump($errors);
+      echo "</pre>";
+      exit();
+
       foreach ($errors as $e) {
         $form->get($e['origin'])->addError(new FormError($e['message']));
       }
@@ -332,7 +346,6 @@ WHERE
 
     return $this->render('create_jo.twig', [
       'form' => $form->createView(),
-      'endorsee' => [$jo['performed_by']],
       'options' => $options,
     ]);
   }
