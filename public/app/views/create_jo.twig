@@ -38,42 +38,53 @@
       <div>
         <h5>Client Information</h5>
 
-        <div class="form-floating mb-3">
+        <div class="form-floating">
           {{ form_widget(form.client_name, {'attr': {'placeholder': ' ' }}) }}
           {{ form_label(form.client_name) }}
         </div>
+        {{ form_errors(form.client_name) }}
 
-        <div class="form-floating mb-3">
+        <div class="form-floating mt-3">
           {{ form_widget(form.client_lgu, {'attr': {'placeholder': ' ' }}) }}
           {{ form_label(form.client_lgu) }}
         </div>
+        {{ form_errors(form.client_lgu) }}
 
-        <div class="row g-3">
-          <div class="form-floating col-12 col-md mb-3">
-            {{ form_widget(form.client_contact, {'attr': {'placeholder': ' ' }}) }}
-            {{ form_label(form.client_contact) }}
+        <div class="row g-3 mt-3">
+          <div class="col-12 col-md">
+            <div class="form-floating">
+              {{ form_widget(form.client_contact, {'attr': {'placeholder': ' ' }}) }}
+              {{ form_label(form.client_contact) }}
+            </div>
+            {{ form_errors(form.client_contact) }}
           </div>
-          <div class="form-floating col-12 col-md mb-3">
-            {{ form_widget(form.request_date, {'attr': {'placeholder': ' ' }}) }}
-            {{ form_label(form.request_date) }}
+
+          <div class="col-12 col-md">
+            <div class="form-floating">
+              {{ form_widget(form.request_date, {'attr': {'placeholder': ' ' }}) }}
+              {{ form_label(form.request_date) }}
+            </div>
+            {{ form_errors(form.request_date) }}
           </div>
         </div>
       </div>
 
-      <hr>
+      <hr class="mt-3">
 
       <div>
         <h5>Job Order Details</h5>
 
-        <div class="form-floating mb-3" x-data="dateRange()">
+        <div class="form-floating" x-data="dateRange()">
           <input type="text" class="form-control" placeholder=" ">
           <label class="form-label">Scheduled date</label>
           <input type="hidden" name="{{ field_name(form.start_scheduled) }}" :value="format(startDate)">
           <input type="hidden" name="{{ field_name(form.end_scheduled) }}" :value="format(endDate)">
         </div>
+        {{ form_errors(form.start_scheduled) }}
+        {{ form_errors(form.end_scheduled) }}
 
         <div
-          class="dropdown form-floating mb-3"
+          class="dropdown form-floating mt-3"
           x-data="autocomplete('options', {{ ("'" ~ form.vars.value.issued_by ~ "'") | e('html_attr')}})"
           x-bind="container"
         >
@@ -99,9 +110,10 @@
             </template>
           </ul>
         </div>
+        {{ form_errors(form.issued_by) }}
 
         <div
-          class="dropdown form-floating mb-3"
+          class="dropdown form-floating mt-3"
           x-data="autocomplete('options', {{ ("'" ~ form.vars.value.approved_by ~ "'") | e('html_attr')}})"
           x-bind="container"
         >
@@ -127,8 +139,12 @@
             </template>
           </ul>
         </div>
+        {{ form_errors(form.approved_by) }}
 
-        <div x-data="multipleSelect('endorsee', 'permanent')">
+        <div
+          x-data="multipleSelect('endorsee', 'permanent')"
+          class="mt-3"
+        >
           {{ form_label(form.endorsee) }}
 
           <template x-for="val,i in values" :key="val">
@@ -154,7 +170,7 @@
           </template>
 
           <div
-            class="dropdown mb-3"
+            class="dropdown"
             x-data="autocomplete('options', '')"
             x-bind="container"
             @select="ev => { add(ev.detail); selected = ''; }"
@@ -187,29 +203,37 @@
             </ul>
           </div>
         </div>
+        {{ form_errors(form.endorsee) }}
 
-        {{ form_row(form.job_description, {'widge_attr': {'rows' : 7 }}) }}
+        {{ form_row(form.job_description, {'label_attr': {'class' : 'mt-3' }, 'attr': {'rows': 7 }}) }}
       </div>
       <hr>
       <div>
         <h5>Completion Information</h5>
-        {{ form_row(form.actual_job_done) }}
+        {{ form_row(form.actual_job_done, {'attr': {'rows': 7 }}) }}
 
-        <div class="row g-3">
-          <div class="form-floating col-12 col-md mb-3">
-            {{ form_widget(form.verifier, {'attr': {'placeholder': ' ' }}) }}
-            {{ form_label(form.verifier) }}
+        <div class="row g-3 mt-3">
+          <div class="col-12 col-md">
+            <div class="form-floating">
+              {{ form_widget(form.verifier, {'attr': {'placeholder': ' ' }}) }}
+              {{ form_label(form.verifier) }}
+            </div>
+            {{ form_errors(form.verifier) }}
           </div>
-          <div class="form-floating col-12 col-md mb-3">
-            {{ form_widget(form.verifier_position, {'attr': {'placeholder': ' ' }}) }}
-            {{ form_label(form.verifier_position) }}
+
+          <div class="col-12 col-md">
+            <div class="form-floating">
+              {{ form_widget(form.verifier_position, {'attr': {'placeholder': ' ' }}) }}
+              {{ form_label(form.verifier_position) }}
+            </div>
+            {{ form_errors(form.verifier_position) }}
           </div>
         </div>
 
-        {{ form_row(form.remarks) }}
+        {{ form_row(form.remarks, {'label_attr': {'class' : 'mt-3' }, 'attr': {'rows': 7 }}) }}
       </div>
 
-      <div class="row gap-2 p-2">
+      <div class="row mx-0 gap-2">
         {{ form_widget(form.draft, {'attr': {'class': 'btn btn-primary col-12 col-md' }}) }}
         {{ form_widget(form.submit, {'attr': {'class': 'btn btn-success col-12 col-md' }}) }}
       </div>

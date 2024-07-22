@@ -65,8 +65,7 @@ class FormController extends BaseController
       return $this->render('404.twig');
     }
     if ($jo['performer_id'] !== $account['personnel_id'] and !$account['admin']) {
-      header('Location: /dashboard.php');
-      exit();
+      return new RedirectResponse('/dashboard.php');
     }
 
     $simulateDone = \App\Util\Env::isDev() && $request->query->has('done');
@@ -264,7 +263,6 @@ WHERE
       generateJobOrderId(getDB(), $personnel['project_id'], $jo['request_date']->format('Y-m-d'));
 
 
-
     /** @var Session $session */
     $session = $request->getSession();
     $flashes = $session->getFlashBag();
@@ -275,7 +273,6 @@ WHERE
 
         foreach ($form->getErrors(true, true) as $v) {
           $origin = $v->getOrigin()->getName();
-          if ($origin === 'endorsee') continue;
           $errors[] = [
             "origin" => $origin,
             "message" => $v->getMessage()
@@ -333,11 +330,6 @@ WHERE
 
     if ($flashes->has('form_errors')) {
       $errors = $flashes->get('form_errors');
-
-      echo "<pre>";
-      var_dump($errors);
-      echo "</pre>";
-      exit();
 
       foreach ($errors as $e) {
         $form->get($e['origin'])->addError(new FormError($e['message']));
