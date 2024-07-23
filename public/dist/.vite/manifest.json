@@ -1,18 +1,18 @@
 {
-  "_vendor-_inenN0y.js": {
-    "file": "assets/vendor-_inenN0y.js",
+  "_vendor-vV3tjzeV.js": {
+    "file": "assets/vendor-vV3tjzeV.js",
     "name": "vendor"
   },
   "main.ts": {
-    "file": "assets/main-CRC_4LBT.js",
+    "file": "assets/main-Cww9ByH2.js",
     "name": "main",
     "src": "main.ts",
     "isEntry": true,
     "imports": [
-      "_vendor-_inenN0y.js"
+      "_vendor-vV3tjzeV.js"
     ],
     "css": [
-      "assets/main-CfYVbt1t.css"
+      "assets/main-tJv9mCmT.css"
     ]
   }
 }

@@ -53,10 +53,16 @@ class JoborderType extends AbstractType
         'constraints' => [new Assert\NotBlank()]
       ])
       ->add('job_description', TextareaType::class, ['constraints' => [new Assert\NotBlank()]])
+      /*
       ->add('actual_job_done', TextareaType::class, ['constraints' => [new Assert\NotBlank()]])
       ->add('verifier', TextType::class, ['constraints' => [new Assert\NotBlank()]])
       ->add('verifier_position', TextType::class, ['constraints' => [new Assert\NotBlank()]])
       ->add('remarks', TextareaType::class, ['constraints' => [new Assert\NotBlank()]])
+      */
+      ->add('actual_job_done', TextareaType::class, ['constraints' => []])
+      ->add('verifier', TextType::class, ['constraints' => []])
+      ->add('verifier_position', TextType::class, ['constraints' => []])
+      ->add('remarks', TextareaType::class, ['constraints' => []])
       ->add('draft', SubmitType::class, ['label' => 'Draft'])
       ->add('submit', SubmitType::class, ['label' => 'Submit']);
   }

@@ -37,8 +37,9 @@ class FormController extends BaseController
     $stmt = execute("SELECT p.name 
         FROM EndorsedPersonnels ep
         JOIN Personnels p ON ep.personnel_id = p.personnel_id
-        WHERE ep.job_order_id = :id
-    ", [':id' => $id]);
+        WHERE ep.job_order_id = ?
+        ORDER BY ep.personnel_id = ? DESC
+    ", [$id, $jo['performer_id']]);
     $endorsee = $stmt->fetchAll();
     $names = array_map(function ($item) {
       return $item['name'];
@@ -278,7 +279,7 @@ WHERE
             "message" => $v->getMessage()
           ];
         }
-
+        $flashes->set('jo', $form->getData());
         $flashes->set('form_errors', $errors);
         return new RedirectResponse($request->getRequestUri());
       }
@@ -308,6 +309,13 @@ WHERE
       return $item['name'];
     }, $personnels);
 
+
+    $jo = null;
+
+    /** @var Session $session */
+    $session = $request->getSession();
+    $flashes = $session->getFlashBag();
+
     $jo = [
       'status' => 'Draft',
       'job_order_number' => $jo_num,
@@ -320,6 +328,10 @@ WHERE
     if (!is_null($id)) {
       $jo = $this->fetchJO($id);
       $jo['id'] = $id;
+    }
+
+    if ($flashes->has('jo')) {
+      $jo = array_merge($jo, $flashes->get('jo'));
     }
 
     $form = $this->createForm(JoborderType::class, null, ['data' => $jo]);

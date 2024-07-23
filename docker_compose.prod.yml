@@ -2,6 +2,8 @@ services:
   public:
     build: public
     restart: always
+    volumes:
+      - ./storage:/var/www/html/storage
     depends_on:
       - database
     ports:

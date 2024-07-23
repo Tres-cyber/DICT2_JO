@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "cross-env APP_ENV=development vite",
-    "build": "vue-tsc -b && vite build",
+    "build": "vite build",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -252,4 +252,13 @@
   [hidden] {
     display: none !important;
   }
+
+  .tw-text-sm {
+    font-size: 0.75rem !important;
+  }
+
+  td {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
 }
