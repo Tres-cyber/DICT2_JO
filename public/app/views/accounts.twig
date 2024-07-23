@@ -77,30 +77,31 @@
         </tr>
       </thead>
       <tbody class="table-group-divider" x-data="poll('/admin/accounts.php?json')">
-        <template x-for="acc in data" :key="acc.account_id">
-          <tr>
-            <td data-label="Account Name" x-text="acc.name"></td>
-            <td
-              data-label="Session Status"
-              x-text="acc.current_session_id == null ? 'Offline' : 'Active'"
-            ></td>
-            <td data-label="Action">
-              <div class="d-flex flex-no-wrap gap-1">
-                <a :href="'/admin/accounts.php?logout=' + acc.current_session_id" class="btn btn-sm btn-primary">
-                  <i class="fa-solid fa-right-from-bracket"></i>
-                </a>
-                <button class="btn btn-sm btn-secondary">
-                  <i class="fa-solid fa-rotate-right"></i>
-                </button>
-                <a :href="'/admin/accounts.php?delete=' + acc.account_id" class="btn btn-sm btn-danger">
-                
-                  <i class="fa-solid fa-trash"></i>
-                </a>
-              </div>
-            </td>
-          </tr>
-        </template>
-      </tbody>
+      <template x-for="acc in data" :key="acc.account_id">
+        <tr>
+          <td data-label="Account Name" x-text="acc.name"></td>
+          <td
+            data-label="Session Status"
+            x-text="acc.current_session_id == null ? 'Offline' : 'Active'"
+            :class="acc.current_session_id == null ? 'text-danger' : 'text-success'"
+          ></td>
+          <td data-label="Action">
+            <div class="d-flex flex-no-wrap gap-1">
+              <a :href="'/admin/accounts.php?logout=' + acc.current_session_id" class="btn btn-sm btn-primary">
+                <i class="fa-solid fa-right-from-bracket"></i>
+              </a>
+              <button class="btn btn-sm btn-secondary">
+                <i class="fa-solid fa-rotate-right"></i>
+              </button>
+              <a :href="'/admin/accounts.php?delete=' + acc.account_id" class="btn btn-sm btn-danger">
+                <i class="fa-solid fa-trash"></i>
+              </a>
+            </div>
+          </td>
+        </tr>
+      </template>
+    </tbody>
+
     </table>
   </div>
 </div>
