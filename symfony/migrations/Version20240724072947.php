@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240723141220 extends AbstractMigration
+final class Version20240724072947 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -24,13 +24,21 @@ final class Version20240723141220 extends AbstractMigration
           id INT AUTO_INCREMENT NOT NULL,
           personnel_id INT DEFAULT NULL,
           current_session_id INT DEFAULT NULL,
-          password_hash VARCHAR(127) NOT NULL,
+          PASSWORD VARCHAR(127) NOT NULL,
           email VARCHAR(127) NOT NULL,
           is_deleted TINYINT(1) DEFAULT 0 NOT NULL,
           is_admin TINYINT(1) DEFAULT 0 NOT NULL,
           UNIQUE INDEX UNIQ_7D3656A4E7927C74 (email),
           UNIQUE INDEX UNIQ_7D3656A41C109075 (personnel_id),
           UNIQUE INDEX UNIQ_7D3656A4BE8425AD (current_session_id),
+          PRIMARY KEY(id)
+        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE account_session (
+          id INT AUTO_INCREMENT NOT NULL,
+          account_id INT NOT NULL,
+          login_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT \'(DC2Type:datetime_immutable)\',
+          logout_at DATETIME DEFAULT NULL COMMENT \'(DC2Type:datetime_immutable)\',
+          INDEX IDX_196FC19C9B6B5FBA (account_id),
           PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('CREATE TABLE job_order (
@@ -54,7 +62,7 @@ final class Version20240723141220 extends AbstractMigration
           control_number VARCHAR(63) DEFAULT NULL,
           verifier_name VARCHAR(127) DEFAULT NULL,
           verifier_position VARCHAR(63) DEFAULT NULL,
-          STATUS VARCHAR(255) DEFAULT \'DRAFT\' NOT NULL,
+          joborder_status VARCHAR(255) DEFAULT \'DRAFT\' NOT NULL,
           request_mode VARCHAR(255) DEFAULT \'ON_SITE\' NOT NULL,
           INDEX IDX_F4752EE8166D1F9C (project_id),
           INDEX IDX_F4752EE86C6B33F3 (performer_id),
@@ -85,14 +93,6 @@ final class Version20240723141220 extends AbstractMigration
           is_deleted TINYINT(1) DEFAULT 0 NOT NULL,
           PRIMARY KEY(id)
         ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE SESSION (
-          id INT AUTO_INCREMENT NOT NULL,
-          account_id INT NOT NULL,
-          login DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
-          logout DATETIME DEFAULT NULL,
-          INDEX IDX_D044D5D49B6B5FBA (account_id),
-          PRIMARY KEY(id)
-        ) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
         $this->addSql('ALTER TABLE
           account
         ADD
@@ -100,7 +100,11 @@ final class Version20240723141220 extends AbstractMigration
         $this->addSql('ALTER TABLE
           account
         ADD
-          CONSTRAINT FK_7D3656A4BE8425AD FOREIGN KEY (current_session_id) REFERENCES SESSION (id)');
+          CONSTRAINT FK_7D3656A4BE8425AD FOREIGN KEY (current_session_id) REFERENCES account_session (id)');
+        $this->addSql('ALTER TABLE
+          account_session
+        ADD
+          CONSTRAINT FK_196FC19C9B6B5FBA FOREIGN KEY (account_id) REFERENCES account (id)');
         $this->addSql('ALTER TABLE
           job_order
         ADD
@@ -129,10 +133,6 @@ final class Version20240723141220 extends AbstractMigration
           personnel
         ADD
           CONSTRAINT FK_A6BCF3DE166D1F9C FOREIGN KEY (project_id) REFERENCES project (id)');
-        $this->addSql('ALTER TABLE
-          SESSION
-        ADD
-          CONSTRAINT FK_D044D5D49B6B5FBA FOREIGN KEY (account_id) REFERENCES account (id)');
     }
 
     public function down(Schema $schema): void
@@ -140,6 +140,7 @@ final class Version20240723141220 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE account DROP FOREIGN KEY FK_7D3656A41C109075');
         $this->addSql('ALTER TABLE account DROP FOREIGN KEY FK_7D3656A4BE8425AD');
+        $this->addSql('ALTER TABLE account_session DROP FOREIGN KEY FK_196FC19C9B6B5FBA');
         $this->addSql('ALTER TABLE job_order DROP FOREIGN KEY FK_F4752EE8166D1F9C');
         $this->addSql('ALTER TABLE job_order DROP FOREIGN KEY FK_F4752EE86C6B33F3');
         $this->addSql('ALTER TABLE job_order DROP FOREIGN KEY FK_F4752EE8BB9D6FEE');
@@ -147,12 +148,11 @@ final class Version20240723141220 extends AbstractMigration
         $this->addSql('ALTER TABLE job_order_personnel DROP FOREIGN KEY FK_F1A7C749EAD8C843');
         $this->addSql('ALTER TABLE job_order_personnel DROP FOREIGN KEY FK_F1A7C7491C109075');
         $this->addSql('ALTER TABLE personnel DROP FOREIGN KEY FK_A6BCF3DE166D1F9C');
-        $this->addSql('ALTER TABLE session DROP FOREIGN KEY FK_D044D5D49B6B5FBA');
         $this->addSql('DROP TABLE account');
+        $this->addSql('DROP TABLE account_session');
         $this->addSql('DROP TABLE job_order');
         $this->addSql('DROP TABLE job_order_personnel');
         $this->addSql('DROP TABLE personnel');
         $this->addSql('DROP TABLE project');
-        $this->addSql('DROP TABLE session');
     }
 }

@@ -19,10 +19,15 @@ class AccountSession
   private ?Account $account = null;
 
   #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
-  private ?\DateTimeImmutable $login_at = new DateTimeImmutable();
+  private ?\DateTimeImmutable $login_at = null;
 
   #[ORM\Column(nullable: true)]
   private ?\DateTimeImmutable $logout_at = null;
+
+  public function __construct()
+  {
+    $this->login_at = new DateTimeImmutable();
+  }
 
   public function getId(): ?int
   {

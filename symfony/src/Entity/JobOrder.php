@@ -24,7 +24,7 @@ class JobOrder
   private ?Project $project = null;
 
   #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
-  private ?\DateTimeImmutable $created_at = new DateTimeImmutable();
+  private ?\DateTimeImmutable $created_at = null;
 
   #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
   private ?\DateTimeInterface $scheduled_start_date = null;
@@ -92,6 +92,7 @@ class JobOrder
   public function __construct()
   {
     $this->endorsee = new ArrayCollection();
+    $this->created_at = new DateTimeImmutable();
   }
 
   public function getId(): ?int
