@@ -1,0 +1,30 @@
+{
+  "plugins": ["@shopify/prettier-plugin-liquid", "prettier-plugin-tailwindcss"],
+  "overrides": [
+    {
+      "files": "*.twig",
+      "options": {
+        "parser": "liquid-html"
+      }
+    }
+  ],
+  "tailwindAttributes": [
+    "class",
+    "className",
+    "classList",
+    "ngClass",
+    "container-class",
+    "select-class",
+    "value-class",
+    "delete-class",
+    "input-class",
+    "choices-class",
+    "option-class",
+    "enter-from-class",
+    "enter-active-class",
+    "enter-to-class",
+    "leave-from-class",
+    "leave-active-class",
+    "leave-to-class"
+  ]
+}
