@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use \App\Entity\JobOrderStatus;
 use \App\Entity\RequestMode;
+use DateTimeImmutable;
 
 #[ORM\Entity(repositoryClass: JobOrderRepository::class)]
 class JobOrder
@@ -23,7 +24,7 @@ class JobOrder
   private ?Project $project = null;
 
   #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
-  private ?\DateTimeImmutable $created_at = null;
+  private ?\DateTimeImmutable $created_at = new DateTimeImmutable();
 
   #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
   private ?\DateTimeInterface $scheduled_start_date = null;
@@ -76,8 +77,8 @@ class JobOrder
   #[ORM\Column(length: 63, nullable: true)]
   private ?string $verifier_position = null;
 
-  #[ORM\Column(enumType: JobOrderStatus::class, options: ['default' => 'DRAFT'])]
-  private ?JobOrderStatus $status = null;
+  #[ORM\Column(name: "joborder_status", enumType: JobOrderStatus::class, options: ['default' => 'DRAFT'])]
+  private ?JobOrderStatus $status = JobOrderStatus::Draft;
 
   /**
    * @var Collection<int, Personnel>
@@ -86,7 +87,7 @@ class JobOrder
   private Collection $endorsee;
 
   #[ORM\Column(enumType: RequestMode::class, options: ['default' => 'ON_SITE'])]
-  private ?RequestMode $request_mode = null;
+  private ?RequestMode $request_mode = RequestMode::OnSite;
 
   public function __construct()
   {

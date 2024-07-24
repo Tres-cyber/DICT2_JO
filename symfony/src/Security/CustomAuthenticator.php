@@ -3,9 +3,8 @@
 namespace App\Security;
 
 use App\Entity\Account;
-use App\Entity\Session;
+use App\Entity\AccountSession;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,14 +24,15 @@ class CustomAuthenticator extends AbstractLoginFormAuthenticator
 
   public function authenticate(Request $request): Passport
   {
-    $email = $request->request->get('email', '');
-    $password = $request->request->get('password', '');
+    $email = $request->request->get('_username', '');
+    $password = $request->request->get('_password', '');
     $csrfToken = $request->request->get('_csrf_token');
 
     $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
     return new Passport(
       new UserBadge($email, function ($userIdentifier) {
+        /** @var Account $account */
         $account = $this->entityManager->getRepository(Account::class)->findOneBy([
           'email' => $userIdentifier,
           'is_deleted' => false
@@ -60,8 +60,9 @@ class CustomAuthenticator extends AbstractLoginFormAuthenticator
     /** @var Account */
     $account = $token->getUser();
 
-    $session = new Session();
+    $session = new AccountSession();
     $session->setAccount($account);
+
     $this->entityManager->persist($session);
     $account->setCurrentSession($session);
     $this->entityManager->flush();
