@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use App\Repository\AccountRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
-class Account
+class Account implements UserInterface, PasswordAuthenticatedUserInterface
 {
   #[ORM\Id]
   #[ORM\GeneratedValue]
@@ -17,7 +19,7 @@ class Account
   private ?Personnel $personnel = null;
 
   #[ORM\Column(length: 127)]
-  private ?string $password_hash = null;
+  private ?string $password = null;
 
   #[ORM\Column(length: 127, unique: true)]
   private ?string $email = null;
@@ -44,18 +46,6 @@ class Account
   public function setPersonnel(?Personnel $personnel): static
   {
     $this->personnel = $personnel;
-
-    return $this;
-  }
-
-  public function getPasswordHash(): ?string
-  {
-    return $this->password_hash;
-  }
-
-  public function setPasswordHash(string $password_hash): static
-  {
-    $this->password_hash = $password_hash;
 
     return $this;
   }
@@ -101,10 +91,42 @@ class Account
     return $this->current_session;
   }
 
+  public function hasSession(): bool
+  {
+    return !is_null($this->current_session);
+  }
+
   public function setCurrentSession(?Session $current_session): static
   {
     $this->current_session = $current_session;
 
     return $this;
+  }
+
+  public function getRoles(): array
+  {
+    $roles = ['ROLE_USER'];
+    if ($this->isAdmin()) {
+      $roles[] = 'ROLE_ADMIN';
+    }
+    return $roles;
+  }
+
+  public function getUserIdentifier(): string
+  {
+    return (string) $this->email;
+  }
+
+  public function eraseCredentials(): void {}
+
+  public function setPassword(string $password): static
+  {
+    $this->password = $password;
+    return $this;
+  }
+
+  public function getPassword(): ?string
+  {
+    return $this->password;
   }
 }
