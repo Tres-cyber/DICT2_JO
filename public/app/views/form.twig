@@ -8,7 +8,7 @@
 <div class="container mt-4">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="/dashboard.php">Home</a></li>
+      <li class="breadcrumb-item"><a href="{{ app.user.admin ? "/admin/job_orders.php":"/dashboard.php" }}" >Home</a></li>
       <li class="breadcrumb-item active" aria-current="page">{{ jo.job_order_number }}</li>
     </ol>
   </nav>
@@ -141,7 +141,11 @@
                 <span
                   class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-border-none tw-rounded-none tw-font-semibold tw-text-sm tw-font-serif tw-p-0 tw-uppercase"
                 >
+                {% if jo.scheduled_start_date == jo.scheduled_end_date %}
+                  {{ jo.scheduled_start_date | date('M d, Y') }}
+                {% else %}
                   {{ jo.scheduled_start_date | date('M d, Y') }} - {{ jo.scheduled_end_date | date('M d, Y') }}
+                {% endif %}
                 </span>
               </div>
             </td>
