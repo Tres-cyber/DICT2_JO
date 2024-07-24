@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\ProjectRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ProjectRepository::class)]
@@ -25,18 +23,12 @@ class Project
   private ?string $logo = null;
 
   #[ORM\Column(options: ["default" => false])]
-  private ?bool $is_deleted = null;
+  private ?bool $is_deleted = false;
 
-  /**
-   * @var Collection<int, Personnel>
-   */
-  #[ORM\OneToMany(targetEntity: Personnel::class, mappedBy: 'project')]
-  private Collection $focal_person;
+  #[ORM\ManyToOne]
+  private ?Personnel $focal_person = null;
 
-  public function __construct()
-  {
-    $this->focal_person = new ArrayCollection();
-  }
+  public function __construct() {}
 
   public function getId(): ?int
   {
@@ -91,32 +83,14 @@ class Project
     return $this;
   }
 
-  /**
-   * @return Collection<int, Personnel>
-   */
-  public function getFocalPerson(): Collection
+  public function getFocalPerson(): ?Personnel
   {
     return $this->focal_person;
   }
 
-  public function addFocalPerson(Personnel $focalPerson): static
+  public function setFocalPerson(?Personnel $focal_person): static
   {
-    if (!$this->focal_person->contains($focalPerson)) {
-      $this->focal_person->add($focalPerson);
-      $focalPerson->setProject($this);
-    }
-
-    return $this;
-  }
-
-  public function removeFocalPerson(Personnel $focalPerson): static
-  {
-    if ($this->focal_person->removeElement($focalPerson)) {
-      // set the owning side to null (unless already changed)
-      if ($focalPerson->getProject() === $this) {
-        $focalPerson->setProject(null);
-      }
-    }
+    $this->focal_person = $focal_person;
 
     return $this;
   }
