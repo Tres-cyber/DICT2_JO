@@ -25,13 +25,13 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
   private ?string $email = null;
 
   #[ORM\Column(options: ['default' => false])]
-  private ?bool $is_deleted = null;
+  private ?bool $is_deleted = false;
 
   #[ORM\Column(options: ['default' => false])]
-  private ?bool $is_admin = null;
+  private ?bool $is_admin = false;
 
   #[ORM\OneToOne(cascade: ['persist', 'remove'])]
-  private ?Session $current_session = null;
+  private ?AccountSession $current_session = null;
 
   public function getId(): ?int
   {
@@ -86,23 +86,6 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
     return $this;
   }
 
-  public function getCurrentSession(): ?Session
-  {
-    return $this->current_session;
-  }
-
-  public function hasSession(): bool
-  {
-    return !is_null($this->current_session);
-  }
-
-  public function setCurrentSession(?Session $current_session): static
-  {
-    $this->current_session = $current_session;
-
-    return $this;
-  }
-
   public function getRoles(): array
   {
     $roles = ['ROLE_USER'];
@@ -128,5 +111,22 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
   public function getPassword(): ?string
   {
     return $this->password;
+  }
+
+  public function getCurrentSession(): ?AccountSession
+  {
+    return $this->current_session;
+  }
+
+  public function hasSession(): bool
+  {
+    return !is_null($this->current_session);
+  }
+
+  public function setCurrentSession(?AccountSession $current_session): static
+  {
+    $this->current_session = $current_session;
+
+    return $this;
   }
 }
