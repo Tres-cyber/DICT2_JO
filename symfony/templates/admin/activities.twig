@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+{% block head %}
+<title>ADMIN | Activities</title>
+{% endblock %}
+{% block header %}
+{% set current = "activities" %}
+
+{% endblock %}
+{% block body %}
+<div class="container mt-5">
+  <div class="col col-md-9 col-lg-8 col-xl-7 col-xxl-6 table-responsive mx-auto">
+    <table class="table-light table-striped table border">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Log in Time</th>
+          <th>Log out Time</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        {% for ses in session %}
+          <tr>
+            <td data-label="Name">
+              {{ ses.name | default("Admin") }}
+            </td>
+            <td data-label="Log in Time">{{ ses.login | date("M d, Y H:i ", "Asia/Manila") }}</td>
+            <td data-label="Log out Time">
+              {% if ses.logout is null %}
+                Still Logged In
+              {% else %}
+                {{ ses.logout | date("M d, Y H:i", "Asia/Manila") }}
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

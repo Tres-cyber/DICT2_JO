@@ -13,6 +13,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
 import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
+import { faBroom } from "@fortawesome/free-solid-svg-icons/faBroom";
 import { faPrint } from "@fortawesome/free-solid-svg-icons/faPrint";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 import poll from "./components/poll";
@@ -33,6 +34,7 @@ library.add(
   faRotateRight,
   faRightFromBracket,
   faXmark,
+  faBroom,
 );
 dom.watch();
 
