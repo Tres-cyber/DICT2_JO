@@ -91,7 +91,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       
-      <form method="post" action="/admin/personnels.php">
+      <form method="post" action="/admin/personnels">
         <div class="modal-body">
           <label for="name" class="form-label">Name: </label>
           <input
@@ -156,18 +156,22 @@
           <tr>
             <td data-label="Name">{{ per.name }}</td>
             <td data-label="Position">{{ per.position }}</td>
-            <td data-label="Assigned Project">{{ per.project_name }}</td>
+            {% if per.project %}
+              <td data-label="Assigned Project">{{ per.project.name }}</td>
+            {% else %}
+              <td data-label="Assigned Project">No Assigned Project.</td>
+            {% endif %}
             <td data-label="Action">
               <div class="d-flex flex-no-wrap gap-1">
                 <button
-                  onclick="setPersonnelId({{ per.personnel_id }}, '{{ per.name }}', '{{ per.position }}', '{{ per.project_name }}')"
+                  onclick="setPersonnelId({{ per.id }}, '{{ per.name }}', '{{ per.position }}', '{{ per.project.name | default("") }}')"
                   class="btn btn-sm btn-primary"
                   data-bs-toggle="modal"
                   data-bs-target="#EditBackDrop"
                 >
                   <i class="fa-solid fa-pen"></i>
                 </button>
-                <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" onclick="setDeleteUrl('/admin/delete_personnel.php?id={{ per.personnel_id }}');">
+                <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" onclick="setDeleteUrl('/admin/delete_personnel.php?id={{ per.id }}');">
                   <i class="fa-solid fa-trash"></i>
                 </a>
               </div>
@@ -179,33 +183,11 @@
   </div>
 </div>
 
-<nav class="container">
-  <ul class="pagination">
-    {% if current_page > 1 %}
-      <li class="page-item">
-        <a class="page-link" href="/admin/personnels.php?p={{ current_page - 1 }}{% if search_query %}&search_query={{ search_query }}{% endif %}">Prev</a>
-      </li>
-    {% endif %}
 
-    {% for n in range(1, total_pages ) %}
-      {% if total_pages > 0 %}
-        <li class="page-item {% if n == current_page %}active{% endif %}">
-          <a class="page-link" href="/admin/personnels.php?p={{ n }}{% if search_query %}&search_query={{ search_query }}{% endif %}">{{ n }}</a>
-        </li>
-      {% endif %}
-    {% endfor %}
-
-    {% if current_page < total_pages and total_pages > 1 %}
-      <li class="page-item">
-        <a class="page-link" href="/admin/personnels.php?p={{ current_page + 1 }}{% if search_query %}&search_query={{ search_query }}{% endif %}">Next</a>
-      </li>
-    {% endif %}
-  </ul>
-</nav>
 
 <script>
-  function setPersonnelId(personnel_id, name, position, project_name) {
-        document.getElementById('edit-personnel-id').value = personnel_id;
+  function setPersonnelId(id, name, position, project_name) {
+        document.getElementById('edit-personnel-id').value = id;
         document.getElementById('edit-name').value = name;
         document.getElementById('edit-position').value = position;
         document.getElementById('projects-input').value = project_name;

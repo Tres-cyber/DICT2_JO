@@ -15,6 +15,17 @@ class PersonnelRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Personnel::class);
     }
+    public function findAllJoinedToProject()
+    {
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT per, proj
+            FROM App\Entity\Personnel per
+            LEFT JOIN per.project proj'
+        );
+
+        return $query->getArrayResult();
+    }
 
     //    /**
     //     * @return Personnel[] Returns an array of Personnel objects
