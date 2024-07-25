@@ -16,6 +16,18 @@ class JobOrderRepository extends ServiceEntityRepository
         parent::__construct($registry, JobOrder::class);
     }
 
+    public function findAllJoinedToPersonnel(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT jo, pi, pp ,pa
+            FROM App\Entity\JobOrders jo
+            LEFT JOIN jo.issued_by pi,
+            LEFT JOIN jo.approved_by pa,
+            LEFT JOIN jo.performer_id pp
+            '
+        );
+    }
+
 //    /**
 //     * @return JobOrder[] Returns an array of JobOrder objects
 //     */

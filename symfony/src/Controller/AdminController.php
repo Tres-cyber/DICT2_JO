@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Personnel;
 use App\Repository\AccountSessionRepository;
+use App\Repository\JobOrderRepository;
 use App\Repository\PersonnelRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManager;
@@ -79,4 +80,23 @@ class AdminController extends AbstractController
             $this->addFlash('success', 'Personnel created successfully.');
             return $this->redirectToRoute('admin_personnels');
     }
+
+    #[Route('/admin/job_orders', name: 'app_admin')]
+    public function joborders(Request $request, JobOrderRepository $JobOrderRepository): Response
+    {
+        $JobOrders = $JobOrderRepository->findAll();
+
+        return $this->render('admin/job_orders.twig', [
+            'joborders' => $JobOrders,
+            'count' => 10,
+            'current_page' => 1,
+            'total_pages' => 5,
+            'search_query' => '',
+            'total_count' => 100,
+            'start_index' => 1,
+            'end_index' => 10,
+            'sort_option' => 'date_asc'
+        ]);
+        }
+
 }
