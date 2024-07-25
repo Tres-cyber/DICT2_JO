@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Entity\Personnel;
 use App\Repository\AccountSessionRepository;
 use App\Repository\PersonnelRepository;
 use App\Repository\ProjectRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,5 +59,24 @@ class AdminController extends AbstractController
             'options' => $options,
         ]);
     }
-    
+    #[Route('/admin/personnels/create', name: 'admin_personnel_create', methods: ['POST'])]
+    public function createPersonnel(EntityManagerInterface $entityManager, Request $request, ProjectRepository $projectRepository): Response
+    {
+            $projects = $projectRepository->findOneBy(['name'=>$request->request->get('project_name')]);
+            if (is_null($projects)){
+
+                return new Response("Project does not exist.", 400);
+            }
+
+            $personnel = new Personnel();
+            $personnel->setName($request->request->get('name'));
+            $personnel->setPosition($request->request->get('position'));
+            $personnel->setProject($projects);
+
+            $entityManager->persist($personnel);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Personnel created successfully.');
+            return $this->redirectToRoute('admin_personnels');
+    }
 }
