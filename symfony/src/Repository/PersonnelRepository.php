@@ -21,7 +21,8 @@ class PersonnelRepository extends ServiceEntityRepository
         $query = $entityManager->createQuery(
             'SELECT per, proj
             FROM App\Entity\Personnel per
-            LEFT JOIN per.project proj'
+            LEFT JOIN per.project proj
+            WHERE per.is_deleted = 0'
         );
 
         return $query->getArrayResult();

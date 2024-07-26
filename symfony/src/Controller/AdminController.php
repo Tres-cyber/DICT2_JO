@@ -79,4 +79,14 @@ class AdminController extends AbstractController
             $this->addFlash('success', 'Personnel created successfully.');
             return $this->redirectToRoute('admin_personnels');
     }
+
+    #[Route('/admin/personnels/delete', name: 'admin_personnel_delete', methods: ['GET'])]
+    public function deletePersonnel(EntityManagerInterface $entityManager, Request $request, PersonnelRepository $personnelRepository): Response
+    {
+        $personnel = $personnelRepository->find($request->query->get('id'));
+        $personnel->setDeleted(true);
+        $entityManager->flush();
+        
+        return  $this->redirectToRoute('admin_personnels');
+    }
 }

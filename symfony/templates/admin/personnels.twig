@@ -159,7 +159,7 @@
             {% if per.project %}
               <td data-label="Assigned Project">{{ per.project.name }}</td>
             {% else %}
-              <td data-label="Assigned Project">No Assigned Project.</td>
+              <td data-label="Assigned Project">No Assigned Project</td>
             {% endif %}
             <td data-label="Action">
               <div class="d-flex flex-no-wrap gap-1">
@@ -171,7 +171,7 @@
                 >
                   <i class="fa-solid fa-pen"></i>
                 </button>
-                <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" onclick="setDeleteUrl('/admin/delete_personnel.php?id={{ per.id }}');">
+                <a href="#" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" onclick="setDeleteUrl('/admin/personnels/delete?id={{ per.id }}');">
                   <i class="fa-solid fa-trash"></i>
                 </a>
               </div>

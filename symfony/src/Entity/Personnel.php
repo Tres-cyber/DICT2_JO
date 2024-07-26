@@ -30,6 +30,9 @@ class Personnel
   #[ORM\OneToMany(targetEntity: JobOrder::class, mappedBy: 'performer')]
   private Collection $jobOrders;
 
+  #[ORM\Column]
+  private ?bool $is_deleted = false;
+
   public function __construct()
   {
     $this->jobOrders = new ArrayCollection();
@@ -104,5 +107,17 @@ class Personnel
     }
 
     return $this;
+  }
+
+  public function isDeleted(): ?bool
+  {
+      return $this->is_deleted;
+  }
+
+  public function setDeleted(bool $is_deleted): static
+  {
+      $this->is_deleted = $is_deleted;
+
+      return $this;
   }
 }
