@@ -58,7 +58,11 @@ Encore
   .enablePostCssLoader()
 
   // uncomment if you use TypeScript
-  .enableTypeScriptLoader();
+  .enableTypeScriptLoader()
+  .configureWatchOptions(function (watchOptions) {
+    watchOptions.poll = 250;
+    watchOptions.ignored = /(node_modules|var|vendor)/;
+  });
 
 // uncomment if you use React
 //.enableReactPreset()

@@ -14,12 +14,13 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
 import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
 import { faPrint } from "@fortawesome/free-solid-svg-icons/faPrint";
-import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons/faRightFromBracket";
+import { faBroom } from "@fortawesome/free-solid-svg-icons/faBroom";
+import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
 import poll from "./components/poll";
 import autocomplete from "./components/autocomplete";
 import dateRange from "./components/dateRange";
 import multipleSelect from "./components/multipleSelect";
-import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
 
 library.add(
   faPrint,
@@ -33,6 +34,7 @@ library.add(
   faRotateRight,
   faRightFromBracket,
   faXmark,
+  faBroom,
 );
 dom.watch();
 
