@@ -16,6 +16,19 @@ class AccountRepository extends ServiceEntityRepository
         parent::__construct($registry, Account::class);
     }
 
+    public function findAllJoined(){
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT acc pa 
+            FROM App\Entity\Accounts acc
+            INNER JOIN acc.personnel_id pa,
+            WHERE acc.deleted = 0,
+            '
+        );
+    }
+
+    
+
     //    /**
     //     * @return Account[] Returns an array of Account objects
     //     */
