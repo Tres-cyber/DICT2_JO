@@ -1,3 +1,4 @@
+{% set route = app.request.attributes.get('_route') %}
 <nav class="navbar sticky-top navbar-expand-lg {% if app.user.admin %}bg-danger{% else %}bg-primary{% endif %}" data-bs-theme="dark">
   <div class="container">
     <a class="navbar-brand fw-semibold fs-2" href="/">
@@ -19,26 +20,28 @@
       <ul class="navbar-nav fs-5 ms-lg-auto px-lg-2 py-lg-3 gap-3 p-5">
         {% if app.user.admin %}
         <li class="nav-item">
-          <a class="nav-link{% if current == 'job_orders' %} active" aria-current="page{%endif%}" href="/admin/job_orders.php">Job Orders</a>
+          <a 
+          class="nav-link{% if route == 'admin_joborders' %} active" aria-current="page{%endif%}"
+          href="{{ path('admin_joborders') }}">Job Orders</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link{% if current == 'activities' %} active" aria-current="page{%endif%}" href="/admin/activities.php">Activities</a>
+          <a class="nav-link{% if route == 'admin_activities' %} active" aria-current="page{%endif%}" href="{{ path('admin_activities') }}">Activities</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link{% if current == 'accounts' %} active" aria-current="page{%endif%}" href="/admin/accounts.php">Accounts</a>
+          <a class="nav-link{% if route == 'admin_accounts' %} active" aria-current="page{%endif%}" href="#">Accounts</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link{% if current == 'projects' %} active" aria-current="page{%endif%}" href="/admin/projects.php">Projects</a>
+          <a class="nav-link{% if route == 'admin_projects' %} active" aria-current="page{%endif%}" href="{{ path('admin_projects') }}">Projects</a>
         </li>
         <li class="nav-item mr-5">
-          <a class="nav-link{% if current == 'personnels' %} active" aria-current="page{%endif%}" href="/admin/personnels.php">Personnels</a>
+          <a class="nav-link{% if route == 'personnels_index' %} active" aria-current="page{%endif%}" href="{{ path('personnels_index') }}">Personnels</a>
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link{% if current == 'dashboard' %} active" aria-current="page{%endif%}" href="/dashboard.php">Dashboards</a>
+          <a class="nav-link{% if route == 'dashboard_user' %} active" aria-current="page{%endif%}" href="{{ path('dashboard_user') }}">Dashboards</a>
         </li>
         {% endif %}
-        <a href="/logout.php" class="btn btn-secondary align-self-center">Logout</a>
+        <a href="{{ path('app_logout') }}" class="btn btn-secondary align-self-center">Logout</a>
       </ul>
     </div>
   </div>

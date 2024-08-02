@@ -54,7 +54,7 @@
       </div>
       <form
         method="POST"
-        x-data="{ id: 0 }"
+        x-data="{id: 0}"
         @edit.window="id = $event.target.dataset.editId"
         :action="`{{ path('personnel_edit', {id : 'PLACEHOLDER'}) }}`.replace('PLACEHOLDER', id)"
       >
