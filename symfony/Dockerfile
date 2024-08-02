@@ -29,7 +29,7 @@ COPY composer.* symfony.* ./
 RUN composer install --no-scripts;
 
 COPY . .
-RUN composer run-script post-install-cmd;
+RUN mkdir -p var/cache var/log; composer run-script post-install-cmd;
 
 # Expose port 80
 EXPOSE 80
