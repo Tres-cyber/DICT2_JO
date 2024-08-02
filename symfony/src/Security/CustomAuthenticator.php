@@ -67,7 +67,11 @@ class CustomAuthenticator extends AbstractLoginFormAuthenticator
     $account->setCurrentSession($session);
     $this->entityManager->flush();
 
-    return new RedirectResponse('/dashboard');
+    if ($account->isAdmin()) {
+      return new RedirectResponse($this->urlGenerator->generate('admin_joborders'));
+    } else {
+      return new RedirectResponse($this->urlGenerator->generate('user_dashboard'));
+    }
   }
 
 

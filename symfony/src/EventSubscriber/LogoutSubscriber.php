@@ -6,11 +6,14 @@ use App\Entity\Account;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Event\LogoutEvent;
 
 class LogoutSubscriber implements EventSubscriberInterface
 {
-  public function __construct(private EntityManagerInterface $entityManager) {}
+  public function __construct(private UrlGeneratorInterface $urlGenerator, private EntityManagerInterface $entityManager) {}
 
   public function onLogoutEvent(LogoutEvent $event): void
   {
@@ -27,6 +30,11 @@ class LogoutSubscriber implements EventSubscriberInterface
     $currentSession->setLogoutAt(new DateTimeImmutable());
 
     $this->entityManager->flush();
+
+    $redirect = new RedirectResponse(
+      $this->urlGenerator->generate('app_login')
+    );
+    $event->setResponse($redirect);
   }
 
   public static function getSubscribedEvents(): array
