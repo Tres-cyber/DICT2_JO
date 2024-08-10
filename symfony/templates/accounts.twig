@@ -1,0 +1,107 @@
+{% extends 'base.twig' %}
+{% block head %}
+<title>ADMIN | Accounts</title>
+{% endblock %}
+{% block header %}
+{% set current = 'accounts' %}
+{% include 'nav-bar.twig' %}
+{% endblock %}
+{% block body %}
+
+<div
+  class="modal fade"
+  id="AddBackDrop"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Account</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="/admin/accounts.php">
+          <label for="name" class="form-label">Name: </label>
+          <select name="personnel" class="form-select mb-3">
+            {% for personnel in personnels %}
+              <option value="{{ personnel.id }}">{{ personnel.name }}</option>
+            {% endfor %}
+          </select>
+          <label for="email" class="form-label">Email: </label>
+          <input
+            type="email"
+            class="form-control mb-3"
+            aria-label="email"
+            id="email"
+            name="email"
+            aria-describedby="addon-wrapping"
+          >
+          <label for="password" class="form-label">Password: </label>
+          <input
+            type="password"
+            class="form-control mb-3"
+            aria-label="password"
+            aria-describedby="addon-wrapping"
+            type="password"
+            id="password"
+            name="password_hash"
+            required
+          >
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Register</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-5">
+  <div class="col col-lg-9 col-xl-8 col-xxl-7 table-responsive mx-auto">
+    <button type="button" class="btn btn-success mb-3" data-bs-toggle="modal" data-bs-target="#AddBackDrop">
+      Add Account
+    </button>
+    <table class="table-light table-striped table  border ">
+      <thead>
+        <tr>
+          <th>Account Name</th>
+          <th>Session Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        {% for acc in accounts %}
+          <tr>
+            <td data-label="Account Name">
+              {{ acc.personnel ? acc.personnel.name : 'admin' }}
+            </td>
+            <td
+              data-label="Session Status"
+              class="{{ acc.hasSession() ? 'text-success' : 'text-session' }}"
+            >
+              {{ acc.hasSession() ? 'active': 'offline' }}
+            </td>
+            <td data-label="Action">
+              <div class="d-flex flex-no-wrap gap-1">
+                <a href="{{ path('account_logout', {id: acc.id}) }}" class="btn btn-sm btn-primary">
+                  <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+                <button class="btn btn-sm btn-secondary">
+                  <i class="fa-solid fa-rotate-right"></i>
+                </button>
+                <a href="{{ path('account_delete', {id: acc.id, _method: 'DELETE'}) }}" class="btn btn-sm btn-danger">
+                  <i class="fa-solid fa-trash"></i>
+                </a>
+              </div>
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -3,9 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\AccountRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints\IsNull;
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
 class Account implements UserInterface, PasswordAuthenticatedUserInterface
@@ -119,7 +121,20 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
 
   public function hasSession(): bool
   {
-    return !is_null($this->current_session);
+    $session = $this->getCurrentSession();
+    if (is_null($session)) return false;
+    return is_null($session->getLogoutAt());
+  }
+
+  public function removeSession(): void
+  {
+    $currentSession = $this->getCurrentSession();
+
+    if (!is_null($currentSession) && is_null($currentSession->getLogoutAt())) {
+      $currentSession->setLogoutAt(new DateTimeImmutable());
+    }
+
+    $this->setCurrentSession(null);
   }
 
   public function setCurrentSession(?AccountSession $current_session): static

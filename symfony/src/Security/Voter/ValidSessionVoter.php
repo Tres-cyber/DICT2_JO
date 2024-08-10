@@ -4,11 +4,9 @@ namespace App\Security\Voter;
 
 use App\Entity\Account;
 use Doctrine\ORM\EntityManagerInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
-use Symfony\Component\Validator\Constraints\IsNull;
 
 class ValidSessionVoter extends Voter
 {
@@ -17,7 +15,6 @@ class ValidSessionVoter extends Voter
   public function __construct(
     private Security $security,
     private EntityManagerInterface $entityManager,
-    private LoggerInterface $logger
   ) {}
 
   public function supports(string $attribute, mixed $subject): bool
@@ -33,10 +30,7 @@ class ValidSessionVoter extends Voter
       return false;
     }
 
-
-
-    $session = $user->getCurrentSession();
-    if (is_null($session) || !is_null($session->getLogoutAt())) {
+    if (!$user->hasSession()) {
       $this->security->logout(false);
       return false;
     }

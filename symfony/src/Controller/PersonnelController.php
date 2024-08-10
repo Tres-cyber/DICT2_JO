@@ -7,7 +7,6 @@ use App\Repository\PersonnelRepository;
 use App\Repository\ProjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +21,7 @@ class PersonnelController extends AbstractController
   ) {}
 
   #[Route('/admin/personnels', name: 'personnels_index', methods: ['GET'])]
-  public function index(PaginatorInterface $paginator, Request $request, LoggerInterface $logger): Response
+  public function index(PaginatorInterface $paginator, Request $request): Response
   {
     $search = $request->query->getString('search', '');
 

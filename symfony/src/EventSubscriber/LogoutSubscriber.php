@@ -23,13 +23,7 @@ class LogoutSubscriber implements EventSubscriberInterface
     $account = $token->getUser();
     if (is_null($account)) return;
 
-    $currentSession = $account->getCurrentSession();
-
-    $account->setCurrentSession(null);
-
-    if (is_null($currentSession->getLogoutAt())) {
-      $currentSession->setLogoutAt(new DateTimeImmutable());
-    }
+    $account->removeSession();
 
     $this->entityManager->flush();
 
