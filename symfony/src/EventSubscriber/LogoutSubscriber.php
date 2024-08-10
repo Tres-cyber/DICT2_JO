@@ -26,7 +26,10 @@ class LogoutSubscriber implements EventSubscriberInterface
     $currentSession = $account->getCurrentSession();
 
     $account->setCurrentSession(null);
-    $currentSession->setLogoutAt(new DateTimeImmutable());
+
+    if (is_null($currentSession->getLogoutAt())) {
+      $currentSession->setLogoutAt(new DateTimeImmutable());
+    }
 
     $this->entityManager->flush();
 

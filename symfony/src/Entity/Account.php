@@ -88,11 +88,10 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
 
   public function getRoles(): array
   {
-    $roles = ['ROLE_USER'];
     if ($this->isAdmin()) {
-      $roles[] = 'ROLE_ADMIN';
+      return ['ROLE_ADMIN'];
     }
-    return $roles;
+    return ['ROLE_USER'];
   }
 
   public function getUserIdentifier(): string
