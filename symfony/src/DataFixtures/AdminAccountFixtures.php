@@ -16,7 +16,6 @@ class AdminAccountFixtures extends Fixture
     $admin = new Account();
     $admin->setAdmin(true);
     $admin->setEmail('admin@dict.gov.ph');
-    $admin->setDeleted(false);
     $password = $this->passwordHasher->hashPassword($admin, 'adminpassword');
     $admin->setPassword($password);
     $manager->persist($admin);

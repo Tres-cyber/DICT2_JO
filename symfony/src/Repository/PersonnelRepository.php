@@ -26,7 +26,7 @@ class PersonnelRepository extends ServiceEntityRepository
        WHERE per.is_deleted = 0'
     );
 
-    return $query->getArrayResult();
+    return $query->getResult();
   }
 
   public function createJoinedQueryBuilder(

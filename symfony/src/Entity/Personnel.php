@@ -24,6 +24,9 @@ class Personnel
   #[ORM\ManyToOne(inversedBy: 'focal_person')]
   private ?Project $project = null;
 
+  #[ORM\OneToOne(mappedBy: 'personnel', targetEntity: Account::class)]
+  private ?Account $account = null;
+
   /**
    * @var Collection<int, JobOrder>
    */
@@ -111,13 +114,18 @@ class Personnel
 
   public function isDeleted(): ?bool
   {
-      return $this->is_deleted;
+    return $this->is_deleted;
   }
 
   public function setDeleted(bool $is_deleted): static
   {
-      $this->is_deleted = $is_deleted;
+    $this->is_deleted = $is_deleted;
 
-      return $this;
+    return $this;
+  }
+
+  public function getAccount(): ?Account
+  {
+    return $this->getAccount();
   }
 }

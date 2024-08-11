@@ -16,7 +16,7 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\Column]
   private ?int $id = null;
 
-  #[ORM\OneToOne(cascade: ['persist'])]
+  #[ORM\OneToOne(inversedBy: 'account', cascade: ['persist'])]
   private ?Personnel $personnel = null;
 
   #[ORM\Column(length: 127)]
@@ -29,6 +29,7 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
   private ?bool $is_admin = false;
 
   #[ORM\OneToOne(cascade: ['persist'])]
+  #[ORM\JoinColumn(onDelete: 'SET NULL')]
   private ?AccountSession $current_session = null;
 
   public function getId(): ?int
@@ -56,18 +57,6 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
   public function setEmail(string $email): static
   {
     $this->email = $email;
-
-    return $this;
-  }
-
-  public function isDeleted(): ?bool
-  {
-    return $this->is_deleted;
-  }
-
-  public function setDeleted(bool $is_deleted): static
-  {
-    $this->is_deleted = $is_deleted;
 
     return $this;
   }
