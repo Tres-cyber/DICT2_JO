@@ -17,20 +17,20 @@
           href="{{ path('admin_joborders') }}">Job Orders</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link{% if route == 'activities_idnex' %} active" aria-current="page{%endif%}" href="{{ path('activities_index') }}">Activities</a>
+          <a class="nav-link{% if route == 'activities_index' %} active" aria-current="page{%endif%}" href="{{ path('activities_index') }}">Activities</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link{% if route == 'admin_accounts' %} active" aria-current="page{%endif%}" href="{{ path('accounts_index') }}">Accounts</a>
+          <a class="nav-link{% if route == 'accounts_index' %} active" aria-current="page{%endif%}" href="{{ path('accounts_index') }}">Accounts</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link{% if route == 'admin_projects' %} active" aria-current="page{%endif%}" href="{{ path('admin_projects') }}">Projects</a>
+          <a class="nav-link{% if route == 'projects_index' %} active" aria-current="page{%endif%}" href="{{ path('projects_index') }}">Projects</a>
         </li>
         <li class="nav-item mr-5">
           <a class="nav-link{% if route == 'personnels_index' %} active" aria-current="page{%endif%}" href="{{ path('personnels_index') }}">Personnels</a>
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link{% if route == 'dashboard_user' %} active" aria-current="page{%endif%}" href="{{ path('dashboard_user') }}">Dashboards</a>
+          <a class="nav-link{% if route == 'user_dashboard' %} active" aria-current="page{%endif%}" href="{{ path('user_dashboard') }}">Dashboards</a>
         </li>
         {% endif %}
       </ul>

@@ -29,7 +29,6 @@ class PersonnelRepository extends ServiceEntityRepository
     return $query->getArrayResult();
   }
 
-
   public function createJoinedQueryBuilder(
     string $personnel = "personnel",
     string $project = "project"

@@ -17,7 +17,7 @@ class ProjectController extends AbstractController
     private ProjectRepository $projectRepository
   ) {}
 
-  #[Route('/admin/projects', name: 'admin_projects')]
+  #[Route('/admin/projects', name: 'projects_index')]
   public function projects(): Response
   {
     $projects = $this->projectRepository->findAllJoined();

@@ -33,12 +33,15 @@ class CustomAuthenticator extends AbstractLoginFormAuthenticator
     return new Passport(
       new UserBadge($email, function ($userIdentifier) {
         /** @var Account $account */
-        $account = $this->entityManager->getRepository(Account::class)->findOneBy([
-          'email' => $userIdentifier,
-          'is_deleted' => false
-        ]);
+        $qb = $account = $this->entityManager->getRepository(Account::class)->createQueryBuilder('acc');
+        $qb = $qb->leftJoin('acc.personnel', 'per')
+          ->where('acc.email = ?1')
+          ->select('acc', 'per')
+          ->setParameter(1, $userIdentifier);
 
-        if (!$account) {
+        $account  = $qb->getQuery()->getOneOrNullResult();
+
+        if (is_null($account)) {
           throw new CustomUserMessageAuthenticationException('Invalid email or password');
         }
 

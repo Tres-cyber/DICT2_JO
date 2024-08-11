@@ -3,7 +3,6 @@
 <title>ADMIN | Accounts</title>
 {% endblock %}
 {% block header %}
-{% set current = 'accounts' %}
 {% include 'nav-bar.twig' %}
 {% endblock %}
 {% block body %}
@@ -24,7 +23,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form method="post" action="/admin/accounts.php">
+        <form method="post" action="{{ path('account_add') }}">
           <label for="name" class="form-label">Name: </label>
           <select name="personnel" class="form-select mb-3">
             {% for personnel in personnels %}
@@ -48,7 +47,7 @@
             aria-describedby="addon-wrapping"
             type="password"
             id="password"
-            name="password_hash"
+            name="password"
             required
           >
           <div class="modal-footer">
@@ -93,9 +92,12 @@
                 <button class="btn btn-sm btn-secondary">
                   <i class="fa-solid fa-rotate-right"></i>
                 </button>
-                <a href="{{ path('account_delete', {id: acc.id, _method: 'DELETE'}) }}" class="btn btn-sm btn-danger">
-                  <i class="fa-solid fa-trash"></i>
-                </a>
+                <form action="{{ path('account_delete', {id: acc.id}) }}" method="post">
+                  <input type="hidden" name="_method" value="DELETE">
+                  <button class="btn btn-sm btn-danger">
+                    <i class="fa-solid fa-trash"></i>
+                  </button>
+                </form>
               </div>
             </td>
           </tr>

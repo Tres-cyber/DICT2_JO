@@ -7,7 +7,6 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints\IsNull;
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
 class Account implements UserInterface, PasswordAuthenticatedUserInterface
@@ -17,7 +16,7 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
   #[ORM\Column]
   private ?int $id = null;
 
-  #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+  #[ORM\OneToOne(cascade: ['persist'])]
   private ?Personnel $personnel = null;
 
   #[ORM\Column(length: 127)]
@@ -27,12 +26,9 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
   private ?string $email = null;
 
   #[ORM\Column(options: ['default' => false])]
-  private ?bool $is_deleted = false;
-
-  #[ORM\Column(options: ['default' => false])]
   private ?bool $is_admin = false;
 
-  #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+  #[ORM\OneToOne(cascade: ['persist'])]
   private ?AccountSession $current_session = null;
 
   public function getId(): ?int
