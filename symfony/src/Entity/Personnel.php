@@ -21,7 +21,7 @@ class Personnel
   #[ORM\Column(length: 63)]
   private ?string $position = null;
 
-  #[ORM\ManyToOne(inversedBy: 'focal_person')]
+  #[ORM\ManyToOne]
   private ?Project $project = null;
 
   #[ORM\OneToOne(mappedBy: 'personnel', targetEntity: Account::class)]
@@ -126,6 +126,6 @@ class Personnel
 
   public function getAccount(): ?Account
   {
-    return $this->getAccount();
+    return $this->account;
   }
 }
