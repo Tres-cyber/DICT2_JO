@@ -6,140 +6,6 @@
 {% include 'nav-bar.twig' %}
 {% endblock %}
 {% block body %}
-<div
-  class="modal fade"
-  id="deleteConfirmationModal"
-  tabindex="-1"
-  aria-labelledby="deleteConfirmationLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="deleteConfirmationLabel">Confirm Deletion</h5>
-      </div>
-      <div class="modal-body">Are you sure you want to delete this personnel?</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <form
-          :action="`{{ path('personnel_delete', {id : 'PLACEHOLDER'}) }}`.replace('PLACEHOLDER', id)"
-          method="POST"
-          x-data="{ id: 0 }"
-          @delete.window="id = $event.target.dataset.deleteId"
-        >
-          <input type="hidden" name="_method" value="DELETE">
-          <button class="btn btn-danger" id="confirmDelete">Delete</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div
-  class="modal fade"
-  id="EditModal"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
-  tabindex="-1"
-  aria-labelledby="editModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="editModalLabel">Edit Personnel</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <form
-        method="POST"
-        x-data="{id: 0}"
-        @edit.window="id = $event.target.dataset.editId"
-        :action="`{{ path('personnel_edit', {id : 'PLACEHOLDER'}) }}`.replace('PLACEHOLDER', id)"
-      >
-        <input type="hidden" name="_method" value="PUT">
-        <div class="modal-body">
-          <label for="edit-name" class="form-label">Name: </label>
-          <input
-            type="text"
-            class="form-control mb-3"
-            aria-label="name"
-            aria-describedby="addon-wrapping"
-            id="edit-name"
-            name="name"
-          >
-          <label for="edit-position" class="form-label">Position: </label>
-          <input
-            type="text"
-            class="form-control mb-3"
-            aria-label="position"
-            aria-describedby="addon-wrapping"
-            id="edit-position"
-            name="position"
-          >
-          <select name="project_id" class="form-select" id="projects-input">
-            {% for project in projects %}
-              <option value="{{ project.id }}">{{ project.name }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-success">Save</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<div
-  class="modal fade"
-  id="AddModal"
-  data-bs-backdrop="static"
-  data-bs-keyboard="false"
-  tabindex="-1"
-  aria-labelledby="addModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="addModalLabel">Add Personnel</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <form method="post" action="{{ path('personnels_add') }}">
-        <div class="modal-body">
-          <label for="name" class="form-label">Name: </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            class="form-control mb-3"
-            aria-label="name"
-            aria-describedby="addon-wrapping"
-          >
-          <label for="position" class="form-label">Position: </label>
-          <input
-            type="text"
-            id="position"
-            name="position"
-            class="form-control mb-3"
-            aria-label="position"
-            aria-describedby="addon-wrapping"
-          >
-          <label for="project_name" class="form-label">Project Name: </label>
-          <select name="project_id" class="form-select" id="projects-input">
-            {% for project in projects %}
-              <option value="{{ project.id }}">{{ project.name }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 
 <div class="container mt-4">
   <nav aria-label="breadcrumb">
@@ -168,7 +34,7 @@
         <span class="no-wrap tw-hidden sm:tw-block">Add personnel</span>
         <i class="fa-solid fa-plus"></i>
       </button>
-      <form action="{{ path('personnels_index') }}" method="GET" class="input-group">
+      <form hx-target="body" hx-get="{{ path('personnels_index') }}" hx-push-url="true" class="input-group">
         <input
           class="form-control form-control-sm"
           type="text"
@@ -184,6 +50,7 @@
         </button>
       </form>
       <a
+        hx-boost="true"
         href="{{ path(app.request.attributes.get('_route')) }}"
         class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
       >
@@ -218,16 +85,13 @@
             <td data-label="Action">
               <div class="d-flex flex-no-wrap gap-1">
                 <button
-                  x-data
-                  data-edit-id="{{ per.id | e('html_attr') }}"
-                  data-edit-name="{{ per.name | e('html_attr') }}"
-                  data-edit-position="{{ per.position | e('html_attr') }}"
-                  data-edit-project="{{ per.project.id | default(0) }}"
-                  @click="$dispatch('edit')"
-                  onclick="setPersonnelId({{ per.id }}, '{{ per.name }}', '{{ per.position }}', {{ per.project.id | default(0) }})"
                   class="btn btn-sm btn-primary"
                   data-bs-toggle="modal"
-                  data-bs-target="#EditModal"
+                  data-bs-target="#editModal"
+                  hx-get="{{ path('personnel_edit', {id: per.id }) }}"
+                  hx-target="#edit-form"
+                  hx-indicator="#edit-loading"
+                  hx-swap="outerHTML"
                 >
                   <i class="fa-solid fa-pen"></i>
                 </button>
@@ -235,9 +99,12 @@
                   class="btn btn-sm btn-danger"
                   data-bs-toggle="modal"
                   data-bs-target="#deleteConfirmationModal"
-                  data-delete-id="{{ per.id }}"
-                  @click="$dispatch('delete')"
+                  hx-delete="{{ path('personnel_delete', {id: per.id}) }}"
+                  hx-target="body"
+                  hx-trigger="confirmed"
+                  hx-push-url="true"
                   x-data
+                  @click="$dispatch('confirm')"
                 >
                   <i class="fa-solid fa-trash"></i>
                 </button>
@@ -249,14 +116,112 @@
     </table>
   </div>
 </div>
-<div class="container mt-3">
+<div class="container mt-3" hx-boost="true">
   {{ knp_pagination_render(personnels) }}
 </div>
-<script>
-  function setPersonnelId(id, name, position, project_name) {
-    document.getElementById('edit-name').value = name;
-    document.getElementById('edit-position').value = position;
-    document.getElementById('projects-input').value = project_name;
-  }
-</script>
+{% endblock %}
+{% block outside %}
+<div
+  class="modal fade"
+  id="deleteConfirmationModal"
+  tabindex="-1"
+  aria-labelledby="deleteConfirmationLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteConfirmationLabel">Confirm Deletion</h5>
+      </div>
+      <div class="modal-body">Are you sure you want to delete this personnel?</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          x-data="{ target: null }"
+          @confirm.window="target = $event.target; console.log($event.target)"
+          @click="htmx.trigger(target, 'confirmed')"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="editModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="editModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="editModalLabel">Edit Personnel</h1>
+        <div class="spinner-border spinner-border-sm ms-3 htmx-indicator" role="status" id="edit-loading">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="edit-form" class="placeholder-glow">
+          <div class="placeholder col-4"></div>
+          <div class="placeholder placeholder-lg col-12 mb-3"></div>
+          <div class="placeholder col-5"></div>
+          <div class="placeholder placeholder-lg col-12 mb-3"></div>
+          <div class="placeholder col-4"></div>
+          <div class="placeholder placeholder-lg col-12 mb-3"></div>
+          <div class="btn btn-primary disabled placeholder col-4"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="AddModal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="addModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="addModalLabel">Add Personnel</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form hx-post="{{ path('personnels_index') }}" hx-target="body" hx-push-url="true">
+          {{ form_rest(addForm) }}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastPlacement bottom-0 end-0">
+  {% for notif in app.flashes('notifications') %}
+    <div
+      class="toast"
+      role="alert"
+      aria-live="assertive"
+      aria-atomic="true"
+      x-data="notification"
+    >
+      <div class="toast-header">
+        <strong class="me-auto">{{ notif.title }}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body">{{ notif.message }}</div>
+    </div>
+  {% endfor %}
+</div>
 {% endblock %}

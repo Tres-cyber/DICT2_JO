@@ -19,6 +19,9 @@
     {{ encore_entry_link_tags('app') }}
   </head>
   <html>
+    {% block outside %}
+    {% endblock %}
+
     <body>
       <header>
         {% block header %}

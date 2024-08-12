@@ -1,7 +1,7 @@
 {% set route = app.request.attributes.get('_route') %}
 <nav class="navbar navbar-expand-md" style="background-color: {{ app.user.admin ? '#eb4c39' : '#3f5e8c'}}" data-bs-theme="dark">
   <div class="container">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="#" hx-boost="true">
       <img src="/assets/logo.png" alt="Logo" class="d-inline-block align-text-center tw-w-14 tw-h-14 rounded-circle">
       DICT
     </a>
@@ -9,7 +9,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0" hx-boost="true">
         {% if app.user.admin %}
         <li class="nav-item">
           <a 
@@ -35,7 +35,7 @@
         {% endif %}
       </ul>
       <div class="d-flex">
-        <a href="{{ path('app_logout') }}" class="btn btn-secondary align-self-center">Logout</a>
+        <a hx-boost="true" href="{{ path('app_logout') }}" class="btn btn-secondary align-self-center">Logout</a>
       </div>
     </div>
   </div>

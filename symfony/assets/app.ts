@@ -1,4 +1,6 @@
 import Alpine from "alpinejs";
+import htmx from "htmx.org";
+
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./tailwind-base.scss";
@@ -21,6 +23,7 @@ import poll from "./components/poll";
 import autocomplete from "./components/autocomplete";
 import dateRange from "./components/dateRange";
 import multipleSelect from "./components/multipleSelect";
+import notifcation from "./components/notifcation";
 
 library.add(
   faPrint,
@@ -39,6 +42,7 @@ library.add(
 dom.watch();
 
 (window as any).Alpine = Alpine;
+(window as any).htmx = htmx;
 
 Alpine.data("autocomplete", autocomplete);
 Alpine.data("dateRange", dateRange);
@@ -46,5 +50,6 @@ Alpine.data("multipleSelect", multipleSelect);
 Alpine.data("poll", poll);
 Alpine.data("autocomplete", autocomplete);
 Alpine.data("dateRange", dateRange);
+Alpine.data("notification", notifcation);
 
 Alpine.start();
