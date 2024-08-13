@@ -23,8 +23,10 @@ class PersonnelType extends AbstractType
         'required' => false,
         'placeholder' => 'No assigned project',
       ])
-      ->add('save', SubmitType::class, ['label' => 'Add Personnel'])
-    ;
+      ->add('save', SubmitType::class, [
+        'label' => 'Save',
+        'attr' => ['data-bs-dismiss' => 'modal']
+      ]);;
   }
 
   public function configureOptions(OptionsResolver $resolver): void

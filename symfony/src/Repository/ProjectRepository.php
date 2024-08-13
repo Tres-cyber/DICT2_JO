@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Project;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -26,6 +27,18 @@ class ProjectRepository extends ServiceEntityRepository
     );
 
     return $query->getArrayResult();
+  }
+
+  public function createJoinedQueryBuilder(
+
+    string $project = "project",
+    string $focal_person = "focal_person",
+  ): QueryBuilder {
+    $qb = $this->createQueryBuilder($project)
+      ->leftJoin("$project.focal_person", $focal_person)
+      ->select($project, $focal_person);
+
+    return $qb;
   }
 
   //    /**

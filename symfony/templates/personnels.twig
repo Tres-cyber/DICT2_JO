@@ -29,7 +29,7 @@
       <button
         class="btn btn-sm btn-success d-flex align-items-center gap-1"
         data-bs-toggle="modal"
-        data-bs-target="#AddModal"
+        data-bs-target="#add-modal"
       >
         <span class="no-wrap tw-hidden sm:tw-block">Add personnel</span>
         <i class="fa-solid fa-plus"></i>
@@ -87,7 +87,7 @@
                 <button
                   class="btn btn-sm btn-primary"
                   data-bs-toggle="modal"
-                  data-bs-target="#editModal"
+                  data-bs-target="#edit-modal"
                   hx-get="{{ path('personnel_edit', {id: per.id }) }}"
                   hx-target="#edit-form"
                   hx-indicator="#edit-loading"
@@ -98,7 +98,7 @@
                 <button
                   class="btn btn-sm btn-danger"
                   data-bs-toggle="modal"
-                  data-bs-target="#deleteConfirmationModal"
+                  data-bs-target="#delete-modal"
                   hx-delete="{{ path('personnel_delete', {id: per.id}) }}"
                   hx-target="body"
                   hx-trigger="confirmed"
@@ -109,6 +109,12 @@
                   <i class="fa-solid fa-trash"></i>
                 </button>
               </div>
+            </td>
+          </tr>
+        {% else %}
+          <tr>
+            <td colspan="999" class="!text-left">
+              <em>No projects found.</em>
             </td>
           </tr>
         {% endfor %}
@@ -123,15 +129,15 @@
 {% block outside %}
 <div
   class="modal fade"
-  id="deleteConfirmationModal"
+  id="delete-modal"
   tabindex="-1"
-  aria-labelledby="deleteConfirmationLabel"
+  aria-labelledby="delete-label"
   aria-hidden="true"
 >
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="deleteConfirmationLabel">Confirm Deletion</h5>
+        <h5 class="modal-title" id="delete-label">Confirm Deletion</h5>
       </div>
       <div class="modal-body">Are you sure you want to delete this personnel?</div>
       <div class="modal-footer">
@@ -152,17 +158,17 @@
 
 <div
   class="modal fade"
-  id="editModal"
+  id="edit-modal"
   data-bs-backdrop="static"
   data-bs-keyboard="false"
   tabindex="-1"
-  aria-labelledby="editModalLabel"
+  aria-labelledby="edit-modalLabel"
   aria-hidden="true"
 >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="editModalLabel">Edit Personnel</h1>
+        <h1 class="modal-title fs-5" id="edit-modalLabel">Edit Personnel</h1>
         <div class="spinner-border spinner-border-sm ms-3 htmx-indicator" role="status" id="edit-loading">
           <span class="visually-hidden">Loading...</span>
         </div>
@@ -185,7 +191,7 @@
 
 <div
   class="modal fade"
-  id="AddModal"
+  id="add-modal"
   data-bs-backdrop="static"
   data-bs-keyboard="false"
   tabindex="-1"
@@ -205,23 +211,5 @@
       </div>
     </div>
   </div>
-</div>
-
-<div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastPlacement bottom-0 end-0">
-  {% for notif in app.flashes('notifications') %}
-    <div
-      class="toast"
-      role="alert"
-      aria-live="assertive"
-      aria-atomic="true"
-      x-data="notification"
-    >
-      <div class="toast-header">
-        <strong class="me-auto">{{ notif.title }}</strong>
-        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-      <div class="toast-body">{{ notif.message }}</div>
-    </div>
-  {% endfor %}
 </div>
 {% endblock %}

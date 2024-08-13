@@ -15,7 +15,7 @@ class AccountSession
   private ?int $id = null;
 
   #[ORM\ManyToOne]
-  #[ORM\JoinColumn(nullable: false)]
+  #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
   private ?Account $account = null;
 
   #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]

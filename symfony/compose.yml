@@ -8,10 +8,18 @@ services:
     volumes:
       - ./:/var/www/html
       - ./apache-config.conf:/etc/apache2/sites-available/000-default.conf
+      - uploads:/var/www/html/public/uploads
       - /var/www/html/vendor
       - /var/www/html/var
     depends_on:
       - database
+    command: >
+      bash -c "
+        mkdir -p /var/www/html/public/uploads/logo &&
+        chown -R www-data:www-data /var/www/html/public/uploads &&
+        chmod -R 775 /var/www/html/public/uploads &&
+        apache2-foreground
+      "
 
   database:
     image: mysql:8.0
@@ -42,3 +50,4 @@ services:
 
 volumes:
   db-data:
+  uploads:

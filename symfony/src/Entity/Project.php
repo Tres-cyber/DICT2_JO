@@ -26,6 +26,7 @@ class Project
   private ?bool $is_deleted = false;
 
   #[ORM\ManyToOne]
+  #[ORM\JoinColumn(onDelete: 'CASCADE')]
   private ?Personnel $focal_person = null;
 
   public function __construct() {}
@@ -64,7 +65,7 @@ class Project
     return $this->logo;
   }
 
-  public function setLogo(string $logo): static
+  public function setLogo(?string $logo): static
   {
     $this->logo = $logo;
 

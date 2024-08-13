@@ -22,6 +22,7 @@ class Personnel
   private ?string $position = null;
 
   #[ORM\ManyToOne]
+  #[ORM\JoinColumn(onDelete: 'SET NULL')]
   private ?Project $project = null;
 
   #[ORM\OneToOne(mappedBy: 'personnel', targetEntity: Account::class)]

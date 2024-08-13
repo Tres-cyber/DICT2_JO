@@ -24,14 +24,14 @@ class JoborderController extends AbstractController
     /** @var \App\Entity\Account */
     $account = $this->getUser();
 
-    $search = $request->query->getString('search', '');
+    $search = strtolower($request->query->getString('search', ''));
 
     $qb = $this->jobOrderRepository->createJoinedQueryBuilder();
-    $qb = $qb->orWhere('joborder.client_name LIKE :search')
-      ->orWhere('joborder.control_number LIKE :search');
+    $qb = $qb->orWhere('LOWER(joborder.client_name) LIKE :search')
+      ->orWhere('LOWER(joborder.control_number) LIKE :search');
 
     if ($account->isAdmin()) {
-      $qb = $qb->orWhere('performer.name LIKE :search');
+      $qb = $qb->orWhere('LOWER(performer.name) LIKE :search');
     }
     $qb = $qb->setParameter(':search', $search);
 
