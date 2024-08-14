@@ -31,11 +31,14 @@ class PersonnelRepository extends ServiceEntityRepository
 
   public function createJoinedQueryBuilder(
     string $personnel = "personnel",
-    string $project = "project"
+    string $project = "project",
+    string $account = "account",
   ) {
     $qb = $this->createQueryBuilder($personnel)
       ->leftJoin("$personnel.project", $project)
-      ->select($personnel, $project);
+      ->leftJoin('personnel.account', $account)
+      ->select($personnel, $project, $account)
+      ->where("$personnel.is_deleted = 0");
 
     return $qb;
   }

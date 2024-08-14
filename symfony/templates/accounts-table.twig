@@ -1,0 +1,36 @@
+{% for acc in accounts %}
+  <tr>
+    <td data-label="Account Name">
+      {{ acc.personnel ? acc.personnel.name : 'admin' }}
+    </td>
+    <td
+      data-label="Session Status"
+      class="{{ acc.hasSession() ? 'text-success' : 'text-session' }}"
+    >
+      {{ acc.hasSession() ? 'active': 'offline' }}
+    </td>
+    <td data-label="Action">
+      <div class="d-flex flex-no-wrap gap-1">
+        <button
+          hx-get="{{ path('account_logout', {id: acc.id}) }}"
+          hx-target="body"
+          hx-push-url="true"
+          class="btn btn-sm btn-primary"
+        >
+          <i class="fa-solid fa-right-from-bracket"></i>
+        </button>
+        <button class="btn btn-sm btn-secondary">
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+        <button
+          hx-delete="{{ path('account_delete', {id: acc.id}) }}"
+          hx-target="body"
+          hx-push-url="true"
+          class="btn btn-sm btn-danger"
+        >
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </div>
+    </td>
+  </tr>
+{% endfor %}

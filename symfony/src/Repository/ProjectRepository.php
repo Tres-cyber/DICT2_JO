@@ -30,13 +30,14 @@ class ProjectRepository extends ServiceEntityRepository
   }
 
   public function createJoinedQueryBuilder(
-
     string $project = "project",
     string $focal_person = "focal_person",
+    string $account = "account",
   ): QueryBuilder {
     $qb = $this->createQueryBuilder($project)
       ->leftJoin("$project.focal_person", $focal_person)
-      ->select($project, $focal_person);
+      ->leftjoin("$focal_person.account", $account)
+      ->select($project, $focal_person, $account);
 
     return $qb;
   }

@@ -61,8 +61,12 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
     return $this;
   }
 
-  public function isAdmin(): ?bool
+  public function isAdmin(?bool $is_admin = null): ?bool
   {
+    if (!is_null($is_admin)) {
+      $this->is_admin = $is_admin;
+    }
+
     return $this->is_admin;
   }
 

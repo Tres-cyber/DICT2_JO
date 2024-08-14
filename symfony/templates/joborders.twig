@@ -28,44 +28,32 @@
       {% endif %}
     </em>
     <div class="d-flex justify-content-start align-items-center col-12 col-md-auto gap-2">
-      <a
-        href="/form.php"
-        class="btn btn-sm btn-primary d-flex align-items-center gap-1"
-      >
-        <span class="hidden sm:block">add</span>
-        <i class="fa-solid fa-plus"></i>
-      </a>
-      <div class="dropdown">
-        <button class="btn btn-sm btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-          Filter
-        </button>
-        <div class="dropdown-menu">
-          <a
-            class="dropdown-item"
-            href="{{ path(current_route, query | merge({sort: 'date_asc'})) }}"
+      {% if is_admin %}
+        <div class="btn-group">
+          <button
+            class="btn btn-sm btn-primary dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            data-bs-auto-close="outside"
+            aria-expanded="false"
           >
-            Date Ascending
-          </a>
-          <a
-            class="dropdown-item"
-            href="{{ path(current_route, query | merge({sort: 'date_desc'})) }}"
-          >
-            Date Descending
-          </a>
-          <a
-            class="dropdown-item"
-            href="{{ path(current_route, query | merge({sort: 'issued_by'})) }}"
-          >
-            Issued By
-          </a>
-          <a
-            class="dropdown-item"
-            href="{{ path(current_route, query | merge({sort: 'approved_by'})) }}"
-          >
-            Approved By
-          </a>
+            Create new
+          </button>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Menu item</a></li>
+            <li><a class="dropdown-item" href="#">Menu item</a></li>
+            <li><a class="dropdown-item" href="#">Menu item</a></li>
+          </ul>
         </div>
-      </div>
+      {% else %}
+        <a
+          href="/form.php"
+          class="btn btn-sm btn-primary d-flex align-items-center gap-1"
+        >
+          <span class="hidden sm:block">Add</span>
+          <i class="fa-solid fa-plus"></i>
+        </a>
+      {% endif %}
       <form action="{{ path(app.request.attributes.get('_route')) }}" method="GET" class="input-group">
         <input class="form-control form-control-sm" type="text" name="search" placeholder="Search...">
         <button

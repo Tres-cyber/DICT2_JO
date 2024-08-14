@@ -46,7 +46,7 @@ class JoborderController extends AbstractController
       10
     );
 
-    return $this->render('job_orders.twig', [
+    return $this->render('joborders.twig', [
       'jobOrders' => $jobOrders,
       'search' => $search,
     ]);

@@ -78,11 +78,20 @@
             <td data-label="Focal Person">{{ proj.focalPerson.name }}</td>
             <td data-label="Action">
               <div class="d-flex flex-no-wrap gap-1">
+                <a
+                  href="#"
+                  class="btn btn-sm btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#edit-modal"
+                  onclick="setProjectId({{ proj.id }}, '{{ proj.name }}', '{{ proj.code }}', '{{ proj.name }}', '{{ proj.logo }}')"
+                >
+                  <i class="fa-solid fa-pen tw-h-3 tw-w-3"></i>
+                </a>
                 <button
                   class="btn btn-sm btn-primary"
                   data-bs-toggle="modal"
                   data-bs-target="#edit-modal"
-                  hx-get="{{ path('project_edit', {id: proj.id }) }}"
+                  hx-get="{{ path('personnel_edit', {id: proj.id }) }}"
                   hx-target="#edit-form"
                   hx-indicator="#edit-loading"
                   hx-swap="outerHTML"

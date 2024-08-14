@@ -5,11 +5,11 @@ namespace App\Form;
 use App\Entity\Personnel;
 use App\Entity\Project;
 use App\Form\DataTransformer\FilenameTransformer;
+use App\Repository\PersonnelRepository;
 use RuntimeException;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -34,6 +34,9 @@ class ProjectType extends AbstractType
       ->add('focal_person', EntityType::class, [
         'class' => Personnel::class,
         'choice_label' => 'name',
+        'query_builder' => function (PersonnelRepository $repository) {
+          return $repository->createJoinedQueryBuilder();
+        }
       ])
       ->add('logo', FileType::class, [
         'required' => false,

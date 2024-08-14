@@ -1,7 +1,7 @@
 import Alpine from "alpinejs";
 import htmx from "htmx.org";
 
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./tailwind-base.scss";
 import "./style.css";
@@ -43,6 +43,7 @@ dom.watch();
 
 (window as any).Alpine = Alpine;
 (window as any).htmx = htmx;
+(window as any).bootstrap = bootstrap;
 
 Alpine.data("autocomplete", autocomplete);
 Alpine.data("dateRange", dateRange);

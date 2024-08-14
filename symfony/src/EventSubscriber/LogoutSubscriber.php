@@ -28,7 +28,11 @@ class LogoutSubscriber implements EventSubscriberInterface
     $this->entityManager->flush();
 
     $redirect = new RedirectResponse(
-      $this->urlGenerator->generate('app_login')
+      $this->urlGenerator->generate('app_login'),
+      303,
+      [
+        'HX-Refresh' => 'true'
+      ]
     );
     $event->setResponse($redirect);
   }

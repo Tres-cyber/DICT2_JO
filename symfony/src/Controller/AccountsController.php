@@ -3,9 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Account;
+use App\Form\AccountType;
 use App\Repository\AccountRepository;
 use App\Repository\PersonnelRepository;
+use App\Service\Referer;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Exception\BadRequestException;
@@ -20,51 +23,61 @@ class AccountsController extends AbstractController
     private EntityManagerInterface $entityManager,
     private PersonnelRepository $personnelRepository,
     private AccountRepository $accountRepository,
+    private Referer $referer,
   ) {}
 
-  #[Route('/admin/accounts', name: 'accounts_index', methods: ['GET'])]
-  public function index(): Response
+  #[Route('/admin/accounts', name: 'accounts_index', methods: ['GET', 'POST'])]
+  public function index(UserPasswordHasherInterface $passwordHasher, PaginatorInterface $paginator, Request $request): Response
   {
-    $personnels = $this->personnelRepository->findBy([
-      'is_deleted' => 0,
-    ]);
-    $accounts = $this->accountRepository->findAllJoined();
+    $qb = $this->accountRepository->createJoinedQueryBuilder();
 
-    return $this->render('accounts.twig', [
-      'personnels' => $personnels,
-      'accounts' => $accounts,
-    ]);
-  }
-
-  #[Route('/admin/accounts', name: 'account_add', methods: ['POST'])]
-  public function add(Request $request, UserPasswordHasherInterface $hasher, LoggerInterface $logger): Response
-  {
     $account = new Account();
+    $form = $this->createForm(AccountType::class, $account);
 
-    $personnel = $this->personnelRepository->findOneBy([
-      'id' => $request->request->getInt('personnel'),
-      'is_deleted' => 0,
-    ]);
+    $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) {
+      $passwordHash = $passwordHasher->hashPassword(
+        $account,
+        $account->getPassword(),
+      );
+      $account->setPassword($passwordHash);
 
-    if (is_null($personnel)) {
-      throw new BadRequestException("Personnel doesn't correspond to any active user");
+      $this->entityManager->persist($account);
+
+      $this->entityManager->flush();
+      $this->addFlash('notifications', [
+        'title' => 'Added account successfully',
+        'message' => "Successfully added account '" . $account->getEmail() . "'"
+      ]);
+
+      return $this->referer->redirect(
+        $this->redirectToRoute('accounts_index', [], 303)
+      );
     }
 
-    $account->setPersonnel($personnel);
-    $account->setEmail($request->request->getString('email'));
 
-    $hashedPassword = $hasher->hashPassword(
-      $account,
-      $request->request->getString('password'),
+    $search = $request->query->get('search');
+    $page = $request->query->getInt('page', 1);
+    $accounts = $paginator->paginate(
+      $qb,
+      $page,
+      10
     );
-    $logger->error($request->request->getString('password'));
-    $account->setPassword($hashedPassword);
 
-    $this->entityManager->persist($account);
-    $this->entityManager->flush();
+    if ($request->query->has('table')) {
+      return $this->render('accounts-table.twig', [
+        'accounts' => $accounts,
+      ]);
+    }
 
-    return $this->redirectToRoute('accounts_index');
+    return $this->render('accounts.twig', [
+      'addForm' => $form,
+      'accounts' => $accounts,
+      'page' => $page,
+      'search' => $search,
+    ]);
   }
+
   #[Route('/admin/accounts/{id}/logout', name: 'account_logout', methods: ['GET'])]
   public function logoutAccount(Account $account): Response
   {
@@ -80,6 +93,8 @@ class AccountsController extends AbstractController
     $this->entityManager->remove($account);
     $this->entityManager->flush();
 
-    return $this->redirectToRoute('accounts_index');
+    return $this->referer->redirect(
+      $this->redirectToRoute('accounts_index', [], 303)
+    );
   }
 }

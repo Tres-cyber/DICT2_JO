@@ -44,7 +44,7 @@ class ProjectController extends AbstractController
 
     $search = strtolower($request->query->get('search'));
     $qb = $this->projectRepository->createJoinedQueryBuilder();
-    $qb->andWhere('project.is_deleted = 0')
+    $qb = $qb->andWhere('project.is_deleted = 0')
       ->andWhere($qb->expr()->orX(
         'LOWER(project.code) LIKE :search',
         'LOWER(project.name) LIKE :search',

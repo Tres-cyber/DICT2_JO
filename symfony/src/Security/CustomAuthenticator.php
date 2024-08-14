@@ -80,7 +80,6 @@ class CustomAuthenticator extends AbstractLoginFormAuthenticator
 
   public function getLoginUrl(Request $request): string
   {
-
     return $this->urlGenerator->generate('app_login');
   }
 }

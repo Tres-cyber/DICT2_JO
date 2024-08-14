@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Account;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -31,5 +32,17 @@ class AccountRepository extends ServiceEntityRepository
        WHERE per IS NULL OR per.is_deleted = 0'
     );
     return $query->getResult();
+  }
+
+  public function createJoinedQueryBuilder(
+    string $account = 'account',
+    string $personnel = 'personnel',
+    string $current_session = 'current_session'
+  ): QueryBuilder {
+    return $this->createQueryBuilder($account)
+      ->leftJoin("$account.personnel", $personnel)
+      ->leftJoin("$account.current_session", $current_session)
+      ->where("$personnel IS NULL OR $personnel.is_deleted = 0")
+      ->select($account, $personnel, $current_session);
   }
 }
