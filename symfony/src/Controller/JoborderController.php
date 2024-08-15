@@ -17,12 +17,18 @@ class JoborderController extends AbstractController
     private JobOrderRepository $jobOrderRepository
   ) {}
 
-  #[Route('/admin/job_orders', name: 'admin_joborders')]
-  #[Route('/dashboard', name: 'user_dashboard')]
+  #[Route('/admin/joborders', name: 'admin_joborders')]
+  #[Route('/joborders', name: 'user_dashboard')]
   public function index(PaginatorInterface $paginator, Request $request): Response
   {
     /** @var \App\Entity\Account */
     $account = $this->getUser();
+    $isAdmin = $request->attributes->get('_route') == 'admin_joborders';
+
+
+    if (!$isAdmin and is_null($account->getPersonnel())) {
+      return $this->redirectToRoute('admin_joborders');
+    }
 
     $search = strtolower($request->query->getString('search', ''));
 
@@ -49,6 +55,7 @@ class JoborderController extends AbstractController
     return $this->render('joborders.twig', [
       'jobOrders' => $jobOrders,
       'search' => $search,
+      'isAdmin' => $isAdmin,
     ]);
   }
 }

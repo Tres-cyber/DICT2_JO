@@ -7,11 +7,10 @@ use App\Form\AccountType;
 use App\Repository\AccountRepository;
 use App\Repository\PersonnelRepository;
 use App\Service\Referer;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -44,11 +43,20 @@ class AccountsController extends AbstractController
 
       $this->entityManager->persist($account);
 
-      $this->entityManager->flush();
-      $this->addFlash('notifications', [
-        'title' => 'Added account successfully',
-        'message' => "Successfully added account '" . $account->getEmail() . "'"
-      ]);
+      try {
+        $this->entityManager->flush();
+
+        $this->addFlash('notifications', [
+          'title' => 'Added account successfully',
+          'message' => "Successfully added account '" . $account->getEmail() . "'"
+        ]);
+      } catch (UniqueConstraintViolationException $e) {
+        $this->addFlash('notifications', [
+          'title' => 'Cannot create account',
+          'message' => "Email '" . $account->getEmail() . "' is already registered"
+        ]);
+      }
+
 
       return $this->referer->redirect(
         $this->redirectToRoute('accounts_index', [], 303)

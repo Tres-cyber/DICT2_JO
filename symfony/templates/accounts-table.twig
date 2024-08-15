@@ -5,9 +5,12 @@
     </td>
     <td
       data-label="Session Status"
-      class="{{ acc.hasSession() ? 'text-success' : 'text-session' }}"
     >
-      {{ acc.hasSession() ? 'active': 'offline' }}
+      {% if acc.hasSession() %}
+        <span class="text-success">active</span>
+      {% else %}
+        <span class="text-success">offline</span>
+      {% endif %}
     </td>
     <td data-label="Action">
       <div class="d-flex flex-no-wrap gap-1">
@@ -23,10 +26,16 @@
           <i class="fa-solid fa-rotate-right"></i>
         </button>
         <button
-          hx-delete="{{ path('account_delete', {id: acc.id}) }}"
-          hx-target="body"
-          hx-push-url="true"
+          @click="$dispatch('confirm')"
           class="btn btn-sm btn-danger"
+          data-bs-target="#delete-modal"
+          data-bs-title="Delete account"
+          data-bs-toggle="modal"
+          hx-delete="{{ path('account_delete', {id: acc.id}) }}"
+          hx-push-url="true"
+          hx-target="body"
+          hx-trigger="confirmed"
+          x-data="tooltip"
         >
           <i class="fa-solid fa-trash"></i>
         </button>

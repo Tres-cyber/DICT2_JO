@@ -7,7 +7,13 @@
 {% endblock %}
 {% block body %}
 
-<div class="container mt-5">
+<div class="container mt-4 mt-sm-5">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page">Home</li>
+    </ol>
+  </nav>
+
   <div class="row align-items-center justify-content-between gap-2">
     <em class="col-12 col-lg-auto">
       {% if accounts.totalItemCount > 0 %}
@@ -52,8 +58,8 @@
     </div>
   </div>
 
-  <div class="col col-lg-9 col-xl-8 col-xxl-7 table-responsive mx-auto mt-3">
-    <table class="table-light table-striped table  border ">
+  <div class="col col-lg-9 col-xl-8 col-xxl-7 mx-auto mt-3">
+    <table class="table-light table-striped table border table-stack table-stack-md">
       <thead>
         <tr>
           <th>Account Name</th>
@@ -78,6 +84,35 @@
 
 {% endblock %}
 {% block outside %}
+<div
+  class="modal fade"
+  id="delete-modal"
+  tabindex="-1"
+  aria-labelledby="delete-label"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="delete-label">Confirm Deletion</h5>
+      </div>
+      <div class="modal-body">Are you sure you want to delete this personnel?</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button
+          class="btn btn-danger"
+          data-bs-dismiss="modal"
+          x-data="{ target: null }"
+          @confirm.window="target = $event.target"
+          @click="htmx.trigger(target, 'confirmed')"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div
   class="modal fade"
   id="add-modal"

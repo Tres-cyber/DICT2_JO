@@ -41,6 +41,7 @@ security:
     ROLE_USER: HAS_VALID_SESSION
   access_control:
     - { path: ^/admin, roles: ROLE_ADMIN }
+    - { path: ^/joborder, roles: ROLE_USER }
   access_decision_manager:
     strategy: unanimous
     allow_if_all_abstain: false

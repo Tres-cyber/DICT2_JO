@@ -7,15 +7,13 @@
 {% endblock %}
 {% block body %}
 
-<div class="container mt-4">
+<div class="container mt-4 mt-sm-5">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item active" aria-current="page">Personnels</li>
     </ol>
   </nav>
-</div>
 
-<div class="container">
   <div class="row align-items-center justify-content-between gap-2">
     <em class="col-12 col-lg-auto">
       {% if personnels.totalItemCount > 0 %}
@@ -62,66 +60,70 @@
 </div>
 
 <div class="container mt-3">
-  <div class="col table-responsive mx-auto">
-    <table class="table-light table-hover table-striped table border no-wrap">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Position</th>
-          <th>Assigned Project</th>
-          <th>Action</th>
+  <table class="table-light table-hover table-striped table border table-stack table-stack-md">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Assigned Project</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+      {% for per in personnels %}
+        <tr role="row">
+          <td data-label="Name" role="cell">{{ per.name }}</td>
+          <td data-label="Position" role="cell">{{ per.position }}</td>
+          {% if per.project %}
+            <td data-label="Assigned Project" role="cell">{{ per.project.name }}</td>
+          {% else %}
+            <td data-label="Assigned Project" role="cell">No Assigned Project</td>
+          {% endif %}
+          <td data-label="Action" role="cell">
+            <div class="d-flex flex-no-wrap gap-1">
+              <button
+                class="btn btn-sm btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#edit-modal"
+                hx-get="{{ path('personnel_edit', {id: per.id }) }}"
+                hx-target="#edit-form"
+                hx-indicator="#edit-loading"
+                hx-swap="outerHTML"
+                x-data="tooltip"
+                data-bs-title="Edit personnel"
+              >
+                <i class="fa-solid fa-pen"></i>
+                <span class="d-md-none">Edit</span>
+              </button>
+              <button
+                @click="$dispatch('confirm')"
+                class="btn btn-sm btn-danger"
+                data-bs-target="#delete-modal"
+                data-bs-title="Remove personnel"
+                data-bs-toggle="modal"
+                hx-delete="{{ path('personnel_delete', {id: per.id}) }}"
+                hx-push-url="true"
+                hx-target="body"
+                hx-trigger="confirmed"
+                x-data="tooltip"
+              >
+                <i class="fa-solid fa-trash"></i>
+                <span class="d-md-none">Delete</span>
+              </button>
+            </div>
+          </td>
         </tr>
-      </thead>
-      <tbody class="table-group-divider">
-        {% for per in personnels %}
-          <tr>
-            <td data-label="Name">{{ per.name }}</td>
-            <td data-label="Position">{{ per.position }}</td>
-            {% if per.project %}
-              <td data-label="Assigned Project">{{ per.project.name }}</td>
-            {% else %}
-              <td data-label="Assigned Project">No Assigned Project</td>
-            {% endif %}
-            <td data-label="Action">
-              <div class="d-flex flex-no-wrap gap-1">
-                <button
-                  class="btn btn-sm btn-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#edit-modal"
-                  hx-get="{{ path('personnel_edit', {id: per.id }) }}"
-                  hx-target="#edit-form"
-                  hx-indicator="#edit-loading"
-                  hx-swap="outerHTML"
-                >
-                  <i class="fa-solid fa-pen"></i>
-                </button>
-                <button
-                  class="btn btn-sm btn-danger"
-                  data-bs-toggle="modal"
-                  data-bs-target="#delete-modal"
-                  hx-delete="{{ path('personnel_delete', {id: per.id}) }}"
-                  hx-target="body"
-                  hx-trigger="confirmed"
-                  hx-push-url="true"
-                  x-data
-                  @click="$dispatch('confirm')"
-                >
-                  <i class="fa-solid fa-trash"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-        {% else %}
-          <tr>
-            <td colspan="999" class="!text-left">
-              <em>No projects found.</em>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+      {% else %}
+        <tr role="row">
+          <td colspan="999" class="!text-left" role="cell">
+            <em>No projects found.</em>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
+
 <div class="container mt-3" hx-boost="true">
   {{ knp_pagination_render(personnels) }}
 </div>
@@ -146,7 +148,7 @@
           class="btn btn-danger"
           data-bs-dismiss="modal"
           x-data="{ target: null }"
-          @confirm.window="target = $event.target; console.log($event.target)"
+          @confirm.window="target = $event.target"
           @click="htmx.trigger(target, 'confirmed')"
         >
           Delete

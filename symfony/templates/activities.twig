@@ -6,34 +6,8 @@
 {% include 'nav-bar.twig' %}
 {% endblock %}
 {% block body %}
-<div
-  class="modal fade"
-  id="logoutConfirmationModal"
-  tabindex="-1"
-  aria-labelledby="logoutConfirmationLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="logoutConfirmationLabel">Logout all currently active</h5>
-      </div>
-      <div class="modal-body">Are your sure you want to logout all currently active? This will also log you out</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <form
-          action="{{ path(app.request.attributes.get('_route')) }}"
-          method="POST"
-        >
-          <input type="hidden" name="_method" value="DELETE">
-          <button class="btn btn-danger" id="confirmDelete">Logout</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</div>
 
-<div class="container mt-4">
+<div class="container mt-4 mt-sm-5">
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item active" aria-current="page">Activities</li>
@@ -65,8 +39,8 @@
 </div>
 
 <div class="container mt-4 mt-sm-5">
-  <div class="col col-md-9 col-lg-8 col-xl-7 col-xxl-6 table-responsive mx-auto">
-    <table class="table-light table-striped table border no-wrap">
+  <div class="col col-md-9 col-lg-8 col-xl-7 col-xxl-6 mx-auto">
+    <table class="table-light table-striped table border table-stack table-stack-sm">
       <thead>
         <tr>
           <th>Name</th>
@@ -77,11 +51,11 @@
       <tbody class="table-group-divider">
         {% for ses in sessions %}
           <tr>
-            <td>
+            <td data-label="Name">
               {% if ses.account.personnel %}{{ ses.account.personnel.name }}{% else %}Admin{% endif %}
             </td>
-            <td>{{ ses.loginAt | date("M d, Y H:i ", "Asia/Manila") }}</td>
-            <td>
+            <td data-label="Log in Time">{{ ses.loginAt | date("M d, Y H:i ", "Asia/Manila") }}</td>
+            <td data-label="Log out Time">
               {% if ses.logoutAt is null %}
                 Still Logged In
               {% else %}
@@ -97,5 +71,33 @@
 
 <div class="container mt-3" hx-boost="true">
   {{ knp_pagination_render(sessions) }}
+</div>
+{% endblock %}
+{% block outside %}
+<div
+  class="modal fade"
+  id="logoutConfirmationModal"
+  tabindex="-1"
+  aria-labelledby="logoutConfirmationLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logoutConfirmationLabel">Logout all currently active</h5>
+      </div>
+      <div class="modal-body">Are your sure you want to logout all currently active? This will also log you out</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <form
+          action="{{ path(app.request.attributes.get('_route')) }}"
+          method="POST"
+        >
+          <input type="hidden" name="_method" value="DELETE">
+          <button class="btn btn-danger" id="confirmDelete">Logout</button>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}

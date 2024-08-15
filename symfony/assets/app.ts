@@ -24,6 +24,7 @@ import autocomplete from "./components/autocomplete";
 import dateRange from "./components/dateRange";
 import multipleSelect from "./components/multipleSelect";
 import notifcation from "./components/notifcation";
+import tooltip from "./components/tooltip";
 
 library.add(
   faPrint,
@@ -52,5 +53,6 @@ Alpine.data("poll", poll);
 Alpine.data("autocomplete", autocomplete);
 Alpine.data("dateRange", dateRange);
 Alpine.data("notification", notifcation);
+Alpine.data("tooltip", tooltip);
 
 Alpine.start();

@@ -8,6 +8,14 @@
 {% block body %}
 
 <div class="container mt-4 mt-sm-5">
+  <div class="row">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Project</li>
+      </ol>
+    </nav>
+  </div>
+
   <div class="row align-items-center justify-content-between gap-2">
     <em class="col-12 col-lg-auto">
       {% if projects.totalItemCount > 0 %}
@@ -52,78 +60,72 @@
     </div>
   </div>
 
-  <div class="col table-responsive mx-auto mt-3">
-    <table class="table-light table-hover table-striped table border">
-      <thead>
+  <table class="table-light table-hover table-striped table border mt-3 table-stack table-stack-lg">
+    <thead>
+      <tr>
+        <th>Short Code</th>
+        <th>Project Name</th>
+        <th>Icon</th>
+        <th>Focal Person</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+      {% for proj in projects %}
         <tr>
-          <th>Short Code</th>
-          <th>Project Name</th>
-          <th>Icon</th>
-          <th>Focal Person</th>
-          <th>Action</th>
+          <td data-label="Short Code">{{ proj.code }}</td>
+          <td data-label="Project Name">{{ proj.name }}</td>
+          <td data-label="Icon">
+            {% if proj.logo is not empty %}
+              <img class="td-icon tw-h-6" src="{{ proj.logo }}" alt="icon">
+            {% else %}
+              <img class="td-icon tw-h-6" src="/storage/default.png" alt="icon">
+            {% endif %}
+          </td>
+          <td data-label="Focal Person">{{ proj.focalPerson.name }}</td>
+          <td data-label="Action">
+            <div class="d-flex flex-no-wrap gap-1">
+              <button
+                class="btn btn-sm btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#edit-modal"
+                hx-get="{{ path('project_edit', {id: proj.id }) }}"
+                hx-target="#edit-form"
+                hx-indicator="#edit-loading"
+                hx-swap="outerHTML"
+                x-data="tooltip"
+                data-bs-title="Edit project"
+              >
+                <i class="fa-solid fa-pen"></i>
+                <span class="d-lg-none">Edit</span>
+              </button>
+              <button
+                class="btn btn-sm btn-danger"
+                data-bs-toggle="modal"
+                data-bs-target="#delete-modal"
+                hx-delete="{{ path('project_delete', {id: proj.id}) }}"
+                hx-target="body"
+                hx-trigger="confirmed"
+                hx-push-url="true"
+                x-data="tooltip"
+                data-bs-title="Remove project"
+                @click="$dispatch('confirm')"
+              >
+                <i class="fa-solid fa-trash"></i>
+                <span class="d-lg-none">Delete</span>
+              </button>
+            </div>
+          </td>
         </tr>
-      </thead>
-      <tbody class="table-group-divider">
-        {% for proj in projects %}
-          <tr>
-            <td data-label="Short Code">{{ proj.code }}</td>
-            <td data-label="Project Name">{{ proj.name }}</td>
-            <td data-label="Icon">
-              {% if proj.logo is not empty %}
-                <img class="td-icon tw-h-6" src="{{ proj.logo }}" alt="icon">
-              {% else %}
-                <img class="td-icon tw-h-6" src="/storage/default.png" alt="icon">
-              {% endif %}
-            </td>
-            <td data-label="Focal Person">{{ proj.focalPerson.name }}</td>
-            <td data-label="Action">
-              <div class="d-flex flex-no-wrap gap-1">
-                <a
-                  href="#"
-                  class="btn btn-sm btn-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#edit-modal"
-                  onclick="setProjectId({{ proj.id }}, '{{ proj.name }}', '{{ proj.code }}', '{{ proj.name }}', '{{ proj.logo }}')"
-                >
-                  <i class="fa-solid fa-pen tw-h-3 tw-w-3"></i>
-                </a>
-                <button
-                  class="btn btn-sm btn-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#edit-modal"
-                  hx-get="{{ path('personnel_edit', {id: proj.id }) }}"
-                  hx-target="#edit-form"
-                  hx-indicator="#edit-loading"
-                  hx-swap="outerHTML"
-                >
-                  <i class="fa-solid fa-pen"></i>
-                </button>
-                <button
-                  class="btn btn-sm btn-danger"
-                  data-bs-toggle="modal"
-                  data-bs-target="#delete-modal"
-                  hx-delete="{{ path('project_delete', {id: proj.id}) }}"
-                  hx-target="body"
-                  hx-trigger="confirmed"
-                  hx-push-url="true"
-                  x-data
-                  @click="$dispatch('confirm')"
-                >
-                  <i class="fa-solid fa-trash"></i>
-                </button>
-              </div>
-            </td>
-          </tr>
-        {% else %}
-          <tr>
-            <td colspan="999" class="!text-left">
-              <em>No projects found.</em>
-            </td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+      {% else %}
+        <tr>
+          <td colspan="999" class="!text-left">
+            <em>No projects found.</em>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 
 <div class="container mt-3" hx-boost="true">
@@ -151,7 +153,7 @@
           class="btn btn-danger"
           data-bs-dismiss="modal"
           x-data="{ target: null }"
-          @confirm.window="target = $event.target; console.log($event.target)"
+          @confirm.window="target = $event.target"
           @click="htmx.trigger(target, 'confirmed')"
         >
           Delete
