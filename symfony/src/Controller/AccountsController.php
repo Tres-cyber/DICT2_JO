@@ -28,7 +28,11 @@ class AccountsController extends AbstractController
   #[Route('/admin/accounts', name: 'accounts_index', methods: ['GET', 'POST'])]
   public function index(UserPasswordHasherInterface $passwordHasher, PaginatorInterface $paginator, Request $request): Response
   {
+    $search = strtolower($request->query->get('search'));
+
     $qb = $this->accountRepository->createJoinedQueryBuilder();
+    $qb = $qb->andWhere("personnel.name LIKE :search OR (personnel IS NULL AND LOWER('admin') LIKE :search)")
+      ->setParameter('search', '%' . $search . '%');
 
     $account = new Account();
     $form = $this->createForm(AccountType::class, $account);
@@ -64,7 +68,6 @@ class AccountsController extends AbstractController
     }
 
 
-    $search = $request->query->get('search');
     $page = $request->query->getInt('page', 1);
     $accounts = $paginator->paginate(
       $qb,

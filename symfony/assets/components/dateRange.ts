@@ -11,29 +11,41 @@ interface DateRangeData {
   format(d: Date): string;
 }
 
-export default (): AlpineComponent<DateRangeData> => ({
+export default (
+  time = false,
+  notEarlier = true,
+): AlpineComponent<DateRangeData> => ({
   startDate: new Date(),
   endDate: new Date(),
 
   init() {
     const _this = this;
 
+    const options = {
+      startDate: _this.startDate,
+      endDate: _this.endDate,
+    } as any;
+
+    if (notEarlier) {
+      options.minDate = new Date();
+    }
+
+    if (time) {
+      options.timePicker = true;
+    }
+
     (
       $(this.$el.querySelector("input") as HTMLInputElement) as any
-    ).daterangepicker(
-      {
-        startDate: _this.startDate,
-        endDate: _this.endDate,
-        minDate: new Date(),
-      },
-      (start: Moment, end: Moment) => {
-        _this.startDate = start.toDate();
-        _this.endDate = end.toDate();
-      },
-    );
+    ).daterangepicker(options, (start: Moment, end: Moment) => {
+      _this.startDate = start.toDate();
+      _this.endDate = end.toDate();
+    });
   },
 
   format(d) {
+    if (time) {
+      return moment(d).utc().toISOString(false);
+    }
     return moment(d).utc().format("YYYY-MM-DD");
   },
 });

@@ -7,9 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use \App\Entity\JobOrderStatus;
 use \App\Entity\RequestMode;
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\DateImmutableType;
 
 #[ORM\Entity(repositoryClass: JobOrderRepository::class)]
 class JobOrder
@@ -19,62 +21,83 @@ class JobOrder
   #[ORM\Column]
   private ?int $id = null;
 
+  #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+  private ?\DateTimeInterface $archived_at = null;
+
   #[ORM\ManyToOne]
   #[ORM\JoinColumn(nullable: false)]
+  #[Assert\NotNull()]
   private ?Project $project = null;
 
   #[ORM\Column(options: ['default' => 'CURRENT_TIMESTAMP'])]
+  #[Assert\NotNull(groups: ['submitted'])]
   private ?\DateTimeImmutable $created_at = null;
 
+  #[Assert\NotNull(groups: ['submitted'])]
   #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
   private ?\DateTimeInterface $scheduled_start_date = null;
 
+  #[Assert\NotNull(groups: ['submitted'])]
   #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
   private ?\DateTimeInterface $scheduled_end_date = null;
 
   #[ORM\ManyToOne(inversedBy: 'jobOrders')]
+  #[Assert\NotNull()]
   private ?Personnel $performer = null;
 
   #[ORM\Column(type: Types::TEXT, nullable: true)]
+  #[Assert\NotBlank(groups: ['submitted'])]
   private ?string $job_description = null;
 
   #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+  #[Assert\NotNull(groups: ['completed'])]
   private ?\DateTimeInterface $start_time = null;
 
   #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+  #[Assert\NotNull(groups: ['completed'])]
   private ?\DateTimeInterface $end_time = null;
 
   #[ORM\Column(type: Types::TEXT, nullable: true)]
+  #[Assert\NotBlank(groups: ['completed'])]
   private ?string $actual_job_done = null;
 
   #[ORM\Column(type: Types::TEXT, nullable: true)]
+  #[Assert\NotBlank(groups: ['completed'])]
   private ?string $remarks = null;
 
   #[ORM\Column(length: 127, nullable: true)]
+  #[Assert\NotBlank(groups: ['submitted'])]
   private ?string $client_name = null;
 
   #[ORM\Column(length: 127, nullable: true)]
+  #[Assert\NotBlank(groups: ['submitted'])]
   private ?string $client_contact = null;
 
   #[ORM\Column(length: 127, nullable: true)]
+  #[Assert\NotBlank(groups: ['submitted'])]
   private ?string $client_lgu = null;
 
+  #[Assert\NotNull(groups: ['submitted'])]
   #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
   private ?\DateTimeInterface $request_date = null;
 
   #[ORM\ManyToOne]
+  #[Assert\NotNull(groups: ['submitted'])]
   private ?Personnel $issuer = null;
 
   #[ORM\ManyToOne]
+  #[Assert\NotNull(groups: ['submitted'])]
   private ?Personnel $approver = null;
 
   #[ORM\Column(length: 63, nullable: true)]
   private ?string $control_number = null;
 
   #[ORM\Column(length: 127, nullable: true)]
+  #[Assert\NotBlank(groups: ['completed'])]
   private ?string $verifier_name = null;
 
   #[ORM\Column(length: 63, nullable: true)]
+  #[Assert\NotBlank(groups: ['completed'])]
   private ?string $verifier_position = null;
 
   #[ORM\Column(name: "joborder_status", enumType: JobOrderStatus::class, options: ['default' => 'DRAFT'])]
@@ -84,6 +107,7 @@ class JobOrder
    * @var Collection<int, Personnel>
    */
   #[ORM\ManyToMany(targetEntity: Personnel::class)]
+  #[Assert\Count(min: 1, groups: ['submitted'])]
   private Collection $endorsee;
 
   #[ORM\Column(enumType: RequestMode::class, options: ['default' => 'ON_SITE'])]
@@ -258,10 +282,10 @@ class JobOrder
 
   public function getRequestMode(): ?string
   {
-    return $this->request_mode;
+    return $this->request_mode->value;
   }
 
-  public function setRequestMode(string $request_mode): static
+  public function setRequestMode(RequestMode $request_mode): static
   {
     $this->request_mode = $request_mode;
 
@@ -340,9 +364,9 @@ class JobOrder
     return $this;
   }
 
-  public function getStatus(): ?JobOrderStatus
+  public function getStatus(): ?string
   {
-    return $this->status;
+    return $this->status->value;
   }
 
   public function setStatus(JobOrderStatus $status): static
@@ -372,6 +396,27 @@ class JobOrder
   public function removeEndorsee(Personnel $endorsee): static
   {
     $this->endorsee->removeElement($endorsee);
+
+    return $this;
+  }
+
+  public function isArchived(): bool
+  {
+    return !is_null($this->archived_at);
+  }
+
+  public function setArchivedAt(?DateTimeImmutable $archived_at): static
+  {
+    $this->archived_at = $archived_at;
+
+    return $this;
+  }
+
+  public function submit(string $controlNumber): static
+  {
+    $this->created_at = new DateTimeImmutable();
+    $this->control_number = $controlNumber;
+    $this->status = JobOrderStatus::Approved;
 
     return $this;
   }

@@ -25,7 +25,8 @@ class PersonnelType extends AbstractType
         'placeholder' => 'No assigned project',
         'query_builder' => function (ProjectRepository $repository) {
           return $repository->createJoinedQueryBuilder();
-        }
+        },
+        'autocomplete' => true,
       ])
       ->add('save', SubmitType::class, [
         'label' => 'Save',

@@ -1,44 +1,46 @@
 import Alpine from "alpinejs";
 import htmx from "htmx.org";
 
+import "./bootstrap";
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./tailwind-base.scss";
 import "./style.css";
 
-import { library, dom } from "@fortawesome/fontawesome-svg-core";
-import { faRotateRight } from "@fortawesome/free-solid-svg-icons/faRotateRight";
-import { faPen } from "@fortawesome/free-solid-svg-icons/faPen";
-import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons/faFloppyDisk";
 import { faArrowDown } from "@fortawesome/free-solid-svg-icons/faArrowDown";
-import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
-import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
-import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
+import { faArrowTurnDown } from "@fortawesome/free-solid-svg-icons/faArrowTurnDown";
+import { faArrowTurnUp } from "@fortawesome/free-solid-svg-icons/faArrowTurnUp";
 import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
+import { faBroom } from "@fortawesome/free-solid-svg-icons/faBroom";
+import { faEye } from "@fortawesome/free-solid-svg-icons/faEye";
+import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons/faFloppyDisk";
+import { faPen } from "@fortawesome/free-solid-svg-icons/faPen";
+import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
 import { faPrint } from "@fortawesome/free-solid-svg-icons/faPrint";
 import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons/faRightFromBracket";
-import { faBroom } from "@fortawesome/free-solid-svg-icons/faBroom";
+import { faRotateRight } from "@fortawesome/free-solid-svg-icons/faRotateRight";
+import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
-import poll from "./components/poll";
-import autocomplete from "./components/autocomplete";
+import { library, dom } from "@fortawesome/fontawesome-svg-core";
 import dateRange from "./components/dateRange";
-import multipleSelect from "./components/multipleSelect";
 import notifcation from "./components/notifcation";
 import tooltip from "./components/tooltip";
 
 library.add(
-  faPrint,
-  faBars,
-  faEye,
-  faTrash,
-  faPlus,
   faArrowDown,
+  faArrowTurnDown,
+  faArrowTurnUp,
+  faBars,
+  faBroom,
+  faEye,
   faFloppyDisk,
   faPen,
-  faRotateRight,
+  faPlus,
+  faPrint,
   faRightFromBracket,
+  faRotateRight,
+  faTrash,
   faXmark,
-  faBroom,
 );
 dom.watch();
 
@@ -46,11 +48,7 @@ dom.watch();
 (window as any).htmx = htmx;
 (window as any).bootstrap = bootstrap;
 
-Alpine.data("autocomplete", autocomplete);
 Alpine.data("dateRange", dateRange);
-Alpine.data("multipleSelect", multipleSelect);
-Alpine.data("poll", poll);
-Alpine.data("autocomplete", autocomplete);
 Alpine.data("dateRange", dateRange);
 Alpine.data("notification", notifcation);
 Alpine.data("tooltip", tooltip);

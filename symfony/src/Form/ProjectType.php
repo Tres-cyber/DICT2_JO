@@ -36,7 +36,8 @@ class ProjectType extends AbstractType
         'choice_label' => 'name',
         'query_builder' => function (PersonnelRepository $repository) {
           return $repository->createJoinedQueryBuilder();
-        }
+        },
+        'autocomplete' => true,
       ])
       ->add('logo', FileType::class, [
         'required' => false,

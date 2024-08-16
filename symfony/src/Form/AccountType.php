@@ -26,7 +26,8 @@ class AccountType extends AbstractType
         'query_builder' => function (PersonnelRepository $repository) {
           return $repository->createJoinedQueryBuilder()
             ->where('account IS NULL');
-        }
+        },
+        'autocomplete' => true,
       ])
       ->add('save', SubmitType::class, [
         'label' => 'Save',
