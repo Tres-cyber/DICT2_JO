@@ -3,9 +3,7 @@
 namespace App\Form;
 
 use App\Entity\JobOrder;
-use App\Entity\Personnel;
-use App\Repository\PersonnelRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Service\FormUtils;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,20 +14,46 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class JoborderType extends AbstractType
 {
+  public function __construct(private FormUtils $formUtils) {}
+
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
     $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) {
       $jobOrder = $event->getData();
       $form = $event->getForm();
 
+      $submitted = $jobOrder->getStatus() == 'APPROVED'
+        || $jobOrder->getStatus() == 'COMPLETED';
+
       $form
+        /* client info */
+        ->add('client_name', null, ['disabled' => $submitted])
+        ->add('client_lgu', null, ['disabled' => $submitted])
+        ->add('client_contact', null, ['disabled' => $submitted])
+        ->add('request_date', null, [
+          'widget' => 'single_text',
+          'disabled' => $submitted,
+        ])
+
+        /* joborder details */
         ->add('scheduled_start_date', null, [
           'widget' => 'single_text',
+
+          'disabled' => $submitted,
         ])
         ->add('scheduled_end_date', null, [
           'widget' => 'single_text',
+          'disabled' => $submitted,
         ])
-        ->add('job_description')
+        ->add('issuer', PersonnelAutocompleteField::class, ['disabled' => $submitted])
+        ->add('approver', PersonnelAutocompleteField::class, ['disabled' => $submitted])
+        ->add('endorsee', PersonnelAutocompleteField::class, [
+          'multiple' => true,
+          'disabled' => $submitted,
+        ])
+        ->add('job_description', null, ['disabled' => $submitted])
+
+        /* completion info */
         ->add('start_time', null, [
           'widget' => 'single_text',
         ])
@@ -38,27 +62,25 @@ class JoborderType extends AbstractType
         ])
         ->add('actual_job_done')
         ->add('remarks')
-        ->add('client_name')
-        ->add('client_contact')
-        ->add('client_lgu')
-        ->add('request_date', null, [
-          'widget' => 'single_text',
-        ])
         ->add('verifier_name')
-        ->add('verifier_position')
-        ->add('issuer', PersonnelAutocompleteField::class)
-        ->add('approver', PersonnelAutocompleteField::class)
-        ->add('endorsee', PersonnelAutocompleteField::class, ['multiple' => true]);
-
-      dump($jobOrder);
+        ->add('verifier_position');
 
       $form->add('draft', SubmitType::class, [
-        'label' => 'Draft',
+        'label' => 'Save as draft',
         'attr' => ['class' => 'btn-secondary'],
-      ])->add('submit', SubmitType::class, [
-        'label' => 'Submit',
-        'attr' => ['class' => 'btn-primary'],
       ]);
+
+      if ($jobOrder->getStatus() == 'DRAFT') {
+        $form->add('submit', SubmitType::class, [
+          'label' => 'Submit',
+          'attr' => ['class' => 'btn-primary'],
+        ]);
+      } else if ($jobOrder->getStatus() == 'APPROVED') {
+        $form->add('complete', SubmitType::class, [
+          'label' => 'Mark completed',
+          'attr' => ['class' => 'btn-primary'],
+        ]);
+      }
     });
   }
 
@@ -67,9 +89,15 @@ class JoborderType extends AbstractType
     $resolver->setDefaults([
       'data_class' => JobOrder::class,
       'validation_groups' => function (FormInterface $form) {
-        if ($form->get('submit')->isClicked()) {
+        $this->formUtils->setForm($form);
+
+        if ($this->formUtils->isClicked('submit')) {
           return ['Default', 'submitted'];
         }
+        if ($this->formUtils->isClicked('complete')) {
+          return ['Default', 'submitted', 'completed'];
+        }
+
         return ['Default'];
       },
     ]);

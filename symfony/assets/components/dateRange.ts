@@ -4,7 +4,6 @@ import $ from "jquery";
 import "bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import moment, { Moment } from "moment";
-
 interface DateRangeData {
   startDate: Date;
   endDate: Date;
@@ -24,6 +23,9 @@ export default (
     const options = {
       startDate: _this.startDate,
       endDate: _this.endDate,
+      locale: {
+        format: "MMM DD, YY",
+      },
     } as any;
 
     if (notEarlier) {
@@ -32,6 +34,7 @@ export default (
 
     if (time) {
       options.timePicker = true;
+      options.locale.format = "MMM DD, YY hh:mm a";
     }
 
     (

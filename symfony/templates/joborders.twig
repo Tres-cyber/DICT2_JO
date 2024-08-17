@@ -101,7 +101,7 @@
     </thead>
     <tbody class="table-group-divider">
       {% for jo in jobOrders %}
-        <tr class="{% if jo.isArchived() %}opacity-50{% endif %}">
+        <tr class="{% if jo.isArchived() %}[&>td:not([data-label='Actions'])]:tw-text-neutral-500{% endif %}">
           <td data-label="Job Order Number">
             {% if jo.status != 'DRAFT' %}
               {{ jo.controlNumber }}
@@ -115,20 +115,45 @@
           <td data-label="Scheduled Date">
             {{ jo.scheduledStartDate | date("M d, Y") }}-{{ jo.scheduledEndDate | date("M d, Y") }}
           </td>
-          <td data-label="Issued By">{{ jo.issuer.name }}</td>
-          <td data-label="Approved By">{{ jo.approver.name }}</td>
+          <td data-label="Issued By">{{ jo.issuer.name | default('') }}</td>
+          <td data-label="Approved By">{{ jo.approver.name | default('') }}</td>
           <td data-label="Status">{{ jo.status }}</td>
           <td data-label="Actions">
             <div class="d-flex flex-no-wrap gap-1 col tw-justify-end">
               {% if not jo.isArchived() %}
                 {% if jo.status == 'DRAFT' %}
-                  <a href="/form.php?edit={{ jo.id}}" class="btn btn-sm btn-primary">
+                  <a
+                    hx-boost="true"
+                    href="{{ path('joborder_edit_draft', {control_number: jo.controlNumber}) }}"
+                    class="btn btn-sm btn-primary"
+                    x-data="tooltip"
+                    data-bs-title="Edit"
+                  >
                     <i class="fa-solid fa-pen"></i>
+                    <span class="d-xl-none">Edit</span>
+                  </a>
+                  {% elseif jo.status == 'APPROVED' %}
+                  <a
+                    hx-boost="true"
+                    href="{{ path('joborder_edit', {control_number: jo.controlNumber}) }}"
+                    class="btn btn-sm btn-primary"
+                    x-data="tooltip"
+                    data-bs-title="Edit"
+                  >
+                    <i class="fa-solid fa-pen"></i>
+                    <span class="d-xl-none">Edit</span>
                   </a>
                 {% endif %}
 
-                <a href="/form.php?id={{ jo.id}}" class="btn btn-sm btn-success">
+                <a
+                  hx-boost="true"
+                  href="{{ path('joborder_view', {control_number: jo.controlNumber}) }}"
+                  class="btn btn-sm btn-success"
+                  x-data="tooltip"
+                  data-bs-title="View"
+                >
                   <i class="fa-solid fa-eye"></i>
+                  <span class="d-xl-none">View</span>
                 </a>
 
                 {% if isAdmin %}
@@ -145,6 +170,16 @@
                   </button>
                 {% endif %}
                 {% elseif isAdmin %}
+                <a
+                  hx-boost="true"
+                  href="{{ path('joborder_view', {control_number: jo.controlNumber}) }}"
+                  class="btn btn-sm btn-success"
+                  x-data="tooltip"
+                  data-bs-title="View"
+                >
+                  <i class="fa-solid fa-eye"></i>
+                  <span class="d-xl-none">View</span>
+                </a>
                 <button
                   hx-put="{{ path('admin_joborder_unarchive', {control_number: jo.controlNumber}) }}"
                   hx-target="body"

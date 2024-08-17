@@ -22,6 +22,12 @@ class PersonnelAutocompleteField extends AbstractType
       'query_builder' => function (PersonnelRepository $repository) {
         return $repository->createJoinedQueryBuilder();
       },
+      'group_by' =>
+      function (Personnel $choice, $key, $value) {
+        $project = $choice->getProject();
+        if (is_null($project)) return 'Not assigned';
+        return $project->getName();
+      },
     ]);
   }
 

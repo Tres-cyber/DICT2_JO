@@ -4,11 +4,12 @@ namespace App\Controller;
 
 use App\Entity\JobOrder;
 use App\Entity\JobOrderStatus;
-use App\Entity\Personnel;
 use App\Form\JoborderType;
 use App\Repository\JobOrderRepository;
 use App\Repository\PersonnelRepository;
+use App\Service\FormUtils;
 use App\Service\Referer;
+use App\Service\Uniqid;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -17,7 +18,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Uid\Ulid;
 
 class JoborderController extends AbstractController
 {
@@ -26,12 +26,14 @@ class JoborderController extends AbstractController
     private JobOrderRepository $jobOrderRepository,
     private PersonnelRepository $personnelRepository,
     private Referer $referer,
+    private FormUtils $formUtils,
   ) {}
 
   #[Route('/admin/joborders', name: 'admin_joborders', methods: ['GET'])]
   #[Route('/joborders', name: 'user_dashboard', methods: ['GET'])]
   public function index(PaginatorInterface $paginator, Request $request): Response
   {
+
     /** @var \App\Entity\Account */
     $account = $this->getUser();
     $isAdmin = $request->attributes->get('_route') == 'admin_joborders';
@@ -72,9 +74,29 @@ class JoborderController extends AbstractController
     ]);
   }
 
+
+  #[Route('/joborders/{control_number}', name: 'joborder_view', methods: ['GET'], priority: -10)]
+  public function view(
+    #[MapEntity(mapping: ['control_number' => 'control_number'])]
+    JobOrder $joborder,
+  ) {
+    /** @var \App\Entity\Account */
+    $account = $this->getUser();
+
+    $personnel = $account->getPersonnel();
+    if (!$account->isAdmin() && $personnel->getId() != $joborder->getPerformer()->getId()) {
+      return $this->createNotFoundException();
+    }
+
+    return $this->render('print_joborder.twig', [
+      'jo' => $joborder,
+    ]);
+  }
+
+
   #[Route('/admin/joborders/create', name: 'admin_joborder_create', methods: ['GET', 'POST'])]
   #[Route('/joborders/create', name: 'user_joborder_create', methods: ['GET', 'POST'])]
-  public function add(Request $request, JobOrderRepository $jobOrderRepository)
+  public function add(Request $request, JobOrderRepository $jobOrderRepository, Uniqid $uniqid)
   {
     $joborder = new JobOrder();
 
@@ -101,7 +123,7 @@ class JoborderController extends AbstractController
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      if ($form->get('submit')->isClicked()) {
+      if ($this->formUtils->isClicked('submit')) {
         $controlNumber = $jobOrderRepository->generateControlNumber($joborder);
         $joborder->submit($controlNumber);
 
@@ -112,9 +134,9 @@ class JoborderController extends AbstractController
           'title' => "Submitted new joborder",
           'message' => "Saved joborder as '$controlNumber'",
         ]);
-      } else {
-        $ulid = new Ulid();
-        $joborder->setControlNumber($ulid->toRfc4122());
+      } else if ($this->formUtils->isClicked('draft')) {
+        $id = $uniqid->generate('DRAFT-');
+        $joborder->setControlNumber($id);
         $joborder->setStatus(JobOrderStatus::Draft);
 
         $this->entityManager->persist($joborder);
@@ -122,10 +144,9 @@ class JoborderController extends AbstractController
 
         $this->addFlash('notifications', [
           'title' => "Saved joborder as draft",
-          'message' => "Saved joborder as draft with id '$ulid'",
+          'message' => "Saved joborder as draft with id '$id'",
         ]);
       }
-
 
       return $this->redirectToRoute('app_front', [], 303);
     }
@@ -135,9 +156,9 @@ class JoborderController extends AbstractController
     ]);
   }
 
-  #[Route('/admin/joborders/draft/{control_number}/edit', name: 'joborder_edit_draft', methods: ['GET'])]
-  #[Route('/admin/joborders/{control_number}/edit', name: 'joborder_edit', methods: ['GET'])]
-  #[Route('/admin/joborders/{control_number}', name: 'joborder_edit_save', methods: ['POST'])]
+  #[Route('/joborders/draft/{control_number}/edit', name: 'joborder_edit_draft', methods: ['GET'])]
+  #[Route('/joborders/{control_number}/edit', name: 'joborder_edit', methods: ['GET'])]
+  #[Route('/joborders/{control_number}', name: 'joborder_edit_save', methods: ['POST'])]
   public function edit(
     Request $request,
     JobOrderRepository $jobOrderRepository,
@@ -147,22 +168,27 @@ class JoborderController extends AbstractController
     /** @var \App\Entity\Account */
     $account = $this->getUser();
 
-    if ($request->attributes->get('_route') == 'joborder_edit_draft') {
+    if ($request->attributes->get('_route') == 'joborder_edit' and $joborder->getStatus() == 'DRAFT') {
       return $this->redirectToRoute('joborder_edit_draft', [
         'control_number' => $joborder->getControlNumber()
       ]);
     }
 
     $personnel = $account->getPersonnel();
-    if (!$account->isAdmin() && !$personnel->getId() != $joborder->getPerformer()) {
+    if (!$account->isAdmin() && $personnel->getId() != $joborder->getPerformer()->getId()) {
       return $this->createAccessDeniedException();
     }
 
-    $form = $this->createForm(JoborderType::class, $joborder);
+    $form = $this->createForm(JoborderType::class, $joborder, [
+      'action' => $this->generateUrl('joborder_edit_save', [
+        'control_number' => $joborder->getControlNumber()
+      ])
+    ]);
     $form->handleRequest($request);
+    $this->formUtils->setForm($form);
 
     if ($form->isSubmitted() && $form->isValid()) {
-      if ($form->get('submit')->isClicked()) {
+      if ($this->formUtils->isClicked('submit')) {
         $controlNumber = $jobOrderRepository->generateControlNumber($joborder);
         $joborder->submit($controlNumber);
 
@@ -173,13 +199,23 @@ class JoborderController extends AbstractController
           'title' => "Submitted new joborder",
           'message' => "Saved joborder as '$controlNumber'",
         ]);
-      } else {
+      } else if ($this->formUtils->isClicked('complete')) {
+        $joborder->setStatus(JobOrderStatus::Completed);
+
+        $this->entityManager->flush();
+
+        $this->addFlash('notifications', [
+          'title' => "Joborder is marked completed",
+          'message' => "Joborder with control number '"
+            . $joborder->getControlNumber() . "' is marked completed",
+        ]);
+      } else if ($this->formUtils->isClicked('draft')) {
         $this->entityManager->flush();
         $id = $joborder->getControlNumber();
 
         $this->addFlash('notifications', [
-          'title' => "Saved joborder as draft",
-          'message' => "Saved joborder as draft with id '$id'",
+          'title' => "Saved edits",
+          'message' => "Edited joborder with id '$id'",
         ]);
       }
 
