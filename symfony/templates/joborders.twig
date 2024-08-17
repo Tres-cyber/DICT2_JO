@@ -23,7 +23,6 @@
     </em>
     <div class="d-flex justify-content-start align-items-center col-12 col-md-auto gap-2">
       {% if isAdmin %}
-        {#
         <div class="btn-group">
           <button
             class="btn btn-sm btn-primary dropdown-toggle"
@@ -34,13 +33,26 @@
           >
             Create new
           </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Menu item</a></li>
-            <li><a class="dropdown-item" href="#">Menu item</a></li>
-            <li><a class="dropdown-item" href="#">Menu item</a></li>
-          </ul>
+          <form
+            hx-boost
+            action="{{ path('admin_joborder_create') }}"
+            method="get"
+            class="dropdown-menu px-4 py-3"
+          >
+            <select
+              name="personnel"
+              class="mb-3 tw-min-w-[30ch]"
+              {{
+                stimulus_controller('symfony/ux-autocomplete/autocomplete', {
+                url: path('ux_entity_autocomplete', { alias: 'personnel_autocomplete_field' })
+                })
+              }}
+              required="required"
+              placeholder="Please select personnel"
+            ></select>
+            <button class="btn btn-primary">Create new Job Order</button>
+          </form>
         </div>
-        #}
       {% else %}
         <a
           href="{{ path('user_joborder_create') }}"

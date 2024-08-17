@@ -42,4 +42,14 @@ class PersonnelRepository extends ServiceEntityRepository
 
     return $qb;
   }
+
+  public function getDirector(): ?Personnel
+  {
+    return $this->createQueryBuilder('p')
+      ->where("p.position = 'Regional Director'")
+      ->andWhere("p.is_deleted = 0")
+      ->setMaxResults(1)
+      ->getQuery()
+      ->getOneOrNullResult();
+  }
 }

@@ -17,6 +17,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 class JoborderController extends AbstractController
@@ -96,14 +97,28 @@ class JoborderController extends AbstractController
 
   #[Route('/admin/joborders/create', name: 'admin_joborder_create', methods: ['GET', 'POST'])]
   #[Route('/joborders/create', name: 'user_joborder_create', methods: ['GET', 'POST'])]
-  public function add(Request $request, JobOrderRepository $jobOrderRepository, Uniqid $uniqid)
+  public function add(Request $request, Uniqid $uniqid)
   {
     $joborder = new JobOrder();
+    $route = $request->attributes->get('_route');
 
     /** @var \App\Entity\Account */
     $account = $this->getUser();
 
     $performer = $account->getPersonnel();
+    if (
+      $account->isAdmin()
+      && $route == "admin_joborder_create"
+      && $request->query->has('personnel')
+    ) {
+      $id = $request->query->get('personnel');
+      /** @var ?\App\Entity\Personnel */
+      $performer = $this->personnelRepository->find($id);
+      if (is_null($performer)) {
+        throw new HttpException(Response::HTTP_UNPROCESSABLE_ENTITY);
+      }
+    }
+
     $project = $performer->getProject();
 
     if (is_null($project)) {
@@ -114,17 +129,20 @@ class JoborderController extends AbstractController
       return $this->redirectToRoute('app_front', [], 303);
     }
 
+    $director = $this->personnelRepository->getDirector();
+
     $joborder->setPerformer($performer);
     $joborder->addEndorsee($performer);
     $joborder->setProject($project);
     $joborder->setIssuer($project->getFocalPerson());
+    $joborder->setApprover($director);
 
     $form = $this->createForm(JoborderType::class, $joborder);
     $form->handleRequest($request);
 
     if ($form->isSubmitted() && $form->isValid()) {
       if ($this->formUtils->isClicked('submit')) {
-        $controlNumber = $jobOrderRepository->generateControlNumber($joborder);
+        $controlNumber = $this->jobOrderRepository->generateControlNumber($joborder);
         $joborder->submit($controlNumber);
 
         $this->entityManager->persist($joborder);
@@ -161,7 +179,6 @@ class JoborderController extends AbstractController
   #[Route('/joborders/{control_number}', name: 'joborder_edit_save', methods: ['POST'])]
   public function edit(
     Request $request,
-    JobOrderRepository $jobOrderRepository,
     #[MapEntity(mapping: ['control_number' => 'control_number'])]
     JobOrder $joborder,
   ) {
@@ -189,7 +206,7 @@ class JoborderController extends AbstractController
 
     if ($form->isSubmitted() && $form->isValid()) {
       if ($this->formUtils->isClicked('submit')) {
-        $controlNumber = $jobOrderRepository->generateControlNumber($joborder);
+        $controlNumber = $this->jobOrderRepository->generateControlNumber($joborder);
         $joborder->submit($controlNumber);
 
         $this->entityManager->persist($joborder);
