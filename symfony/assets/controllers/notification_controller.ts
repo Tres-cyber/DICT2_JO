@@ -3,8 +3,14 @@ import { Toast } from "bootstrap";
 
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
+  private toast!: Toast;
+
   connect() {
-    const toast = new Toast(this.element);
-    toast.show();
+    this.toast = new Toast(this.element);
+    this.toast.show();
+  }
+
+  disconnect(): void {
+    this.toast.dispose();
   }
 }

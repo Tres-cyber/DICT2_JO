@@ -192,6 +192,9 @@
             "config/routes/ux_autocomplete.yaml"
         ]
     },
+    "symfony/ux-turbo": {
+        "version": "v2.19.3"
+    },
     "symfony/ux-twig-component": {
         "version": "2.19",
         "recipe": {

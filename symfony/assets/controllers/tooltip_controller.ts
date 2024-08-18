@@ -3,7 +3,13 @@ import { Tooltip } from "bootstrap";
 
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
+  private tooltip!: Tooltip;
+
   connect(): void {
-    new Tooltip(this.element);
+    this.tooltip = new Tooltip(this.element);
+  }
+
+  disconnect(): void {
+    this.tooltip.dispose();
   }
 }

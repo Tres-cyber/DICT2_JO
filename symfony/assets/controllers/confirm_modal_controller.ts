@@ -8,6 +8,7 @@ export default class extends Controller {
 
   private event: ConfirmEvent | null = null;
   private modal!: Modal;
+  private confirmEventListener!: (event: Event) => void;
 
   declare readonly titleTarget: Element;
   declare readonly messageTarget: Element;
@@ -16,18 +17,24 @@ export default class extends Controller {
   connect(): void {
     this.modal = new Modal(this.element);
 
-    window.addEventListener("confirm", (event: Event) => {
+    this.confirmEventListener = (event: Event) => {
       if (!(event instanceof ConfirmEvent)) return;
 
       this.event = event;
-
       this.titleTarget.innerHTML = event.detail.title ?? "Confirm";
       this.messageTarget.innerHTML =
         event.detail.message ?? "Are you sure you want to continue?";
       this.actionTarget.innerHTML = event.detail.action ?? "Confirm";
 
       this.modal.show();
-    });
+    };
+
+    window.addEventListener("confirm", this.confirmEventListener);
+  }
+
+  disconnect(): void {
+    window.removeEventListener("confirm", this.confirmEventListener);
+    this.modal.dispose();
   }
 
   confirm() {

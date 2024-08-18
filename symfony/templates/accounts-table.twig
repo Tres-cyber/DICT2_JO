@@ -14,17 +14,17 @@
     </td>
     <td data-label="Action">
       <div class="d-flex flex-no-wrap gap-1">
-        <button
-          class="btn btn-sm btn-primary"
-          data-bs-title="Logout"
-          data-controller="tooltip"
-          hx-get="{{ path('account_logout', {id: acc.id}) }}"
-          hx-push-url="true"
-          hx-target="body"
-        >
-          <i class="fa-solid fa-right-from-bracket"></i>
-          <span class="d-md-none">Logout</span>
-        </button>
+        <form action="{{ path('account_logout', {id: acc.id}) }}" method="get">
+          <button
+            class="btn btn-sm btn-primary"
+            data-bs-title="Logout"
+            data-controller="tooltip"
+          >
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="d-md-none">Logout</span>
+          </button>
+        </form>
+
         <button
           class="btn btn-sm btn-secondary"
           data-bs-title="Edit"

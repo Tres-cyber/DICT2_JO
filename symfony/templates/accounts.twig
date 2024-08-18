@@ -32,7 +32,7 @@
         <span class="no-wrap tw-hidden sm:tw-block">Add account</span>
         <i class="fa-solid fa-plus"></i>
       </button>
-      <form hx-target="body" hx-get="{{ path('accounts_index') }}" hx-push-url="true" class="input-group">
+      <form class="input-group" action="{{ path('accounts_index') }}" method="get">
         <input
           class="form-control form-control-sm"
           type="text"
@@ -68,8 +68,6 @@
       </thead>
       <tbody
         class="table-group-divider"
-        hx-get="{{ path('accounts_index', {table: true, page: page, search: search}) }}"
-        hx-trigger="every 5s"
       >
         {% include 'accounts-table.twig' %}
       </tbody>

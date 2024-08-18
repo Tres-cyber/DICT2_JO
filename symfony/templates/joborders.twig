@@ -34,7 +34,6 @@
             Create new
           </button>
           <form
-            hx-boost
             action="{{ path('admin_joborder_create') }}"
             method="get"
             class="dropdown-menu px-4 py-3"
@@ -63,10 +62,9 @@
         </a>
       {% endif %}
       <form
-        hx-get="{{ path(app.request.attributes.get('_route')) }}"
-        hx-target="body"
-        hx-push-url="true"
         class="input-group"
+        action="{{ path(app.request.attributes.get('_route')) }}"
+        method="get"
       >
         <input
           class="form-control form-control-sm"
@@ -165,17 +163,17 @@
                 </a>
 
                 {% if isAdmin %}
-                  <button
-                    hx-put="{{ path('admin_joborder_archive', {control_number: jo.controlNumber}) }}"
-                    hx-target="body"
-                    hx-push-url="true"
-                    class="btn btn-sm btn-warning"
-                    data-controller="tooltip"
-                    data-bs-title="Archive"
-                  >
-                    <i class="fa-solid fa-arrow-turn-down"></i>
-                    <span class="d-xl-none">Archive</span>
-                  </button>
+                  <form action="{{ path('admin_joborder_archive', {control_number: jo.controlNumber}) }}" method="post">
+                    <input type="hidden" name="_method" value="PUT">
+                    <button
+                      class="btn btn-sm btn-warning"
+                      data-controller="tooltip"
+                      data-bs-title="Archive"
+                    >
+                      <i class="fa-solid fa-arrow-turn-down"></i>
+                      <span class="d-xl-none">Archive</span>
+                    </button>
+                  </form>
                 {% endif %}
                 {% elseif isAdmin %}
                 <a
@@ -187,17 +185,18 @@
                   <i class="fa-solid fa-eye"></i>
                   <span class="d-xl-none">View</span>
                 </a>
-                <button
-                  hx-put="{{ path('admin_joborder_unarchive', {control_number: jo.controlNumber}) }}"
-                  hx-target="body"
-                  hx-push-url="true"
-                  class="btn btn-sm btn-info"
-                  data-controller="tooltip"
-                  data-bs-title="Unarchive"
-                >
-                  <i class="fa-solid fa-arrow-turn-up"></i>
-                  <span class="d-xl-none">Unarchive</span>
-                </button>
+
+                <form action="{{ path('admin_joborder_unarchive', {control_number: jo.controlNumber}) }}" method="post">
+                  <input type="hidden" name="_method" value="PUT">
+                  <button
+                    class="btn btn-sm btn-info"
+                    data-controller="tooltip"
+                    data-bs-title="Unarchive"
+                  >
+                    <i class="fa-solid fa-arrow-turn-up"></i>
+                    <span class="d-xl-none">Unarchive</span>
+                  </button>
+                </form>
               {% endif %}
             </div>
           </td>

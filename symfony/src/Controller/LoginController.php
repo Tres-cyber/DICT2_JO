@@ -18,7 +18,7 @@ class LoginController extends AbstractController
     return $this->render('login.twig', [
       'last_username' => $lastUsername,
       'error' => $error,
-    ], new Response(null, 200, ['HX-Refresh' => 'true']));
+    ], new Response(null, 200));
   }
 
   #[Route(path: '/logout', name: 'app_logout')]

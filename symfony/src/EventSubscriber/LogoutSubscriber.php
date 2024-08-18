@@ -30,9 +30,6 @@ class LogoutSubscriber implements EventSubscriberInterface
     $redirect = new RedirectResponse(
       $this->urlGenerator->generate('app_login'),
       303,
-      [
-        'HX-Refresh' => 'true'
-      ]
     );
     $event->setResponse($redirect);
   }

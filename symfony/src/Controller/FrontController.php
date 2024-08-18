@@ -14,7 +14,12 @@ class FrontController extends AbstractController
     /** @var ?\App\Entity\Account */
     $account = $this->getUser();
     if (is_null($account)) return $this->redirectToRoute('app_login');
-    if (is_null($account->getPersonnel())) return $this->redirectToRoute('admin_joborders');
+    if (
+      $account->isAdmin() ||
+      is_null($account->getPersonnel())
+    ) {
+      return $this->redirectToRoute('admin_joborders');
+    }
     return $this->redirectToRoute('user_dashboard');
   }
 }

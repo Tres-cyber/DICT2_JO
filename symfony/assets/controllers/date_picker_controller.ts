@@ -73,6 +73,10 @@ export default class extends Controller {
     );
   }
 
+  disconnect(): void {
+    $(this.inputTarget).data("daterangepicker").remove();
+  }
+
   format(date: Moment) {
     if (this.timeValue) {
       return date.utc().toISOString(false);

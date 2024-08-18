@@ -95,7 +95,9 @@ class AccountsController extends AbstractController
     $account->removeSession();
     $this->entityManager->flush();
 
-    return $this->redirectToRoute('accounts_index');
+    return $this->referer->redirect(
+      $this->redirectToRoute('accounts_index', [], 303)
+    );
   }
 
   #[Route('/admin/accounts/{id}', name: 'account_delete', methods: ['DELETE'])]
