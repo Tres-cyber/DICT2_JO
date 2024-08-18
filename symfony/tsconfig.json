@@ -15,11 +15,6 @@
       "@/*": ["assets/*"]
     }
   },
-  "include": [
-    "./assets/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "public"
-  ]
+  "include": ["./assets/**/*"],
+  "exclude": ["node_modules", "public"]
 }
