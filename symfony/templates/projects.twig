@@ -50,7 +50,6 @@
         </button>
       </form>
       <a
-        hx-boost="true"
         href="{{ path(app.request.attributes.get('_route')) }}"
         class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
       >
@@ -93,7 +92,7 @@
                 hx-target="#edit-form"
                 hx-indicator="#edit-loading"
                 hx-swap="outerHTML"
-                x-data="tooltip"
+                data-controller="tooltip"
                 data-bs-title="Edit project"
               >
                 <i class="fa-solid fa-pen"></i>
@@ -107,7 +106,7 @@
                 hx-target="body"
                 hx-trigger="confirmed"
                 hx-push-url="true"
-                x-data="tooltip"
+                data-controller="tooltip"
                 data-bs-title="Remove project"
                 @click="$dispatch('confirm')"
               >
@@ -128,7 +127,7 @@
   </table>
 </div>
 
-<div class="container mt-3" hx-boost="true">
+<div class="container mt-3">
   {{ knp_pagination_render(projects) }}
 </div>
 

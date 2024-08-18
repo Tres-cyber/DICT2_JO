@@ -1,6 +1,3 @@
-import Alpine from "alpinejs";
-import htmx from "htmx.org";
-
 import "./bootstrap";
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -22,9 +19,6 @@ import { faRotateRight } from "@fortawesome/free-solid-svg-icons/faRotateRight";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
 import { library, dom } from "@fortawesome/fontawesome-svg-core";
-import dateRange from "./components/dateRange";
-import notifcation from "./components/notifcation";
-import tooltip from "./components/tooltip";
 
 library.add(
   faArrowDown,
@@ -44,13 +38,4 @@ library.add(
 );
 dom.watch();
 
-(window as any).Alpine = Alpine;
-(window as any).htmx = htmx;
 (window as any).bootstrap = bootstrap;
-
-Alpine.data("dateRange", dateRange);
-Alpine.data("dateRange", dateRange);
-Alpine.data("notification", notifcation);
-Alpine.data("tooltip", tooltip);
-
-Alpine.start();

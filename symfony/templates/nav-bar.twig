@@ -6,7 +6,7 @@
   data-bs-theme="dark"
 >
   <div class="container">
-    <a class="navbar-brand" href="{{ path('app_front') }}" hx-boost="true">
+    <a class="navbar-brand" href="{{ path('app_front') }}">
       <img src="/assets/logo.png" alt="Logo" class="d-inline-block align-text-center rounded-circle tw-h-14 tw-w-14">
       DICT
     </a>
@@ -22,7 +22,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0" hx-boost="true">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         {% if app.user.admin %}
           <li class="nav-item">
             <a
@@ -58,7 +58,7 @@
         {% endif %}
       </ul>
       <div class="d-flex">
-        <a hx-boost="true" href="{{ path('app_logout') }}" class="btn btn-secondary align-self-center">Logout</a>
+        <a href="{{ path('app_logout') }}" class="btn btn-secondary align-self-center">Logout</a>
       </div>
     </div>
   </div>

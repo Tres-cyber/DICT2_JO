@@ -83,7 +83,6 @@
         </button>
       </form>
       <a
-        hx-boost="true"
         href="{{ path(app.request.attributes.get('_route')) }}"
         class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
       >
@@ -135,10 +134,9 @@
               {% if not jo.isArchived() %}
                 {% if jo.status == 'DRAFT' %}
                   <a
-                    hx-boost="true"
                     href="{{ path('joborder_edit_draft', {control_number: jo.controlNumber}) }}"
                     class="btn btn-sm btn-primary"
-                    x-data="tooltip"
+                    data-controller="tooltip"
                     data-bs-title="Edit"
                   >
                     <i class="fa-solid fa-pen"></i>
@@ -146,10 +144,9 @@
                   </a>
                   {% elseif jo.status == 'APPROVED' %}
                   <a
-                    hx-boost="true"
                     href="{{ path('joborder_edit', {control_number: jo.controlNumber}) }}"
                     class="btn btn-sm btn-primary"
-                    x-data="tooltip"
+                    data-controller="tooltip"
                     data-bs-title="Edit"
                   >
                     <i class="fa-solid fa-pen"></i>
@@ -158,10 +155,9 @@
                 {% endif %}
 
                 <a
-                  hx-boost="true"
                   href="{{ path('joborder_view', {control_number: jo.controlNumber}) }}"
                   class="btn btn-sm btn-success"
-                  x-data="tooltip"
+                  data-controller="tooltip"
                   data-bs-title="View"
                 >
                   <i class="fa-solid fa-eye"></i>
@@ -174,7 +170,7 @@
                     hx-target="body"
                     hx-push-url="true"
                     class="btn btn-sm btn-warning"
-                    x-data="tooltip"
+                    data-controller="tooltip"
                     data-bs-title="Archive"
                   >
                     <i class="fa-solid fa-arrow-turn-down"></i>
@@ -183,10 +179,9 @@
                 {% endif %}
                 {% elseif isAdmin %}
                 <a
-                  hx-boost="true"
                   href="{{ path('joborder_view', {control_number: jo.controlNumber}) }}"
                   class="btn btn-sm btn-success"
-                  x-data="tooltip"
+                  data-controller="tooltip"
                   data-bs-title="View"
                 >
                   <i class="fa-solid fa-eye"></i>
@@ -197,7 +192,7 @@
                   hx-target="body"
                   hx-push-url="true"
                   class="btn btn-sm btn-info"
-                  x-data="tooltip"
+                  data-controller="tooltip"
                   data-bs-title="Unarchive"
                 >
                   <i class="fa-solid fa-arrow-turn-up"></i>
@@ -217,7 +212,7 @@
     </tbody>
   </table>
 </div>
-<div class="container" hx-boost="true">
+<div class="container">
   {{ knp_pagination_render(jobOrders) }}
 </div>
 {% endblock %}

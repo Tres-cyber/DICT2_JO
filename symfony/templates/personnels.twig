@@ -48,7 +48,6 @@
         </button>
       </form>
       <a
-        hx-boost="true"
         href="{{ path(app.request.attributes.get('_route')) }}"
         class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
       >
@@ -89,7 +88,7 @@
                 hx-target="#edit-form"
                 hx-indicator="#edit-loading"
                 hx-swap="outerHTML"
-                x-data="tooltip"
+                data-controller="tooltip"
                 data-bs-title="Edit personnel"
               >
                 <i class="fa-solid fa-pen"></i>
@@ -105,7 +104,7 @@
                 hx-push-url="true"
                 hx-target="body"
                 hx-trigger="confirmed"
-                x-data="tooltip"
+                data-controller="tooltip"
               >
                 <i class="fa-solid fa-trash"></i>
                 <span class="d-md-none">Delete</span>
@@ -124,7 +123,7 @@
   </table>
 </div>
 
-<div class="container mt-3" hx-boost="true">
+<div class="container mt-3">
   {{ knp_pagination_render(personnels) }}
 </div>
 {% endblock %}
