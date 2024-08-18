@@ -19,12 +19,12 @@
     {{ encore_entry_link_tags('app') }}
   </head>
   <html>
-    {% block outside %}
-    {% endblock %}
-
-    <twig:Notifications />
-
     <body>
+      {% block outside %}
+      {% endblock %}
+      <twig:Notifications />
+      <twig:ConfirmModal />
+
       <header>
         {% block header %}
         {% endblock %}

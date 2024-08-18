@@ -15,30 +15,40 @@
     <td data-label="Action">
       <div class="d-flex flex-no-wrap gap-1">
         <button
-          hx-get="{{ path('account_logout', {id: acc.id}) }}"
-          hx-target="body"
-          hx-push-url="true"
           class="btn btn-sm btn-primary"
+          data-bs-title="Logout"
+          data-controller="tooltip"
+          hx-get="{{ path('account_logout', {id: acc.id}) }}"
+          hx-push-url="true"
+          hx-target="body"
         >
           <i class="fa-solid fa-right-from-bracket"></i>
-        </button>
-        <button class="btn btn-sm btn-secondary">
-          <i class="fa-solid fa-rotate-right"></i>
+          <span class="d-md-none">Logout</span>
         </button>
         <button
-          @click="$dispatch('confirm')"
-          class="btn btn-sm btn-danger"
-          data-bs-target="#delete-modal"
-          data-bs-title="Delete account"
-          data-bs-toggle="modal"
-          hx-delete="{{ path('account_delete', {id: acc.id}) }}"
-          hx-push-url="true"
-          hx-target="body"
-          hx-trigger="confirmed"
+          class="btn btn-sm btn-secondary"
+          data-bs-title="Edit"
           data-controller="tooltip"
         >
-          <i class="fa-solid fa-trash"></i>
+          <i class="fa-solid fa-pen"></i>
+          <span class="d-md-none">Edit</span>
         </button>
+        <form
+          action="{{ path('account_delete', {id: acc.id}) }}"
+          method="post"
+          data-controller="confirm-form"
+          data-action="confirm-form#confirm"
+        >
+          <input type="hidden" name="_method" value="DELETE">
+          <button
+            class="btn btn-sm btn-danger"
+            data-bs-title="Delete"
+            data-controller="tooltip"
+          >
+            <i class="fa-solid fa-trash"></i>
+            <span class="d-md-none">Delete</span>
+          </button>
+        </form>
       </div>
     </td>
   </tr>

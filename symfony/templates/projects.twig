@@ -98,21 +98,23 @@
                 <i class="fa-solid fa-pen"></i>
                 <span class="d-lg-none">Edit</span>
               </button>
-              <button
-                class="btn btn-sm btn-danger"
-                data-bs-toggle="modal"
-                data-bs-target="#delete-modal"
-                hx-delete="{{ path('project_delete', {id: proj.id}) }}"
-                hx-target="body"
-                hx-trigger="confirmed"
-                hx-push-url="true"
-                data-controller="tooltip"
-                data-bs-title="Remove project"
-                @click="$dispatch('confirm')"
+              <form
+                action="{{ path('project_delete', {id: proj.id}) }}"
+                method="post"
+                data-controller="confirm-form"
+                data-action="confirm-form#confirm"
               >
-                <i class="fa-solid fa-trash"></i>
-                <span class="d-lg-none">Delete</span>
-              </button>
+                <input type="hidden" name="_method" value="DELETE">
+                <button
+                  class="btn btn-sm btn-danger"
+                  hx-delete="{{ path('project_delete', {id: proj.id}) }}"
+                  data-controller="tooltip"
+                  data-bs-title="Remove project"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                  <span class="d-lg-none">Delete</span>
+                </button>
+              </form>
             </div>
           </td>
         </tr>
@@ -133,35 +135,6 @@
 
 {% endblock %}
 {% block outside %}
-<div
-  class="modal fade"
-  id="delete-modal"
-  tabindex="-1"
-  aria-labelledby="delete-label"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="delete-label">Confirm Deletion</h5>
-      </div>
-      <div class="modal-body">Are you sure you want to delete this personnel?</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <button
-          class="btn btn-danger"
-          data-bs-dismiss="modal"
-          x-data="{ target: null }"
-          @confirm.window="target = $event.target"
-          @click="htmx.trigger(target, 'confirmed')"
-        >
-          Delete
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div
   class="modal fade"
   id="edit-modal"

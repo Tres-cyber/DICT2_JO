@@ -1,4 +1,3 @@
-import "./bootstrap";
 import * as bootstrap from "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./tailwind-base.scss";
@@ -39,3 +38,5 @@ library.add(
 dom.watch();
 
 (window as any).bootstrap = bootstrap;
+
+import "./bootstrap";
