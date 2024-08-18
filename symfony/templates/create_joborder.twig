@@ -31,7 +31,14 @@
         {{ form_row(form.client_name) }}
         {{ form_row(form.client_lgu) }}
         {{ form_row(form.client_contact) }}
-        {{ form_row(form.request_date) }}
+        <div
+          class="mb-3"
+          data-controller="date-picker"
+        >
+          <label class="form-label">Request date</label>
+          <input type="text" class="form-control" placeholder=" " data-date-picker-target="input">
+          <input type="hidden" name="{{ field_name(form.request_date) }}" data-date-picker-target="selected">
+        </div>
       </div>
 
       <hr class="mb-3">
@@ -39,11 +46,16 @@
       <div>
         <h5 class="mb-3">Job Order Details</h5>
 
-        <div class="mb-3" x-data="dateRange()">
+        <div
+          class="mb-3"
+          data-controller="date-picker"
+          data-date-picker-range-value="true"
+          data-date-picker-min-value="{{ date('now') | date('Y-m-d') }}"
+        >
           <label class="form-label">Scheduled date</label>
-          <input type="text" class="form-control" placeholder=" ">
-          <input type="hidden" name="{{ field_name(form.scheduled_start_date) }}" :value="format(startDate)">
-          <input type="hidden" name="{{ field_name(form.scheduled_end_date) }}" :value="format(endDate)">
+          <input type="text" class="form-control" placeholder=" " data-date-picker-target="input">
+          <input type="hidden" name="{{ field_name(form.scheduled_start_date) }}" data-date-picker-target="start">
+          <input type="hidden" name="{{ field_name(form.scheduled_end_date) }}" data-date-picker-target="end">
         </div>
 
         {{ form_errors(form.scheduled_start_date) }}
@@ -58,11 +70,16 @@
       <div>
         <h5>Completion Information</h5>
 
-        <div class="mb-3" x-data="dateRange(true, false)">
+        <div
+          class="mb-3"
+          data-controller="date-picker"
+          data-date-picker-range-value="true"
+          data-date-picker-time-value="true"
+        >
           <label class="form-label">Actual date and time done</label>
-          <input type="text" class="form-control" placeholder=" ">
-          <input type="hidden" name="{{ field_name(form.start_time) }}" :value="format(startDate)">
-          <input type="hidden" name="{{ field_name(form.end_time) }}" :value="format(endDate)">
+          <input type="text" class="form-control" placeholder=" " data-date-picker-target="input">
+          <input type="hidden" name="{{ field_name(form.start_time) }}" data-date-picker-target="start">
+          <input type="hidden" name="{{ field_name(form.end_time) }}" data-date-picker-target="end">
         </div>
 
         {{ form_row(form.actual_job_done, {'attr': {'rows': 7 }}) }}
