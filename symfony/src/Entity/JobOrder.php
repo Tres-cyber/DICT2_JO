@@ -417,6 +417,7 @@ class JobOrder
     $this->created_at = new DateTimeImmutable();
     $this->control_number = $controlNumber;
     $this->status = JobOrderStatus::Approved;
+    $this->endorsee->add($this->performer);
 
     return $this;
   }
