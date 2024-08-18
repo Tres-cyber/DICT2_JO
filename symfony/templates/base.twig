@@ -22,23 +22,7 @@
     {% block outside %}
     {% endblock %}
 
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastPlacement bottom-0 end-0">
-      {% for notif in app.flashes('notifications') %}
-        <div
-          class="toast"
-          role="alert"
-          aria-live="assertive"
-          aria-atomic="true"
-          x-data="notification"
-        >
-          <div class="toast-header">
-            <strong class="me-auto">{{ notif.title }}</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-          </div>
-          <div class="toast-body">{{ notif.message }}</div>
-        </div>
-      {% endfor %}
-    </div>
+    <twig:Notifications />
 
     <body>
       <header>
