@@ -1,0 +1,129 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap");
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+@page {
+  size: 8.5in 13in;
+  margin: 0in;
+}
+
+:root {
+  --bs-navbar-brand-font-size: 24px;
+}
+
+.form-label::after {
+  background: transparent !important;
+}
+
+@media print {
+  header {
+    display: none !important;
+  }
+}
+
+.no-wrap,
+.table.no-wrap td,
+.table.no-wrap th {
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
+.htmx-indicator {
+  opacity: 0;
+  transition: opacity 500ms ease-in;
+}
+.htmx-request .htmx-indicator {
+  opacity: 1;
+}
+.htmx-request.htmx-indicator {
+  opacity: 1;
+}
+
+.table-stack td[data-label]::before {
+  content: attr(data-label) ": ";
+  display: none;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+@media (max-width: 575.98px) {
+  .table-stack-sm th {
+    display: none;
+  }
+
+  .table-stack-sm td {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .table-stack-sm td[data-label]::before {
+    display: block;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .table-stack-md th {
+    display: none;
+  }
+
+  .table-stack-md td {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .table-stack-md td[data-label]::before {
+    display: block;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .table-stack-lg th {
+    display: none;
+  }
+
+  .table-stack-lg td {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .table-stack-lg td[data-label]::before {
+    display: block;
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .table-stack-xl th {
+    display: none;
+  }
+
+  .table-stack-xl td {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .table-stack-xl td[data-label]::before {
+    display: block;
+  }
+}
+
+@media (max-width: 1399.98px) {
+  .table-stack-xxl th {
+    display: none;
+  }
+
+  .table-stack-xxl td {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .table-stack-xxl td[data-label]::before {
+    display: block;
+  }
+}
+
+@tailwind components;
+@tailwind utilities;

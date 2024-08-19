@@ -1,0 +1,197 @@
+{% extends 'base.twig' %}
+{% block title %} ADMIN | Personnels {% endblock %}
+{% block header %}
+<twig:NavBar />
+{% endblock %}
+{% block body %}
+
+<div class="container mt-4 mt-sm-5">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page">Personnels</li>
+    </ol>
+  </nav>
+
+  <div class="row align-items-center justify-content-between gap-2">
+    <em class="col-12 col-lg-auto">
+      {% if personnels.totalItemCount > 0 %}
+        Showing {{ personnels.customParameters.startIndex }} - {{ personnels.customParameters.endIndex }} of
+        {{ personnels.totalItemCount }} results
+      {% else %}
+        Nothing Found.
+      {% endif %}
+    </em>
+    <div class="d-flex justify-content-start align-items-center col-12 col-lg-auto gap-2">
+      <button
+        class="btn btn-sm btn-success d-flex align-items-center gap-1"
+        data-bs-toggle="modal"
+        data-bs-target="#add-modal"
+      >
+        <span class="no-wrap tw-hidden sm:tw-block">Add personnel</span>
+        <i class="fa-solid fa-plus"></i>
+      </button>
+      <form class="input-group" action="{{ path('personnels_index') }}" method="get">
+        <input
+          class="form-control form-control-sm"
+          type="text"
+          name="search"
+          placeholder="Search..."
+          value="{{ search }}"
+        >
+        <button
+          type="submit"
+          class="btn btn-sm btn-primary"
+        >
+          Search
+        </button>
+      </form>
+      <a
+        href="{{ path(app.request.attributes.get('_route')) }}"
+        class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
+      >
+        <span class="hidden sm:block">Clear</span>
+        <i class="fa-solid fa-broom"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-3">
+  <table class="table-light table-hover table-striped table border table-stack table-stack-md">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Position</th>
+        <th>Assigned Project</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+      {% for per in personnels %}
+        <tr role="row">
+          <td data-label="Name" role="cell">{{ per.name }}</td>
+          <td data-label="Position" role="cell">{{ per.position }}</td>
+          {% if per.project %}
+            <td data-label="Assigned Project" role="cell">{{ per.project.name }}</td>
+          {% else %}
+            <td data-label="Assigned Project" role="cell">No Assigned Project</td>
+          {% endif %}
+          <td data-label="Action" role="cell">
+            <div class="d-flex flex-no-wrap gap-1">
+              <a
+                class="btn btn-sm btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#edit-modal"
+                href="{{ path('personnel_edit', {id: per.id }) }}"
+                data-controller="tooltip"
+                data-bs-title="Edit personnel"
+              >
+                <i class="fa-solid fa-pen"></i>
+                <span class="d-md-none">Edit</span>
+              </a>
+              <form
+                action="{{ path('personnel_delete', {id: per.id}) }}"
+                method="POST"
+                data-controller="confirm-form"
+                data-action="confirm-form#confirm"
+              >
+                <input type="hidden" name="_method" value="DELETE">
+                <button
+                  class="btn btn-sm btn-danger"
+                  data-bs-title="Remove personnel"
+                  data-controller="tooltip"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                  <span class="d-md-none">Delete</span>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      {% else %}
+        <tr role="row">
+          <td colspan="999" class="!text-left" role="cell">
+            <em>No projects found.</em>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="container mt-3">
+  {{ knp_pagination_render(personnels) }}
+</div>
+{% endblock %}
+{% block outside %}
+<div
+  class="modal fade"
+  id="edit-modal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="edit-modalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="edit-modalLabel">Edit Personnel</h1>
+        <div class="spinner-border spinner-border-sm ms-3 htmx-indicator" role="status" id="edit-loading">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="edit-form" class="placeholder-glow">
+          <div class="placeholder col-4"></div>
+          <div class="placeholder placeholder-lg col-12 mb-3"></div>
+          <div class="placeholder col-5"></div>
+          <div class="placeholder placeholder-lg col-12 mb-3"></div>
+          <div class="placeholder col-4"></div>
+          <div class="placeholder placeholder-lg col-12 mb-3"></div>
+          <div class="btn btn-primary disabled placeholder col-4"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="add-modal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="add-label"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="add-label">Add Personnel</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ block('addForm') }}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block addStream %}
+<turbo-stream action="replace" target="add-form">
+  <template>{{ block('addForm') }}</template>
+</turbo-stream>
+{% endblock %}
+
+{% block addForm %}
+{{ form(addForm, {attr: {id: 'add-form' }}) }}
+{% endblock %}
+
+{% block edit %}
+<turbo-stream action="replace" target="edit-form">
+  <template> {{ form(editForm, {attr: {id: 'edit-form' }}) }}</template>
+</turbo-stream>
+{% endblock %}

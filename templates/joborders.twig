@@ -1,0 +1,215 @@
+{% extends 'base.twig' %}
+{% block title %} DICT JO - Dashboard {% endblock %}
+{% block header %}
+<twig:NavBar />
+{% endblock %}
+{% block body %}
+<div class="container mt-4 mt-sm-5">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page">Home</li>
+    </ol>
+  </nav>
+
+  <div class="row align-items-center justify-content-between gap-2">
+    <em class="col-12 col-md-auto">
+      {% if jobOrders.totalItemCount > 0 %}
+        Showing page {{ jobOrders.currentPageNumber }} of {{ jobOrders.totalItemCount }}
+      {% else %}
+        Nothing Found.
+      {% endif %}
+    </em>
+    <div class="d-flex justify-content-start align-items-center col-12 col-md-auto gap-2">
+      {% if isAdmin %}
+        <div class="btn-group">
+          <button
+            class="btn btn-sm btn-primary dropdown-toggle"
+            type="button"
+            data-bs-toggle="dropdown"
+            data-bs-auto-close="outside"
+            aria-expanded="false"
+          >
+            Create new
+          </button>
+          <form
+            action="{{ path('admin_joborder_create') }}"
+            method="get"
+            class="dropdown-menu px-4 py-3"
+          >
+            <select
+              name="personnel"
+              class="mb-3 tw-min-w-[30ch]"
+              {{
+                stimulus_controller('symfony/ux-autocomplete/autocomplete', {
+                url: path('ux_entity_autocomplete', { alias: 'personnel_autocomplete_field' })
+                })
+              }}
+              required="required"
+              placeholder="Please select personnel"
+            ></select>
+            <button class="btn btn-primary">Create new Job Order</button>
+          </form>
+        </div>
+      {% else %}
+        <a
+          href="{{ path('user_joborder_create') }}"
+          class="btn btn-sm btn-primary d-flex align-items-center gap-1"
+        >
+          <span class="hidden sm:block">Add</span>
+          <i class="fa-solid fa-plus"></i>
+        </a>
+      {% endif %}
+      <form
+        class="input-group"
+        action="{{ path(app.request.attributes.get('_route')) }}"
+        method="get"
+      >
+        <input
+          class="form-control form-control-sm"
+          type="text"
+          name="search"
+          value="{{ search }}"
+          placeholder="Search..."
+        >
+        <button
+          type="submit"
+          class="btn btn-sm btn-success"
+        >
+          Search
+        </button>
+      </form>
+      <a
+        href="{{ path(app.request.attributes.get('_route')) }}"
+        class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
+      >
+        <span class="hidden sm:block">Clear</span>
+        <i class="fa-solid fa-broom"></i>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-3">
+  <table class="table-light table-striped table border table-stack table-stack-xl">
+    <thead>
+      <tr>
+        <th>Job Order Number</th>
+        {% if isAdmin %}
+          <th>Performed By</th>
+        {% endif %}
+        <th>Name</th>
+        <th>Date</th>
+        <th>Scheduled Date</th>
+        <th>Issued By</th>
+        <th>Approved By</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+      {% for jo in jobOrders %}
+        <tr class="{% if jo.isArchived() %}[&>td:not([data-label='Actions'])]:tw-text-neutral-500{% endif %}">
+          <td data-label="Job Order Number">
+            {% if jo.status != 'DRAFT' %}
+              {{ jo.controlNumber }}
+            {% endif %}
+          </td>
+          {% if isAdmin %}
+            <td data-label="Performed by">{{ jo.performer.name }}</td>
+          {% endif %}
+          <td data-label="Name">{{ jo.clientName }}</td>
+          <td data-label="Date">{{ jo.requestDate | date("M d, Y") }}</td>
+          <td data-label="Scheduled Date">
+            {{ jo.scheduledStartDate | date("M d, Y") }}-{{ jo.scheduledEndDate | date("M d, Y") }}
+          </td>
+          <td data-label="Issued By">{{ jo.issuer.name | default('') }}</td>
+          <td data-label="Approved By">{{ jo.approver.name | default('') }}</td>
+          <td data-label="Status">{{ jo.status }}</td>
+          <td data-label="Actions">
+            <div class="d-flex flex-no-wrap gap-1 col tw-justify-end">
+              {% if not jo.isArchived() %}
+                {% if jo.status == 'DRAFT' %}
+                  <a
+                    href="{{ path('joborder_edit_draft', {control_number: jo.controlNumber}) }}"
+                    class="btn btn-sm btn-primary"
+                    data-controller="tooltip"
+                    data-bs-title="Edit"
+                  >
+                    <i class="fa-solid fa-pen"></i>
+                    <span class="d-xl-none">Edit</span>
+                  </a>
+                  {% elseif jo.status == 'APPROVED' %}
+                  <a
+                    href="{{ path('joborder_edit', {control_number: jo.controlNumber}) }}"
+                    class="btn btn-sm btn-primary"
+                    data-controller="tooltip"
+                    data-bs-title="Edit"
+                  >
+                    <i class="fa-solid fa-pen"></i>
+                    <span class="d-xl-none">Edit</span>
+                  </a>
+                {% endif %}
+
+                <a
+                  href="{{ path('joborder_view', {control_number: jo.controlNumber}) }}"
+                  class="btn btn-sm btn-success"
+                  data-controller="tooltip"
+                  data-bs-title="View"
+                >
+                  <i class="fa-solid fa-eye"></i>
+                  <span class="d-xl-none">View</span>
+                </a>
+
+                {% if isAdmin %}
+                  <form action="{{ path('admin_joborder_archive', {control_number: jo.controlNumber}) }}" method="post">
+                    <input type="hidden" name="_method" value="PUT">
+                    <button
+                      class="btn btn-sm btn-warning"
+                      data-controller="tooltip"
+                      data-bs-title="Archive"
+                    >
+                      <i class="fa-solid fa-arrow-turn-down"></i>
+                      <span class="d-xl-none">Archive</span>
+                    </button>
+                  </form>
+                {% endif %}
+                {% elseif isAdmin %}
+                <a
+                  href="{{ path('joborder_view', {control_number: jo.controlNumber}) }}"
+                  class="btn btn-sm btn-success"
+                  data-controller="tooltip"
+                  data-bs-title="View"
+                >
+                  <i class="fa-solid fa-eye"></i>
+                  <span class="d-xl-none">View</span>
+                </a>
+
+                <form action="{{ path('admin_joborder_unarchive', {control_number: jo.controlNumber}) }}" method="post">
+                  <input type="hidden" name="_method" value="PUT">
+                  <button
+                    class="btn btn-sm btn-info"
+                    data-controller="tooltip"
+                    data-bs-title="Unarchive"
+                  >
+                    <i class="fa-solid fa-arrow-turn-up"></i>
+                    <span class="d-xl-none">Unarchive</span>
+                  </button>
+                </form>
+              {% endif %}
+            </div>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="999" class="!text-left">
+            <em>No job orders found.</em>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+<div class="container">
+  {{ knp_pagination_render(jobOrders) }}
+</div>
+{% endblock %}

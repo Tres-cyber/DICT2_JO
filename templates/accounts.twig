@@ -1,0 +1,230 @@
+{% extends 'base.twig' %}
+{% block title %}ADMIN | Accounts{% endblock %}
+{% block head %}
+<meta name="turbo-refresh-scroll" content="preserve">
+{% endblock %}
+{% block header %}
+<twig:NavBar />
+{% endblock %}
+{% block body %}
+
+<div class="container mt-4 mt-sm-5">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item active" aria-current="page">Accounts</li>
+    </ol>
+  </nav>
+
+  <div class="row align-items-center justify-content-between gap-2">
+    <em class="col-12 col-lg-auto">
+      {% if accounts.totalItemCount > 0 %}
+        Showing {{ accounts.customParameters.startIndex }} - {{ accounts.customParameters.endIndex }} of
+        {{ accounts.totalItemCount }} results
+      {% else %}
+        Nothing Found.
+      {% endif %}
+    </em>
+    <div class="d-flex justify-content-start align-items-center col-12 col-lg-auto gap-2">
+      <button
+        class="btn btn-sm btn-success d-flex align-items-center gap-1"
+        data-bs-toggle="modal"
+        data-bs-target="#add-modal"
+      >
+        <span class="no-wrap tw-hidden sm:tw-block">Add account</span>
+        <i class="fa-solid fa-plus"></i>
+      </button>
+      <form class="input-group" action="{{ path('accounts_index') }}" method="get">
+        <input
+          class="form-control form-control-sm"
+          type="text"
+          name="search"
+          placeholder="Search..."
+          value="{{ search }}"
+        >
+        <button
+          type="submit"
+          class="btn btn-sm btn-primary"
+        >
+          Search
+        </button>
+      </form>
+      <a
+        href="{{ path(app.request.attributes.get('_route')) }}"
+        class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
+      >
+        <span class="hidden sm:block">Clear</span>
+        <i class="fa-solid fa-broom"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="col col-lg-9 col-xl-8 col-xxl-7 mx-auto mt-3">
+    <table class="table-light table-striped table border table-stack table-stack-md">
+      <thead>
+        <tr>
+          <th>Account Name</th>
+          <th>Session Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody
+        class="table-group-divider"
+        id="table-body"
+        data-controller="poll"
+        data-poll-interval-value="2500"
+        data-poll-target-value="{{ path('accounts_index', {table: true, search: search, page: page}) }}"
+      >
+        {{ block('table') }}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="container mt-3">
+  {{ knp_pagination_render(accounts) }}
+</div>
+
+{% endblock %}
+{% block outside %}
+<div
+  class="modal fade"
+  id="add-modal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="add-label"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="add-label">Add Account</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ block('addForm') }}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="edit-modal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="edit-modalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="edit-modalLabel">Edit account</h1>
+        <div class="spinner-border spinner-border-sm ms-3 htmx-indicator" role="status" id="edit-loading">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="edit-form" class="placeholder-glow">
+          <div class="placeholder col-4"></div>
+          <div class="placeholder placeholder-lg col-12 mb-3"></div>
+          <div class="placeholder col-5"></div>
+          <div class="placeholder placeholder-lg col-12 mb-3"></div>
+          <div class="placeholder col-4"></div>
+          <div class="placeholder placeholder-lg col-12 mb-3"></div>
+          <div class="btn btn-primary disabled placeholder col-4"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block addStream %}
+<turbo-stream action="replace" target="add-form">
+  <template>{{ block('addForm') }}</template>
+</turbo-stream>
+{% endblock %}
+
+{% block addForm %}
+{{ form(addForm, {attr: {id: 'add-form' }}) }}
+{% endblock %}
+
+{% block edit %}
+<turbo-stream action="replace" target="edit-form">
+  <template> {{ form(editForm, {attr: {id: 'edit-form' }}) }}</template>
+</turbo-stream>
+{% endblock %}
+
+{% block tableStream %}
+<turbo-stream
+  action="update"
+  method="morph"
+  target="table-body"
+>
+  <template>{{ block('table') }}</template>
+</turbo-stream>
+{% endblock %}
+
+{% block table %}
+{% for acc in accounts %}
+  <tr id="{{ acc.id }}">
+    <td data-label="Account Name">
+      {{ acc.personnel ? acc.personnel.name : 'admin' }}
+    </td>
+    <td
+      data-label="Session Status"
+    >
+      {% if acc.hasSession() %}
+        <span class="text-success">active</span>
+      {% else %}
+        <span class="text-danger">offline</span>
+      {% endif %}
+    </td>
+    <td data-label="Action">
+      <div class="d-flex flex-no-wrap gap-1">
+        <form action="{{ path('account_logout', {id: acc.id}) }}" method="get">
+          <button
+            class="btn btn-sm btn-primary"
+            data-bs-title="Logout"
+            data-controller="tooltip"
+          >
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="d-md-none">Logout</span>
+          </button>
+        </form>
+
+        <a
+          class="btn btn-sm btn-secondary"
+          href="{{ path('account_edit', {id: acc.id}) }}"
+          data-bs-title="Edit"
+          data-controller="tooltip"
+          data-bs-toggle="modal"
+          data-bs-target="#edit-modal"
+        >
+          <i class="fa-solid fa-pen"></i>
+          <span class="d-md-none">Edit</span>
+        </a>
+        <form
+          action="{{ path('account_delete', {id: acc.id}) }}"
+          method="post"
+          data-controller="confirm-form"
+          data-action="confirm-form#confirm"
+        >
+          <input type="hidden" name="_method" value="DELETE">
+          <button
+            class="btn btn-sm btn-danger"
+            data-bs-title="Delete"
+            data-controller="tooltip"
+          >
+            <i class="fa-solid fa-trash"></i>
+            <span class="d-md-none">Delete</span>
+          </button>
+        </form>
+      </div>
+    </td>
+  </tr>
+{% endfor %}
+{% endblock %}

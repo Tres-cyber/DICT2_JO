@@ -1,0 +1,203 @@
+{% extends 'base.twig' %}
+{% block title %} ADMIN | Projects {% endblock %}
+{% block header %}
+<twig:NavBar />
+{% endblock %}
+{% block body %}
+
+<div class="container mt-4 mt-sm-5">
+  <div class="row">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Project</li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="row align-items-center justify-content-between gap-2">
+    <em class="col-12 col-lg-auto">
+      {% if projects.totalItemCount > 0 %}
+        Showing {{ projects.customParameters.startIndex }} - {{ projects.customParameters.endIndex }} of
+        {{ projects.totalItemCount }} results
+      {% else %}
+        Nothing Found.
+      {% endif %}
+    </em>
+    <div class="d-flex justify-content-start align-items-center col-12 col-lg-auto gap-2">
+      <button
+        class="btn btn-sm btn-success d-flex align-items-center gap-1"
+        data-bs-toggle="modal"
+        data-bs-target="#add-modal"
+      >
+        <span class="no-wrap tw-hidden sm:tw-block">Add project</span>
+        <i class="fa-solid fa-plus"></i>
+      </button>
+      <form class="input-group" action="{{ path('projects_index') }}" method="get">
+        <input
+          class="form-control form-control-sm"
+          type="text"
+          name="search"
+          placeholder="Search..."
+          value="{{ search }}"
+        >
+        <button
+          type="submit"
+          class="btn btn-sm btn-primary"
+        >
+          Search
+        </button>
+      </form>
+      <a
+        href="{{ path(app.request.attributes.get('_route')) }}"
+        class="btn btn-sm btn-secondary d-flex align-items-center gap-1"
+      >
+        <span class="hidden sm:block">Clear</span>
+        <i class="fa-solid fa-broom"></i>
+      </a>
+    </div>
+  </div>
+
+  <table class="table-light table-hover table-striped table border mt-3 table-stack table-stack-lg">
+    <thead>
+      <tr>
+        <th>Short Code</th>
+        <th>Project Name</th>
+        <th>Icon</th>
+        <th>Focal Person</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody class="table-group-divider">
+      {% for proj in projects %}
+        <tr>
+          <td data-label="Short Code">{{ proj.code }}</td>
+          <td data-label="Project Name">{{ proj.name }}</td>
+          <td data-label="Icon">
+            {% if proj.logo is not empty %}
+              <img class="td-icon tw-h-6" src="{{ proj.logo }}" alt="icon">
+            {% else %}
+              <img class="td-icon tw-h-6" src="/storage/default.png" alt="icon">
+            {% endif %}
+          </td>
+          <td data-label="Focal Person">{{ proj.focalPerson.name | default('No focal assigned') }}</td>
+          <td data-label="Action">
+            <div class="d-flex flex-no-wrap gap-1">
+              <a
+                class="btn btn-sm btn-primary"
+                href="{{ path('project_edit', {id: proj.id }) }}"
+                data-bs-toggle="modal"
+                data-bs-target="#edit-modal"
+                data-controller="tooltip"
+                data-bs-title="Edit project"
+              >
+                <i class="fa-solid fa-pen"></i>
+                <span class="d-lg-none">Edit</span>
+              </a>
+              <form
+                action="{{ path('project_delete', {id: proj.id}) }}"
+                method="post"
+                data-controller="confirm-form"
+                data-action="confirm-form#confirm"
+              >
+                <input type="hidden" name="_method" value="DELETE">
+                <button
+                  class="btn btn-sm btn-danger"
+                  data-controller="tooltip"
+                  data-bs-title="Remove project"
+                >
+                  <i class="fa-solid fa-trash"></i>
+                  <span class="d-lg-none">Delete</span>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="999" class="!text-left">
+            <em>No projects found.</em>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<div class="container mt-3">
+  {{ knp_pagination_render(projects) }}
+</div>
+
+{% endblock %}
+{% block outside %}
+<div
+  class="modal fade"
+  id="edit-modal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit Project</h1>
+        <div class="spinner-border spinner-border-sm ms-3 htmx-indicator" role="status" id="edit-loading">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="edit-form" class="placeholder-glow">
+          <div class="placeholder col-4"></div>
+          <div class="placeholder placeholder-lg col-12 mb-3"></div>
+          <div class="placeholder col-5"></div>
+          <div class="placeholder placeholder-lg col-12 mb-3"></div>
+          <div class="placeholder col-4"></div>
+          <div class="placeholder placeholder-lg col-12 mb-3"></div>
+          <div class="btn btn-primary disabled placeholder col-4"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal fade"
+  id="add-modal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">Add Project</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {{ block('addForm') }}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block addStream %}
+<turbo-stream action="replace" target="add-form">
+  <template>{{ block('addForm') }}</template>
+</turbo-stream>
+{% endblock %}
+
+{% block addForm %}
+{{ form(addForm, {attr: {id: 'add-form' }}) }}
+{% endblock %}
+
+{% block edit %}
+<turbo-stream action="replace" target="edit-form">
+  <template> {{ form(editForm, {attr: {id: 'edit-form' }}) }}</template>
+</turbo-stream>
+{% endblock %}

@@ -1,0 +1,327 @@
+{% extends 'base.twig' %}
+{% block title %}
+{{ jo.controlNumber }}
+{% endblock %}
+{% block header %}
+<twig:NavBar />
+{% endblock %}
+{% block body %}
+
+<div class="container mt-4 mt-sm-5 print:!tw-hidden">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="{{ path('app_front') }}">Home</a>
+      </li>
+      {% if jo.status == 'DRAFT' %}
+        <li class="breadcrumb-item active">Draft</li>
+      {% endif %}
+      <li class="breadcrumb-item active" aria-current="page">{{ jo.controlNumber }}</li>
+    </ol>
+  </nav>
+</div>
+
+<div class="tw">
+  <div
+    class="jo-form tw-mx-auto tw-flex tw-justify-center print:!tw-m-0 print:!tw-max-w-full"
+  >
+    <div class="tw-relative print:!tw-w-full">
+      {% if jo.status == 'DRAFT' %}
+        <strong class="tw-absolute tw-left-1/2 tw-top-1/2 tw-z-[-1] tw-hidden -tw-translate-x-1/2 tw-translate-y-1/2 tw-rotate-[-55deg] tw-scale-[7] tw-text-4xl tw-uppercase tw-tracking-widest tw-text-neutral-300 print:tw-block">
+          draft
+        </strong>
+      {% endif %}
+
+      <button
+        type="button"
+        class="button-print btn btn-primary tw-absolute tw-left-4 tw-top-4 tw-z-10 print:tw-hidden"
+        onclick="window.print()"
+      >
+        <i class="fa-solid fa-print"></i>
+        Print
+      </button>
+
+      <div class="tw-relative tw-z-0 tw-flex tw-h-[13in] tw-w-[8.5in] tw-flex-col tw-items-stretch tw-border tw-border-neutral-700 tw-p-[0.75in] print:!tw-w-full print:tw-border-none">
+        <div class="tw-relative tw-flex tw-h-[0.75in] tw-items-center tw-justify-between">
+          <img
+            src="{{ asset('/assets/bagong_pilipinas.png') }}"
+            alt="Bagong Pilipinas Logo"
+            class="tw-h-[0.5in]"
+          >
+          <img
+            src="{{ asset('/assets/dict_header.png') }}"
+            alt="DICT Official Header"
+            class="tw-absolute tw-right-1/2 tw-h-[0.75in] tw-translate-x-1/2"
+          >
+          <img src="{{ jo.project.logo | default('') }}" alt="eLGU IBPLS logo" class="tw-h-[0.5in]">
+        </div>
+        <div class="tw-flex tw-justify-center">
+          <h1 class="tw-mt-4 tw-font-serif tw-text-3xl tw-font-semibold tw-uppercase">job order form</h1>
+        </div>
+        <table class="tw-mb-[0.75in] tw-mt-2 tw-w-full tw-border-collapse tw-font-serif">
+          <tr>
+            <td
+              class="tw-border tw-border-black tw-bg-neutral-200 tw-text-start tw-text-xs tw-font-semibold tw-uppercase"
+              colspan="2"
+            >
+              Client/Worksite Details
+            </td>
+          </tr>
+          <tr>
+            <td class="tw-w-1/2 tw-border tw-border-black">
+              <div class="tw-flex tw-items-center">
+                <span class="tw-text-xs tw-uppercase">Name:</span>
+                <span
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-xs tw-font-semibold tw-uppercase"
+                >
+                  {{ jo.clientName }}
+                </span>
+              </div>
+            </td>
+            <td class="tw-w-1/2 tw-border tw-border-black">
+              <div class="tw-flex tw-items-center">
+                <span class="tw-text-xs tw-uppercase">Contact Number:</span>
+                <span
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-xs tw-font-semibold tw-uppercase"
+                >
+                  {{ jo.clientContact }}
+                </span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="tw-border tw-border-black" colspan="2">
+              <div class="tw-flex tw-items-center">
+                <span class="tw-text-xs tw-uppercase">LGU:</span>
+                <span
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-xs tw-font-semibold tw-uppercase"
+                >
+                  {{ jo.clientLgu }}
+                </span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="tw-w-1/2 tw-border tw-border-black">
+              <div class="tw-flex tw-items-center">
+                <label
+                  for="request_mode"
+                  class="tw-text-xs tw-uppercase"
+                >
+                  Mode of request:
+                </label>
+                <span
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-xs tw-font-semibold tw-capitalize"
+                >
+                  On Site
+                </span>
+              </div>
+            </td>
+            <td class="tw-w-1/2 tw-border tw-border-black">
+              <div class="tw-flex tw-items-center">
+                <label for="date" class="tw-text-xs tw-uppercase"> Date: </label>
+                <span
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-rounded-none tw-border-none tw-bg-transparent tw-p-0 tw-font-serif tw-text-xs tw-font-semibold tw-uppercase"
+                >
+                  {{ jo.requestDate  | date('F d, Y') }}
+                </span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="tw-border tw-border-black tw-bg-neutral-200 tw-text-start tw-text-xs tw-font-semibold tw-uppercase"
+              colspan="2"
+            >
+              Job Order Details
+            </td>
+          </tr>
+          <tr>
+            <td class="tw-w-1/2 tw-border tw-border-black">
+              <div class="tw-flex tw-items-center">
+                <span class="tw-text-xs tw-uppercase"> Scheduled date: </span>
+                <span
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-rounded-none tw-border-none tw-bg-transparent tw-p-0 tw-font-serif tw-text-xs tw-font-semibold tw-uppercase"
+                >
+                  {% if jo.scheduledStartDate == jo.scheduledEndDate %}
+                    {{ jo.scheduledStartDate | date('M d, Y') }}
+                  {% else %}
+                    {{ jo.scheduledStartDate | date('M d, Y') }} - {{ jo.scheduledEndDate | date('M d, Y') }}
+                  {% endif %}
+                </span>
+              </div>
+            </td>
+            <td class="tw-w-1/2 tw-border tw-border-black">
+              <div class="tw-flex tw-items-center">
+                <span class="tw-text-xs tw-uppercase"> Job order number: </span>
+                <span
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-xs tw-font-semibold"
+                >
+                  {{ jo.controlNumber }}
+                </span>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="tw-w-1/2 tw-border tw-border-black">
+              <div class="tw-flex tw-items-center">
+                <span class="tw-text-xs tw-uppercase">Issued by:</span>
+                <span
+                  class="tw-ml-1 tw-flex tw-w-0 tw-flex-1 tw-text-xs tw-font-semibold tw-uppercase"
+                >
+                  {{ jo.issuer.name | default('') }}
+                </span>
+              </div>
+            </td>
+            <td class="tw-w-1/2 tw-border tw-border-black">
+              <div class="tw-flex tw-items-center">
+                <span class="tw-text-xs tw-uppercase">Approved by:</span>
+                <span
+                  class="tw-ml-1 tw-flex tw-w-0 tw-flex-1 tw-text-xs tw-font-semibold tw-uppercase"
+                >
+                  {{ jo.approver.name | default('') }}
+                </span>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="tw-h-[3em] tw-w-1/2 tw-border tw-border-black" colspan="2">
+              <div class="tw-flex tw-items-center">
+                <div class="tw-flex tw-flex-1 tw-items-start">
+                  <span class="tw-mr-1 tw-text-xs tw-uppercase"> Endorsed to: </span>
+                  <span class="tw-relative tw-ml-1 tw-flex tw-w-0 tw-flex-1 tw-text-xs tw-font-semibold tw-uppercase">
+                    {% set count = jo.endorsee|length %}
+                    {% for endorsee in jo.endorsee %}
+                      {% set name = endorsee.name %}
+                      {% if loop.index == count %}
+                        {{ name }}
+                        {% elseif loop.index == count - 1 %}
+                        {{ name }}, and
+                      {% else %}
+                        {{ name }},
+                      {% endif %}
+                    {% endfor %}
+                  </span>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="tw-w-1/2 tw-border tw-border-black" colspan="2">
+              <div class="tw-flex tw-flex-col tw-items-stretch">
+                <span class="tw-block tw-text-xs tw-font-semibold tw-uppercase tw-leading-[19px]"
+                  >Job Request Description</span
+                >
+                <div
+                  class="max-h-[10em] tw-mx-0 tw-my-2 tw-min-h-[2em] tw-resize-none tw-bg-transparent tw-text-xs"
+                >
+                  {{ jo.jobDescription }}
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td
+              class="tw-border tw-border-black tw-bg-neutral-200 tw-text-start tw-text-xs tw-font-semibold tw-uppercase"
+              colspan="2"
+            >
+              Completion Information
+            </td>
+          </tr>
+          <tr>
+            <td class="tw-w-1/2 tw-border tw-border-black">
+              <div class="tw-flex tw-items-center">
+                <span class="tw-text-xs tw-uppercase">Actual time started:</span>
+                <span
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-rounded-none tw-border-none tw-bg-transparent tw-p-0 tw-font-serif tw-text-xs tw-font-semibold tw-uppercase"
+                >
+                  {{ jo.startTime | date('M d, Y h:m a', 'Asia/Manila') }}
+                </span>
+              </div>
+            </td>
+            <td class="tw-w-1/2 tw-border tw-border-black">
+              <div class="tw-flex tw-items-center">
+                <span class="tw-text-xs tw-uppercase">Actual time done:</span>
+                <span
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-rounded-none tw-border-none tw-bg-transparent tw-p-0 tw-font-serif tw-text-xs tw-font-semibold tw-uppercase"
+                >
+                  {{ jo.endTime | date('M d, Y h:m a', 'Asia/Manila') }}
+                </span>
+              </div>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="tw-w-1/2 tw-border tw-border-black" colspan="2">
+              <div class="tw-flex tw-flex-col tw-items-stretch">
+                <span class="tw-block tw-text-xs tw-font-semibold tw-uppercase tw-leading-[19px]">Actual Job Done</span>
+                <div
+                  class="tw-mx-0 tw-my-2 tw-max-h-[15em] tw-min-h-[2em] tw-resize-none tw-bg-transparent tw-text-xs"
+                >
+                  {{ jo.actualJobDone }}
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="tw-w-1/2 tw-border tw-border-black" colspan="2">
+              <div class="tw-flex tw-h-[5em] tw-items-end">
+                <span class="tw-text-xs tw-uppercase tw-leading-[19px]"> Performed by: </span>
+                <div class="tw-flex tw-flex-1 tw-flex-col tw-items-center">
+                  <span
+                    readonly
+                    class="tw-w-full tw-bg-transparent tw-text-center tw-text-xs tw-font-semibold tw-uppercase"
+                  >
+                    {{- jo.performer.name }}
+                  </span>
+                  <span
+                    class="tw-w-full tw-bg-transparent tw-text-center tw-text-xs tw-font-medium tw-uppercase tw-italic"
+                  >
+                    {{ jo.performer.position }}
+                  </span>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="tw-w-1/2 tw-border tw-border-black" colspan="2">
+              <div class="tw-flex tw-h-[5em] tw-items-end">
+                <span class="tw-text-xs tw-uppercase tw-leading-[19px]"> Verified by: </span>
+                <div class="tw-flex tw-flex-1 tw-flex-col tw-items-center">
+                  <span
+                    class="tw-w-full tw-bg-transparent tw-text-center tw-text-xs tw-font-semibold tw-uppercase"
+                  >
+                    {{ jo.verifierName }}
+                  </span>
+                  <span
+                    class="tw-w-full tw-bg-transparent tw-text-center tw-text-xs tw-font-medium tw-uppercase tw-italic"
+                  >
+                    {{ jo.verifierPosition | e('html_attr') }}
+                  </span>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <div class="tw-mt-auto tw-flex tw-flex-1 tw-break-before-avoid tw-flex-col tw-items-stretch tw-justify-stretch tw-border tw-border-black tw-font-serif">
+          <span class="tw-block tw-text-xs tw-font-semibold tw-uppercase tw-leading-[19px]"
+            >Remarks/Comment/Feedback</span
+          >
+          <div class="tw-h-0 tw-flex-1">
+            <div
+              class="tw-h-full tw-w-full tw-resize-none tw-bg-transparent tw-text-xs"
+            >
+              {{ jo.remarks }}
+            </div>
+          </div>
+        </div>
+        <em class="tw-invisible tw-mt-4 print:tw-visible">
+          ****Please accomplish together with Client Satisfaction Feedback Form
+        </em>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
