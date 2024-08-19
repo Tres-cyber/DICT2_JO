@@ -61,9 +61,8 @@ class AccountsController extends AbstractController
         ]);
       }
 
-
       return $this->referer->redirect(
-        $this->redirectToRoute('accounts_index', [], 303)
+        $this->redirectToRoute('accounts_index')
       );
     }
 
@@ -96,7 +95,7 @@ class AccountsController extends AbstractController
     $this->entityManager->flush();
 
     return $this->referer->redirect(
-      $this->redirectToRoute('accounts_index', [], 303)
+      $this->redirectToRoute('accounts_index')
     );
   }
 
@@ -107,7 +106,7 @@ class AccountsController extends AbstractController
     $this->entityManager->flush();
 
     return $this->referer->redirect(
-      $this->redirectToRoute('accounts_index', [], 303)
+      $this->redirectToRoute('accounts_index', [])
     );
   }
 }

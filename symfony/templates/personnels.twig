@@ -80,20 +80,17 @@
           {% endif %}
           <td data-label="Action" role="cell">
             <div class="d-flex flex-no-wrap gap-1">
-              <button
+              <a
                 class="btn btn-sm btn-primary"
                 data-bs-toggle="modal"
                 data-bs-target="#edit-modal"
-                hx-get="{{ path('personnel_edit', {id: per.id }) }}"
-                hx-target="#edit-form"
-                hx-indicator="#edit-loading"
-                hx-swap="outerHTML"
+                href="{{ path('personnel_edit', {id: per.id }) }}"
                 data-controller="tooltip"
                 data-bs-title="Edit personnel"
               >
                 <i class="fa-solid fa-pen"></i>
                 <span class="d-md-none">Edit</span>
-              </button>
+              </a>
               <form
                 action="{{ path('personnel_delete', {id: per.id}) }}"
                 method="POST"
@@ -178,9 +175,25 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        {{ form(addForm) }}
+        {{ block('addForm') }}
       </div>
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block addStream %}
+<turbo-stream action="replace" target="add-form">
+  <template>{{ block('addForm') }}</template>
+</turbo-stream>
+{% endblock %}
+
+{% block addForm %}
+{{ form(addForm, {attr: {id: 'add-form' }}) }}
+{% endblock %}
+
+{% block edit %}
+<turbo-stream action="replace" target="edit-form">
+  <template> {{ form(editForm, {attr: {id: 'edit-form' }}) }}</template>
+</turbo-stream>
 {% endblock %}

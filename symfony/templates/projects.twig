@@ -81,23 +81,20 @@
               <img class="td-icon tw-h-6" src="/storage/default.png" alt="icon">
             {% endif %}
           </td>
-          <td data-label="Focal Person">{{ proj.focalPerson.name }}</td>
+          <td data-label="Focal Person">{{ proj.focalPerson.name | default('No focal assigned') }}</td>
           <td data-label="Action">
             <div class="d-flex flex-no-wrap gap-1">
-              <button
+              <a
                 class="btn btn-sm btn-primary"
+                href="{{ path('project_edit', {id: proj.id }) }}"
                 data-bs-toggle="modal"
                 data-bs-target="#edit-modal"
-                hx-get="{{ path('project_edit', {id: proj.id }) }}"
-                hx-target="#edit-form"
-                hx-indicator="#edit-loading"
-                hx-swap="outerHTML"
                 data-controller="tooltip"
                 data-bs-title="Edit project"
               >
                 <i class="fa-solid fa-pen"></i>
                 <span class="d-lg-none">Edit</span>
-              </button>
+              </a>
               <form
                 action="{{ path('project_delete', {id: proj.id}) }}"
                 method="post"
@@ -183,10 +180,26 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        {{ form(addForm) }}
+        {{ block('addForm') }}
       </div>
     </div>
   </div>
 </div>
 
+{% endblock %}
+
+{% block addStream %}
+<turbo-stream action="replace" target="add-form">
+  <template>{{ block('addForm') }}</template>
+</turbo-stream>
+{% endblock %}
+
+{% block addForm %}
+{{ form(addForm, {attr: {id: 'add-form' }}) }}
+{% endblock %}
+
+{% block edit %}
+<turbo-stream action="replace" target="edit-form">
+  <template> {{ form(editForm, {attr: {id: 'edit-form' }}) }}</template>
+</turbo-stream>
 {% endblock %}

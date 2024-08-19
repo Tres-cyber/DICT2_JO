@@ -30,7 +30,6 @@ class PersonnelType extends AbstractType
       ])
       ->add('save', SubmitType::class, [
         'label' => 'Save',
-        'attr' => ['data-bs-dismiss' => 'modal']
       ]);;
   }
 

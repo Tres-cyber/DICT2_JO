@@ -13,7 +13,6 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AccountType extends AbstractType
@@ -44,7 +43,6 @@ class AccountType extends AbstractType
       ->add('is_admin')
       ->add('save', SubmitType::class, [
         'label' => 'Save',
-        'attr' => ['data-bs-dismiss' => 'modal']
       ]);
 
     $builder->addEventListener(FormEvents::POST_SUBMIT, function (FormEvent $event) {

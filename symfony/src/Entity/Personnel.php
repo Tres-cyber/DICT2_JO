@@ -6,6 +6,7 @@ use App\Repository\PersonnelRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: PersonnelRepository::class)]
 class Personnel
@@ -16,13 +17,16 @@ class Personnel
   private ?int $id = null;
 
   #[ORM\Column(length: 127)]
+  #[Assert\NotBlank()]
   private ?string $name = null;
 
   #[ORM\Column(length: 63)]
+  #[Assert\NotBlank()]
   private ?string $position = null;
 
   #[ORM\ManyToOne]
   #[ORM\JoinColumn(onDelete: 'SET NULL')]
+  #[Assert\NotNull()]
   private ?Project $project = null;
 
   #[ORM\OneToOne(mappedBy: 'personnel', targetEntity: Account::class)]
@@ -52,7 +56,7 @@ class Personnel
     return $this->name;
   }
 
-  public function setName(string $name): static
+  public function setName(?string $name): static
   {
     $this->name = $name;
 
@@ -64,7 +68,7 @@ class Personnel
     return $this->position;
   }
 
-  public function setPosition(string $position): static
+  public function setPosition(?string $position): static
   {
     $this->position = $position;
 

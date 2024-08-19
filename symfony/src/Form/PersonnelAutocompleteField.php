@@ -20,7 +20,10 @@ class PersonnelAutocompleteField extends AbstractType
       'searchable_fields' => ['name'],
       'security' => 'ROLE_USER',
       'query_builder' => function (PersonnelRepository $repository) {
-        return $repository->createJoinedQueryBuilder();
+        return $repository->createJoinedQueryBuilder()
+          ->addSelect('CASE WHEN project.id IS NULL THEN 1 ELSE 0 END AS HIDDEN null_order')
+          ->addOrderBy('null_order', 'ASC')
+          ->addOrderBy('project.name', 'ASC');
       },
       'group_by' =>
       function (Personnel $choice, $key, $value) {

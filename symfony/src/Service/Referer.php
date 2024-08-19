@@ -4,6 +4,7 @@ namespace App\Service;
 
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
 
 class Referer
 {
@@ -23,6 +24,7 @@ class Referer
   public function redirect(RedirectResponse $fallback): RedirectResponse
   {
     $fallback->setTargetUrl($this->referer);
+    $fallback->setStatusCode(Response::HTTP_SEE_OTHER);
     return $fallback;
   }
 }

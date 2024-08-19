@@ -31,21 +31,13 @@ class ProjectType extends AbstractType
     $builder
       ->add('name')
       ->add('code')
-      ->add('focal_person', EntityType::class, [
-        'class' => Personnel::class,
-        'choice_label' => 'name',
-        'query_builder' => function (PersonnelRepository $repository) {
-          return $repository->createJoinedQueryBuilder();
-        },
-        'autocomplete' => true,
-      ])
+      ->add('focal_person', PersonnelAutocompleteField::class)
       ->add('logo', FileType::class, [
         'required' => false,
         'attr' => ['accept' => 'image/jpeg, image/png']
       ])
       ->add('save', SubmitType::class, [
         'label' => 'Save',
-        'attr' => ['data-bs-dismiss' => 'modal']
       ]);;
 
     $builder

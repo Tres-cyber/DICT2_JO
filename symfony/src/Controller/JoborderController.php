@@ -126,7 +126,8 @@ class JoborderController extends AbstractController
         'title' => 'Cannot create joborder',
         'message' => "You are not allowed to create a job order unless assigned to a project. Contact your admin to assign you to a project"
       ]);
-      return $this->redirectToRoute('app_front', [], 303);
+
+      return $this->redirectToRoute('app_front', [], Response::HTTP_SEE_OTHER);
     }
 
     $director = $this->personnelRepository->getDirector();
@@ -166,11 +167,11 @@ class JoborderController extends AbstractController
         ]);
       }
 
-      return $this->redirectToRoute('app_front', [], 303);
+      return $this->redirectToRoute('app_front', [], Response::HTTP_SEE_OTHER);
     }
 
     return $this->render('create_joborder.twig', [
-      'form' => $form->createView(),
+      'form' => $form,
     ]);
   }
 
@@ -236,11 +237,11 @@ class JoborderController extends AbstractController
         ]);
       }
 
-      return $this->redirectToRoute('app_front', [], 303);
+      return $this->redirectToRoute('app_front', [], Response::HTTP_SEE_OTHER);
     }
 
     return $this->render('create_joborder.twig', [
-      'form' => $form->createView(),
+      'form' => $form,
     ]);
   }
 
@@ -253,7 +254,7 @@ class JoborderController extends AbstractController
     $this->entityManager->flush();
 
     return $this->referer->redirect(
-      $this->redirectToRoute('app_front', [], 303)
+      $this->redirectToRoute('app_front')
     );
   }
 
@@ -266,7 +267,7 @@ class JoborderController extends AbstractController
     $this->entityManager->flush();
 
     return $this->referer->redirect(
-      $this->redirectToRoute('app_front', [], 303)
+      $this->redirectToRoute('app_front')
     );
   }
 }

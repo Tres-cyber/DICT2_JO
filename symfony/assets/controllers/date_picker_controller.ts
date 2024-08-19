@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus";
 import $ from "jquery";
 import "bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
-import { Moment } from "moment";
+import moment, { Moment } from "moment";
 
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
@@ -60,17 +60,20 @@ export default class extends Controller {
       options.singleDatePicker = true;
     }
 
-    ($(this.inputTarget) as any).daterangepicker(
-      options,
-      (start: Moment, end: Moment) => {
-        if (this.rangeValue) {
-          this.startTarget.value = this.format(start);
-          this.endTarget.value = this.format(end);
-        } else {
-          this.selectedTarget.value = this.format(start);
-        }
-      },
-    );
+    const callback = (start: Date | Moment, end: Date | Moment) => {
+      if (start instanceof Date) start = moment(start);
+      if (end instanceof Date) end = moment(end);
+
+      if (this.rangeValue) {
+        this.startTarget.value = this.format(start);
+        this.endTarget.value = this.format(end);
+      } else {
+        this.selectedTarget.value = this.format(start);
+      }
+    };
+
+    ($(this.inputTarget) as any).daterangepicker(options, callback);
+    callback(options.startDate, options.endDate);
   }
 
   disconnect(): void {
