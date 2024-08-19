@@ -1,7 +1,7 @@
 {% extends 'base.twig' %}
-{% block head %}
-<title>DICT JO - Form</title>
-{% endblock %}
+{% block title -%}
+{{- jo.controlNumber -}}
+{%- endblock %}
 {% block header %}
 <twig:NavBar />
 {% endblock %}
@@ -70,9 +70,9 @@
           <tr>
             <td class="tw-w-1/2 tw-border tw-border-black">
               <div class="tw-flex tw-items-center">
-                <span class="tw-text-sm tw-uppercase">Name:</span>
+                <span class="tw-text-xs tw-uppercase">Name:</span>
                 <span
-                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-sm tw-font-semibold tw-uppercase"
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-xs tw-font-semibold tw-uppercase"
                 >
                   {{ jo.clientName }}
                 </span>
@@ -80,9 +80,9 @@
             </td>
             <td class="tw-w-1/2 tw-border tw-border-black">
               <div class="tw-flex tw-items-center">
-                <span class="tw-text-sm tw-uppercase">Contact Number:</span>
+                <span class="tw-text-xs tw-uppercase">Contact Number:</span>
                 <span
-                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-sm tw-font-semibold tw-uppercase"
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-xs tw-font-semibold tw-uppercase"
                 >
                   {{ jo.clientContact }}
                 </span>
@@ -92,9 +92,9 @@
           <tr>
             <td class="tw-border tw-border-black" colspan="2">
               <div class="tw-flex tw-items-center">
-                <span class="tw-text-sm tw-uppercase">LGU:</span>
+                <span class="tw-text-xs tw-uppercase">LGU:</span>
                 <span
-                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-sm tw-font-semibold tw-uppercase"
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-xs tw-font-semibold tw-uppercase"
                 >
                   {{ jo.clientLgu }}
                 </span>
@@ -106,12 +106,12 @@
               <div class="tw-flex tw-items-center">
                 <label
                   for="request_mode"
-                  class="tw-text-sm tw-uppercase"
+                  class="tw-text-xs tw-uppercase"
                 >
                   Mode of request:
                 </label>
                 <span
-                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-sm tw-font-semibold tw-capitalize"
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-xs tw-font-semibold tw-capitalize"
                 >
                   On Site
                 </span>
@@ -119,9 +119,9 @@
             </td>
             <td class="tw-w-1/2 tw-border tw-border-black">
               <div class="tw-flex tw-items-center">
-                <label for="date" class="tw-text-sm tw-uppercase"> Date: </label>
+                <label for="date" class="tw-text-xs tw-uppercase"> Date: </label>
                 <span
-                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-rounded-none tw-border-none tw-bg-transparent tw-p-0 tw-font-serif tw-text-sm tw-font-semibold tw-uppercase"
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-rounded-none tw-border-none tw-bg-transparent tw-p-0 tw-font-serif tw-text-xs tw-font-semibold tw-uppercase"
                 >
                   {{ jo.requestDate  | date('F d, Y') }}
                 </span>
@@ -139,9 +139,9 @@
           <tr>
             <td class="tw-w-1/2 tw-border tw-border-black">
               <div class="tw-flex tw-items-center">
-                <span class="tw-text-sm tw-uppercase"> Scheduled date: </span>
+                <span class="tw-text-xs tw-uppercase"> Scheduled date: </span>
                 <span
-                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-rounded-none tw-border-none tw-bg-transparent tw-p-0 tw-font-serif tw-text-sm tw-font-semibold tw-uppercase"
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-rounded-none tw-border-none tw-bg-transparent tw-p-0 tw-font-serif tw-text-xs tw-font-semibold tw-uppercase"
                 >
                   {% if jo.scheduledStartDate == jo.scheduledEndDate %}
                     {{ jo.scheduledStartDate | date('M d, Y') }}
@@ -153,9 +153,9 @@
             </td>
             <td class="tw-w-1/2 tw-border tw-border-black">
               <div class="tw-flex tw-items-center">
-                <span class="tw-text-sm tw-uppercase"> Job order number: </span>
+                <span class="tw-text-xs tw-uppercase"> Job order number: </span>
                 <span
-                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-sm tw-font-semibold"
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-bg-transparent tw-text-xs tw-font-semibold"
                 >
                   {{ jo.controlNumber }}
                 </span>
@@ -165,9 +165,9 @@
           <tr>
             <td class="tw-w-1/2 tw-border tw-border-black">
               <div class="tw-flex tw-items-center">
-                <span class="tw-text-sm tw-uppercase">Issued by:</span>
+                <span class="tw-text-xs tw-uppercase">Issued by:</span>
                 <span
-                  class="tw-ml-1 tw-flex tw-w-0 tw-flex-1 tw-text-sm tw-font-semibold tw-uppercase"
+                  class="tw-ml-1 tw-flex tw-w-0 tw-flex-1 tw-text-xs tw-font-semibold tw-uppercase"
                 >
                   {{ jo.issuer.name | default('') }}
                 </span>
@@ -175,9 +175,9 @@
             </td>
             <td class="tw-w-1/2 tw-border tw-border-black">
               <div class="tw-flex tw-items-center">
-                <span class="tw-text-sm tw-uppercase">Approved by:</span>
+                <span class="tw-text-xs tw-uppercase">Approved by:</span>
                 <span
-                  class="tw-ml-1 tw-flex tw-w-0 tw-flex-1 tw-text-sm tw-font-semibold tw-uppercase"
+                  class="tw-ml-1 tw-flex tw-w-0 tw-flex-1 tw-text-xs tw-font-semibold tw-uppercase"
                 >
                   {{ jo.approver.name | default('') }}
                 </span>
@@ -189,8 +189,8 @@
             <td class="tw-h-[3em] tw-w-1/2 tw-border tw-border-black" colspan="2">
               <div class="tw-flex tw-items-center">
                 <div class="tw-flex tw-flex-1 tw-items-start">
-                  <span class="tw-mr-1 tw-text-sm tw-uppercase"> Endorsed to: </span>
-                  <span class="tw-relative tw-ml-1 tw-flex tw-w-0 tw-flex-1 tw-text-sm tw-font-semibold tw-uppercase">
+                  <span class="tw-mr-1 tw-text-xs tw-uppercase"> Endorsed to: </span>
+                  <span class="tw-relative tw-ml-1 tw-flex tw-w-0 tw-flex-1 tw-text-xs tw-font-semibold tw-uppercase">
                     {% set count = jo.endorsee|length %}
                     {% for endorsee in jo.endorsee %}
                       {% set name = endorsee.name %}
@@ -210,11 +210,11 @@
           <tr>
             <td class="tw-w-1/2 tw-border tw-border-black" colspan="2">
               <div class="tw-flex tw-flex-col tw-items-stretch">
-                <span class="tw-block tw-text-sm tw-font-semibold tw-uppercase tw-leading-[19px]"
+                <span class="tw-block tw-text-xs tw-font-semibold tw-uppercase tw-leading-[19px]"
                   >Job Request Description</span
                 >
                 <div
-                  class="max-h-[10em] tw-mx-0 tw-my-2 tw-min-h-[2em] tw-resize-none tw-bg-transparent tw-text-sm"
+                  class="max-h-[10em] tw-mx-0 tw-my-2 tw-min-h-[2em] tw-resize-none tw-bg-transparent tw-text-xs"
                 >
                   {{ jo.jobDescription }}
                 </div>
@@ -232,9 +232,9 @@
           <tr>
             <td class="tw-w-1/2 tw-border tw-border-black">
               <div class="tw-flex tw-items-center">
-                <span class="tw-text-sm tw-uppercase">Actual time started:</span>
+                <span class="tw-text-xs tw-uppercase">Actual time started:</span>
                 <span
-                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-rounded-none tw-border-none tw-bg-transparent tw-p-0 tw-font-serif tw-text-sm tw-font-semibold tw-uppercase"
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-rounded-none tw-border-none tw-bg-transparent tw-p-0 tw-font-serif tw-text-xs tw-font-semibold tw-uppercase"
                 >
                   {{ jo.startTime | date('M d, Y h:m a', 'Asia/Manila') }}
                 </span>
@@ -242,9 +242,9 @@
             </td>
             <td class="tw-w-1/2 tw-border tw-border-black">
               <div class="tw-flex tw-items-center">
-                <span class="tw-text-sm tw-uppercase">Actual time done:</span>
+                <span class="tw-text-xs tw-uppercase">Actual time done:</span>
                 <span
-                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-rounded-none tw-border-none tw-bg-transparent tw-p-0 tw-font-serif tw-text-sm tw-font-semibold tw-uppercase"
+                  class="tw-ml-1 tw-w-0 tw-flex-1 tw-rounded-none tw-border-none tw-bg-transparent tw-p-0 tw-font-serif tw-text-xs tw-font-semibold tw-uppercase"
                 >
                   {{ jo.endTime | date('M d, Y h:m a', 'Asia/Manila') }}
                 </span>
@@ -255,9 +255,9 @@
           <tr>
             <td class="tw-w-1/2 tw-border tw-border-black" colspan="2">
               <div class="tw-flex tw-flex-col tw-items-stretch">
-                <span class="tw-block tw-text-sm tw-font-semibold tw-uppercase tw-leading-[19px]">Actual Job Done</span>
+                <span class="tw-block tw-text-xs tw-font-semibold tw-uppercase tw-leading-[19px]">Actual Job Done</span>
                 <div
-                  class="tw-mx-0 tw-my-2 tw-max-h-[15em] tw-min-h-[2em] tw-resize-none tw-bg-transparent tw-text-sm"
+                  class="tw-mx-0 tw-my-2 tw-max-h-[15em] tw-min-h-[2em] tw-resize-none tw-bg-transparent tw-text-xs"
                 >
                   {{ jo.actualJobDone }}
                 </div>
@@ -267,11 +267,11 @@
           <tr>
             <td class="tw-w-1/2 tw-border tw-border-black" colspan="2">
               <div class="tw-flex tw-h-[5em] tw-items-end">
-                <span class="tw-text-sm tw-uppercase tw-leading-[19px]"> Performed by: </span>
+                <span class="tw-text-xs tw-uppercase tw-leading-[19px]"> Performed by: </span>
                 <div class="tw-flex tw-flex-1 tw-flex-col tw-items-center">
                   <span
                     readonly
-                    class="tw-w-full tw-bg-transparent tw-text-center tw-text-sm tw-font-semibold tw-uppercase"
+                    class="tw-w-full tw-bg-transparent tw-text-center tw-text-xs tw-font-semibold tw-uppercase"
                   >
                     {{- jo.performer.name }}
                   </span>
@@ -287,10 +287,10 @@
           <tr>
             <td class="tw-w-1/2 tw-border tw-border-black" colspan="2">
               <div class="tw-flex tw-h-[5em] tw-items-end">
-                <span class="tw-text-sm tw-uppercase tw-leading-[19px]"> Verified by: </span>
+                <span class="tw-text-xs tw-uppercase tw-leading-[19px]"> Verified by: </span>
                 <div class="tw-flex tw-flex-1 tw-flex-col tw-items-center">
                   <span
-                    class="tw-w-full tw-bg-transparent tw-text-center tw-text-sm tw-font-semibold tw-uppercase"
+                    class="tw-w-full tw-bg-transparent tw-text-center tw-text-xs tw-font-semibold tw-uppercase"
                   >
                     {{ jo.verifierName }}
                   </span>
@@ -306,12 +306,12 @@
         </table>
 
         <div class="tw-mt-auto tw-flex tw-flex-1 tw-break-before-avoid tw-flex-col tw-items-stretch tw-justify-stretch tw-border tw-border-black tw-font-serif">
-          <span class="tw-block tw-text-sm tw-font-semibold tw-uppercase tw-leading-[19px]"
+          <span class="tw-block tw-text-xs tw-font-semibold tw-uppercase tw-leading-[19px]"
             >Remarks/Comment/Feedback</span
           >
           <div class="tw-h-0 tw-flex-1">
             <div
-              class="tw-h-full tw-w-full tw-resize-none tw-bg-transparent tw-text-sm"
+              class="tw-h-full tw-w-full tw-resize-none tw-bg-transparent tw-text-xs"
             >
               {{ jo.remarks }}
             </div>
