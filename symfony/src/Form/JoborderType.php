@@ -75,7 +75,8 @@ class JoborderType extends AbstractType
           'label' => 'Submit',
           'attr' => ['class' => 'btn-primary'],
         ]);
-      } else if ($jobOrder->getStatus() == 'APPROVED') {
+      }
+      if ($jobOrder->getStatus() == 'APPROVED') {
         $form->add('complete', SubmitType::class, [
           'label' => 'Mark completed',
           'attr' => ['class' => 'btn-primary'],

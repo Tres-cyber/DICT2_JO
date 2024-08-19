@@ -68,8 +68,12 @@
       </thead>
       <tbody
         class="table-group-divider"
+        id="table-body"
+        data-controller="poll"
+        data-poll-interval-value="2500"
+        data-poll-target-value="{{ path('accounts_index', {table: true}) }}"
       >
-        {% include 'accounts-table.twig' %}
+        {{ block('table') }}
       </tbody>
     </table>
   </div>
@@ -97,9 +101,129 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        {{ form(addForm) }}
+        {{ block('addForm') }}
       </div>
     </div>
   </div>
 </div>
+
+<div
+  class="modal fade"
+  id="edit-modal"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="edit-modalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="edit-modalLabel">Edit account</h1>
+        <div class="spinner-border spinner-border-sm ms-3 htmx-indicator" role="status" id="edit-loading">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="edit-form" class="placeholder-glow">
+          <div class="placeholder col-4"></div>
+          <div class="placeholder placeholder-lg col-12 mb-3"></div>
+          <div class="placeholder col-5"></div>
+          <div class="placeholder placeholder-lg col-12 mb-3"></div>
+          <div class="placeholder col-4"></div>
+          <div class="placeholder placeholder-lg col-12 mb-3"></div>
+          <div class="btn btn-primary disabled placeholder col-4"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block addStream %}
+<turbo-stream action="replace" target="add-form">
+  <template>{{ block('addForm') }}</template>
+</turbo-stream>
+{% endblock %}
+
+{% block addForm %}
+{{ form(addForm, {attr: {id: 'add-form' }}) }}
+{% endblock %}
+
+{% block edit %}
+<turbo-stream action="replace" target="edit-form">
+  <template> {{ form(editForm, {attr: {id: 'edit-form' }}) }}</template>
+</turbo-stream>
+{% endblock %}
+
+{% block tableStream %}
+<turbo-stream
+  action="update"
+  method="morph"
+  target="table-body"
+>
+  <template>{{ block('table') }}</template>
+</turbo-stream>
+{% endblock %}
+
+{% block table %}
+{% for acc in accounts %}
+  <tr id="{{ acc.id }}">
+    <td data-label="Account Name">
+      {{ acc.personnel ? acc.personnel.name : 'admin' }}
+    </td>
+    <td
+      data-label="Session Status"
+    >
+      {% if acc.hasSession() %}
+        <span class="text-success">active</span>
+      {% else %}
+        <span class="text-danger">offline</span>
+      {% endif %}
+    </td>
+    <td data-label="Action">
+      <div class="d-flex flex-no-wrap gap-1">
+        <form action="{{ path('account_logout', {id: acc.id}) }}" method="get">
+          <button
+            class="btn btn-sm btn-primary"
+            data-bs-title="Logout"
+            data-controller="tooltip"
+          >
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span class="d-md-none">Logout</span>
+          </button>
+        </form>
+
+        <a
+          class="btn btn-sm btn-secondary"
+          href="{{ path('account_edit', {id: acc.id}) }}"
+          data-bs-title="Edit"
+          data-controller="tooltip"
+          data-bs-toggle="modal"
+          data-bs-target="#edit-modal"
+        >
+          <i class="fa-solid fa-pen"></i>
+          <span class="d-md-none">Edit</span>
+        </a>
+        <form
+          action="{{ path('account_delete', {id: acc.id}) }}"
+          method="post"
+          data-controller="confirm-form"
+          data-action="confirm-form#confirm"
+        >
+          <input type="hidden" name="_method" value="DELETE">
+          <button
+            class="btn btn-sm btn-danger"
+            data-bs-title="Delete"
+            data-controller="tooltip"
+          >
+            <i class="fa-solid fa-trash"></i>
+            <span class="d-md-none">Delete</span>
+          </button>
+        </form>
+      </div>
+    </td>
+  </tr>
+{% endfor %}
 {% endblock %}

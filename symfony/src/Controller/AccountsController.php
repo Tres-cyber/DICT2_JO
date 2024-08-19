@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\UX\Turbo\TurboBundle;
 
 class AccountsController extends AbstractController
 {
@@ -66,6 +67,13 @@ class AccountsController extends AbstractController
       );
     }
 
+    if ($form->isSubmitted()) {
+      $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
+      return $this->renderBlock('personnels.twig', 'addStream', [
+        'addForm' => $form,
+      ]);
+    }
+
 
     $page = $request->query->getInt('page', 1);
     $accounts = $paginator->paginate(
@@ -75,7 +83,8 @@ class AccountsController extends AbstractController
     );
 
     if ($request->query->has('table')) {
-      return $this->render('accounts-table.twig', [
+      $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
+      return $this->renderBlock('accounts.twig', 'tableStream', [
         'accounts' => $accounts,
       ]);
     }
@@ -108,5 +117,44 @@ class AccountsController extends AbstractController
     return $this->referer->redirect(
       $this->redirectToRoute('accounts_index', [])
     );
+  }
+
+  #[Route('/admin/accounts/{id}/edit', name: 'account_edit', methods: ['GET'])]
+  #[Route('/admin/accounts/{id}', name: 'account_update', methods: ['PUT'])]
+  public function edit(Account $account, Request $request, UserPasswordHasherInterface $passwordHasher)
+  {
+    $form = $this->createForm(AccountType::class, $account, [
+      'method' => 'PUT',
+      'action' => $this->generateUrl('account_update', [
+        'id' => $account->getId()
+      ]),
+      'is_editing' => true,
+    ]);
+
+    $form->handleRequest($request);
+    if ($form->isSubmitted() && $form->isValid()) {
+      $passwordHash = $passwordHasher->hashPassword(
+        $account,
+        $account->getPassword(),
+      );
+      $account->setPassword($passwordHash);
+      $account->removeSession();
+
+      $this->entityManager->flush();
+      $this->addFlash('notifications', [
+        'title' => 'Edited account successfully',
+        'message' => "Successfully editted account '" . $account->getEmail() . "'"
+      ]);
+
+      return $this->referer->redirect(
+        $this->redirectToRoute('accounts_index')
+      );
+    }
+
+    $request->setRequestFormat(TurboBundle::STREAM_FORMAT);
+    return $this->renderBlock('accounts.twig', 'edit', [
+      'editForm' => $form,
+      'account' => $account,
+    ]);
   }
 }

@@ -11,30 +11,23 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AccountType extends AbstractType
 {
-  private FlashBagInterface $flashes;
-
-  public function __construct(RequestStack $requestStack)
-  {
-    /** @var \Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface */
-    $session = $requestStack->getCurrentRequest()->getSession();
-    $this->flashes = $session->getFlashBag();
-  }
-
   public function buildForm(FormBuilderInterface $builder, array $options): void
   {
+    if (!$options['is_editing']) {
+      $builder
+        ->add('personnel', PersonnelAutocompleteField::class, [
+          'query_builder' => function (PersonnelRepository $repository) {
+            return $repository->createJoinedQueryBuilder()
+              ->where('account IS NULL');
+          },
+        ]);
+    }
+
     $builder
-      ->add('personnel', PersonnelAutocompleteField::class, [
-        'query_builder' => function (PersonnelRepository $repository) {
-          return $repository->createJoinedQueryBuilder()
-            ->where('account IS NULL');
-        },
-      ])
       ->add('email')
       ->add('password', PasswordType::class)
       ->add('confirmPassword', PasswordType::class, [
@@ -53,10 +46,6 @@ class AccountType extends AbstractType
       if ($data->getPassword() !== $confirmPassword) {
         $form->get('confirmPassword')->addError(new FormError('Passwords must match.'));
         $form->get('password')->addError(new FormError('Passwords must match.'));
-        $this->flashes->add('notifications', [
-          'title' => 'Account creation failed',
-          'message' => "Password doesn't match",
-        ]);
       }
     });
   }
@@ -65,6 +54,7 @@ class AccountType extends AbstractType
   {
     $resolver->setDefaults([
       'data_class' => Account::class,
+      'is_editing' => false,
     ]);
   }
 }

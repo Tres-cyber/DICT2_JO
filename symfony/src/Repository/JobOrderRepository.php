@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use App\Entity\JobOrder;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -46,18 +45,16 @@ class JobOrderRepository extends ServiceEntityRepository
     $date = $jobOrder->getRequestDate();
     $yearMonth = $date->format('Y-m');
 
-    $rsm = new ResultSetMapping();
-    $count = $em->createNativeQuery("
-        SELECT COUNT(*) 
-        FROM job_order
-        WHERE 
-            project_id = :projectId
-            AND DATE_FORMAT(request_date, '%Y-%m') = :yearMonth
-            AND joborder_status != 'DRAFT'
-    ", $rsm)->setParameters([
-      ':projectId' => $project->getId(),
-      ':yearMonth' => $yearMonth,
-    ])->getSingleScalarResult();
+    $dql = "SELECT COUNT(jo) FROM App\Entity\JobOrder jo 
+        WHERE jo.project = :projectId 
+        AND SUBSTRING(jo.request_date, 1, 7) = :yearMonth 
+        AND jo.status != 'DRAFT'";
+
+    $query = $em->createQuery($dql);
+    $query->setParameter('projectId', $project->getId());
+    $query->setParameter('yearMonth', $yearMonth);
+
+    $count = intval($query->getSingleScalarResult());
 
     $formattedDate = $date->format('Y-m-d');
     return sprintf("%s-%s-%s-S%02d", $projectCode, 'R2', $formattedDate, $count + 1);
