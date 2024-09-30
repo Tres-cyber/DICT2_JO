@@ -115,7 +115,7 @@ class AccountsController extends AbstractController
     $this->entityManager->flush();
 
     return $this->referer->redirect(
-      $this->redirectToRoute('accounts_index', [])
+      $this->redirectToRoute('accounts_index', [], Response::HTTP_SEE_OTHER)
     );
   }
 

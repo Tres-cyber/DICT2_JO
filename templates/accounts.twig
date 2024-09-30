@@ -71,7 +71,7 @@
         class="table-group-divider"
         id="table-body"
         data-controller="poll"
-        data-poll-interval-value="2500"
+        data-poll-interval-value="7500"
         data-poll-target-value="{{ path('accounts_index', {table: true, search: search, page: page}) }}"
       >
         {{ block('table') }}
@@ -184,19 +184,21 @@
       {% endif %}
     </td>
     <td data-label="Action">
-      <div class="d-flex flex-no-wrap gap-1">
-        <form action="{{ path('account_logout', {id: acc.id}) }}" method="get">
-          <button
-            class="btn btn-sm btn-primary"
-            data-bs-title="Logout"
-            data-controller="tooltip"
-          >
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span class="d-md-none">Logout</span>
-          </button>
-        </form>
-
+      <div id="actions-{{acc.id}}" class="d-flex flex-no-wrap gap-1" data-turbo-permanent>
         <a
+          role="button"
+          id="logout-{{acc.id}}"
+          href="{{ path('account_logout', {id: acc.id}) }}"
+          class="btn btn-sm btn-primary"
+          data-bs-title="Logout"
+          data-controller="tooltip"
+        >
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span class="d-md-none">Logout</span>
+        </a>
+        <a
+          role="button"
+          id="edit-{{acc.id}}"
           class="btn btn-sm btn-secondary"
           href="{{ path('account_edit', {id: acc.id}) }}"
           data-bs-title="Edit"
@@ -208,6 +210,7 @@
           <span class="d-md-none">Edit</span>
         </a>
         <form
+          id="delete-{{acc.id}}"
           action="{{ path('account_delete', {id: acc.id}) }}"
           method="post"
           data-controller="confirm-form"

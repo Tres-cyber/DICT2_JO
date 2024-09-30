@@ -17,8 +17,9 @@ import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons/faRightFro
 import { faRotateRight } from "@fortawesome/free-solid-svg-icons/faRotateRight";
 import { faTrash } from "@fortawesome/free-solid-svg-icons/faTrash";
 import { faXmark } from "@fortawesome/free-solid-svg-icons/faXmark";
-import { library, dom } from "@fortawesome/fontawesome-svg-core";
+import { library, dom, config } from "@fortawesome/fontawesome-svg-core";
 
+config.mutateApproach = "sync";
 library.add(
   faArrowDown,
   faArrowTurnDown,
